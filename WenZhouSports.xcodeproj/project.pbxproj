@@ -1,0 +1,604 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		274EF4496B2B9BA56214BA27 /* libPods-WenZhouSports.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */; };
+		5401BB741EB823F000003C51 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* Dao.m */; };
+		5401BB771EB864FD00003C51 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB761EB864FD00003C51 /* LoginView.m */; };
+		542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3B1EB1F26A00EDAD91 /* main.m */; };
+		542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */; };
+		542DCC421EB1F26A00EDAD91 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC411EB1F26A00EDAD91 /* ViewController.m */; };
+		542DCC451EB1F26A00EDAD91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC431EB1F26A00EDAD91 /* Main.storyboard */; };
+		542DCC471EB1F26A00EDAD91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC461EB1F26A00EDAD91 /* Assets.xcassets */; };
+		542DCC4A1EB1F26A00EDAD91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */; };
+		542DCC551EB1F26A00EDAD91 /* WenZhouSportsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC541EB1F26A00EDAD91 /* WenZhouSportsUITests.m */; };
+		547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */; };
+		547064651EB822D30069BFE6 /* UIView+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064631EB822D30069BFE6 /* UIView+Util.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		542DCC511EB1F26A00EDAD91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 542DCC2F1EB1F26A00EDAD91 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 542DCC361EB1F26A00EDAD91;
+			remoteInfo = WenZhouSports;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.debug.xcconfig"; sourceTree = "<group>"; };
+		503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WenZhouSports.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5401BB721EB823F000003C51 /* Dao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dao.h; sourceTree = "<group>"; };
+		5401BB731EB823F000003C51 /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
+		5401BB751EB864FD00003C51 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
+		5401BB761EB864FD00003C51 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
+		542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenZhouSports.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		542DCC3B1EB1F26A00EDAD91 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
+		542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		542DCC401EB1F26A00EDAD91 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		542DCC411EB1F26A00EDAD91 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		542DCC441EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		542DCC461EB1F26A00EDAD91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		542DCC491EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		542DCC4B1EB1F26A00EDAD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		542DCC501EB1F26A00EDAD91 /* WenZhouSportsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WenZhouSportsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		542DCC541EB1F26A00EDAD91 /* WenZhouSportsUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WenZhouSportsUITests.m; sourceTree = "<group>"; };
+		542DCC561EB1F26A00EDAD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		547064601EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPSessionManager+RACSupport.h"; sourceTree = "<group>"; };
+		547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPSessionManager+RACSupport.m"; sourceTree = "<group>"; };
+		547064621EB822D30069BFE6 /* UIView+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Util.h"; sourceTree = "<group>"; };
+		547064631EB822D30069BFE6 /* UIView+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Util.m"; sourceTree = "<group>"; };
+		547064671EB822F80069BFE6 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		547064681EB822F80069BFE6 /* Configs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configs.h; sourceTree = "<group>"; };
+		547064691EB822F80069BFE6 /* FontSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontSize.h; sourceTree = "<group>"; };
+		54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.release.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		542DCC341EB1F26A00EDAD91 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				274EF4496B2B9BA56214BA27 /* libPods-WenZhouSports.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		542DCC4D1EB1F26A00EDAD91 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E1994E4D18E28D38CAA6846 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		542DCC2E1EB1F26A00EDAD91 = {
+			isa = PBXGroup;
+			children = (
+				542DCC391EB1F26A00EDAD91 /* WenZhouSports */,
+				542DCC531EB1F26A00EDAD91 /* WenZhouSportsUITests */,
+				542DCC381EB1F26A00EDAD91 /* Products */,
+				79AE2FE47A2F5E48E1635017 /* Pods */,
+				0E1994E4D18E28D38CAA6846 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		542DCC381EB1F26A00EDAD91 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */,
+				542DCC501EB1F26A00EDAD91 /* WenZhouSportsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		542DCC391EB1F26A00EDAD91 /* WenZhouSports */ = {
+			isa = PBXGroup;
+			children = (
+				547064661EB822F80069BFE6 /* Utils */,
+				5470645F1EB822D30069BFE6 /* Categoris */,
+				5470645E1EB822990069BFE6 /* Base */,
+				5470646A1EB8233C0069BFE6 /* Controller */,
+				5470646B1EB8233C0069BFE6 /* Model */,
+				5470646C1EB8233C0069BFE6 /* View */,
+				5470646D1EB8233C0069BFE6 /* ViewModel */,
+				542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */,
+				542DCC401EB1F26A00EDAD91 /* ViewController.h */,
+				54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */,
+				542DCC411EB1F26A00EDAD91 /* ViewController.m */,
+				542DCC431EB1F26A00EDAD91 /* Main.storyboard */,
+				542DCC461EB1F26A00EDAD91 /* Assets.xcassets */,
+				542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */,
+				542DCC4B1EB1F26A00EDAD91 /* Info.plist */,
+				542DCC3A1EB1F26A00EDAD91 /* Supporting Files */,
+			);
+			path = WenZhouSports;
+			sourceTree = "<group>";
+		};
+		542DCC3A1EB1F26A00EDAD91 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				542DCC3B1EB1F26A00EDAD91 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		542DCC531EB1F26A00EDAD91 /* WenZhouSportsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				542DCC541EB1F26A00EDAD91 /* WenZhouSportsUITests.m */,
+				542DCC561EB1F26A00EDAD91 /* Info.plist */,
+			);
+			path = WenZhouSportsUITests;
+			sourceTree = "<group>";
+		};
+		5470645E1EB822990069BFE6 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5401BB721EB823F000003C51 /* Dao.h */,
+				5401BB731EB823F000003C51 /* Dao.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		5470645F1EB822D30069BFE6 /* Categoris */ = {
+			isa = PBXGroup;
+			children = (
+				547064601EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.h */,
+				547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */,
+				547064621EB822D30069BFE6 /* UIView+Util.h */,
+				547064631EB822D30069BFE6 /* UIView+Util.m */,
+			);
+			path = Categoris;
+			sourceTree = "<group>";
+		};
+		547064661EB822F80069BFE6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				547064671EB822F80069BFE6 /* Color.h */,
+				547064681EB822F80069BFE6 /* Configs.h */,
+				547064691EB822F80069BFE6 /* FontSize.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		5470646A1EB8233C0069BFE6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		5470646B1EB8233C0069BFE6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5470646C1EB8233C0069BFE6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5401BB751EB864FD00003C51 /* LoginView.h */,
+				5401BB761EB864FD00003C51 /* LoginView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5470646D1EB8233C0069BFE6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		79AE2FE47A2F5E48E1635017 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */,
+				D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		542DCC361EB1F26A00EDAD91 /* WenZhouSports */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 542DCC591EB1F26A00EDAD91 /* Build configuration list for PBXNativeTarget "WenZhouSports" */;
+			buildPhases = (
+				E62FCBF0D2B8B91AB4E81F66 /* [CP] Check Pods Manifest.lock */,
+				542DCC331EB1F26A00EDAD91 /* Sources */,
+				542DCC341EB1F26A00EDAD91 /* Frameworks */,
+				542DCC351EB1F26A00EDAD91 /* Resources */,
+				ECAA163AF81C3FEEBE9BC506 /* [CP] Embed Pods Frameworks */,
+				5B8BCE8DB4AB3DFD66210057 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WenZhouSports;
+			productName = WenZhouSports;
+			productReference = 542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */;
+			productType = "com.apple.product-type.application";
+		};
+		542DCC4F1EB1F26A00EDAD91 /* WenZhouSportsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 542DCC5C1EB1F26A00EDAD91 /* Build configuration list for PBXNativeTarget "WenZhouSportsUITests" */;
+			buildPhases = (
+				542DCC4C1EB1F26A00EDAD91 /* Sources */,
+				542DCC4D1EB1F26A00EDAD91 /* Frameworks */,
+				542DCC4E1EB1F26A00EDAD91 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				542DCC521EB1F26A00EDAD91 /* PBXTargetDependency */,
+			);
+			name = WenZhouSportsUITests;
+			productName = WenZhouSportsUITests;
+			productReference = 542DCC501EB1F26A00EDAD91 /* WenZhouSportsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		542DCC2F1EB1F26A00EDAD91 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "何聪";
+				TargetAttributes = {
+					542DCC361EB1F26A00EDAD91 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = YD55739445;
+						ProvisioningStyle = Automatic;
+					};
+					542DCC4F1EB1F26A00EDAD91 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = YD55739445;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 542DCC361EB1F26A00EDAD91;
+					};
+				};
+			};
+			buildConfigurationList = 542DCC321EB1F26A00EDAD91 /* Build configuration list for PBXProject "WenZhouSports" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 542DCC2E1EB1F26A00EDAD91;
+			productRefGroup = 542DCC381EB1F26A00EDAD91 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				542DCC361EB1F26A00EDAD91 /* WenZhouSports */,
+				542DCC4F1EB1F26A00EDAD91 /* WenZhouSportsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		542DCC351EB1F26A00EDAD91 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				542DCC4A1EB1F26A00EDAD91 /* LaunchScreen.storyboard in Resources */,
+				542DCC471EB1F26A00EDAD91 /* Assets.xcassets in Resources */,
+				542DCC451EB1F26A00EDAD91 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		542DCC4E1EB1F26A00EDAD91 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5B8BCE8DB4AB3DFD66210057 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E62FCBF0D2B8B91AB4E81F66 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		ECAA163AF81C3FEEBE9BC506 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		542DCC331EB1F26A00EDAD91 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5401BB741EB823F000003C51 /* Dao.m in Sources */,
+				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
+				5401BB771EB864FD00003C51 /* LoginView.m in Sources */,
+				547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */,
+				542DCC421EB1F26A00EDAD91 /* ViewController.m in Sources */,
+				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
+				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		542DCC4C1EB1F26A00EDAD91 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				542DCC551EB1F26A00EDAD91 /* WenZhouSportsUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		542DCC521EB1F26A00EDAD91 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 542DCC361EB1F26A00EDAD91 /* WenZhouSports */;
+			targetProxy = 542DCC511EB1F26A00EDAD91 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		542DCC431EB1F26A00EDAD91 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				542DCC441EB1F26A00EDAD91 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				542DCC491EB1F26A00EDAD91 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		542DCC571EB1F26A00EDAD91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		542DCC581EB1F26A00EDAD91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		542DCC5A1EB1F26A00EDAD91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = YD55739445;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
+				INFOPLIST_FILE = WenZhouSports/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.WenZhouSports;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		542DCC5B1EB1F26A00EDAD91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = YD55739445;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
+				INFOPLIST_FILE = WenZhouSports/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.WenZhouSports;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		542DCC5D1EB1F26A00EDAD91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = YD55739445;
+				INFOPLIST_FILE = WenZhouSportsUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.teewoo.WenZhouSportsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = WenZhouSports;
+			};
+			name = Debug;
+		};
+		542DCC5E1EB1F26A00EDAD91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = YD55739445;
+				INFOPLIST_FILE = WenZhouSportsUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.teewoo.WenZhouSportsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = WenZhouSports;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		542DCC321EB1F26A00EDAD91 /* Build configuration list for PBXProject "WenZhouSports" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				542DCC571EB1F26A00EDAD91 /* Debug */,
+				542DCC581EB1F26A00EDAD91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		542DCC591EB1F26A00EDAD91 /* Build configuration list for PBXNativeTarget "WenZhouSports" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				542DCC5A1EB1F26A00EDAD91 /* Debug */,
+				542DCC5B1EB1F26A00EDAD91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		542DCC5C1EB1F26A00EDAD91 /* Build configuration list for PBXNativeTarget "WenZhouSportsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				542DCC5D1EB1F26A00EDAD91 /* Debug */,
+				542DCC5E1EB1F26A00EDAD91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 542DCC2F1EB1F26A00EDAD91 /* Project object */;
+}
