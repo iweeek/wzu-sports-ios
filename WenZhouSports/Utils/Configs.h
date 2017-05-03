@@ -13,6 +13,9 @@
 #define HEIGHT [[UIScreen mainScreen] bounds].size.height
 #define WIDTH [[UIScreen mainScreen] bounds].size.width
 
-#define FIT_LENGH(num) ((num) * WIDTH/
+#define FIT_LENGTH(num) ((num) * WIDTH/414.0)
+
+//控件距离
+#define MARGIN_SCREEN FIT_LENGTH(18.0)
 
 #endif /* Configs_h */

@@ -12,7 +12,9 @@
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16)) / 255.0 green:((float)((rgbValue & 0xFF00) >> 8)) / 255.0 blue:((float)(rgbValue & 0xFF)) / 255.0 alpha:1.0]
 
 //颜色值，命名统一为C_[颜色的16进制编码]
-
 #define C_FFFFFF UIColorFromRGB(0xffffff)
+
+//像导航栏这种使用统一颜色的控件，也可以命名为C_[控件名], 方便以后做统一修改
+#define C_NAVIGATION UIColorFromRGB(0xffffff)
 
 #endif /* Color_h */

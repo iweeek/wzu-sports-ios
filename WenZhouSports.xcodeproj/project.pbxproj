@@ -10,9 +10,10 @@
 		274EF4496B2B9BA56214BA27 /* libPods-WenZhouSports.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */; };
 		5401BB741EB823F000003C51 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* Dao.m */; };
 		5401BB771EB864FD00003C51 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB761EB864FD00003C51 /* LoginView.m */; };
+		5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB7A1EB8796A00003C51 /* LoginController.m */; };
+		5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB801EB8823B00003C51 /* HomeHeaderView.m */; };
 		542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3B1EB1F26A00EDAD91 /* main.m */; };
 		542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */; };
-		542DCC421EB1F26A00EDAD91 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC411EB1F26A00EDAD91 /* ViewController.m */; };
 		542DCC451EB1F26A00EDAD91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC431EB1F26A00EDAD91 /* Main.storyboard */; };
 		542DCC471EB1F26A00EDAD91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC461EB1F26A00EDAD91 /* Assets.xcassets */; };
 		542DCC4A1EB1F26A00EDAD91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */; };
@@ -38,12 +39,14 @@
 		5401BB731EB823F000003C51 /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
 		5401BB751EB864FD00003C51 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
 		5401BB761EB864FD00003C51 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
+		5401BB791EB8796A00003C51 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		5401BB7A1EB8796A00003C51 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
+		5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeHeaderView.h; sourceTree = "<group>"; };
+		5401BB801EB8823B00003C51 /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeHeaderView.m; sourceTree = "<group>"; };
 		542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenZhouSports.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		542DCC3B1EB1F26A00EDAD91 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
 		542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		542DCC401EB1F26A00EDAD91 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		542DCC411EB1F26A00EDAD91 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		542DCC441EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		542DCC461EB1F26A00EDAD91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		542DCC491EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -120,9 +123,7 @@
 				5470646C1EB8233C0069BFE6 /* View */,
 				5470646D1EB8233C0069BFE6 /* ViewModel */,
 				542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */,
-				542DCC401EB1F26A00EDAD91 /* ViewController.h */,
 				54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */,
-				542DCC411EB1F26A00EDAD91 /* ViewController.m */,
 				542DCC431EB1F26A00EDAD91 /* Main.storyboard */,
 				542DCC461EB1F26A00EDAD91 /* Assets.xcassets */,
 				542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */,
@@ -182,6 +183,8 @@
 		5470646A1EB8233C0069BFE6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5401BB791EB8796A00003C51 /* LoginController.h */,
+				5401BB7A1EB8796A00003C51 /* LoginController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -198,6 +201,8 @@
 			children = (
 				5401BB751EB864FD00003C51 /* LoginView.h */,
 				5401BB761EB864FD00003C51 /* LoginView.m */,
+				5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */,
+				5401BB801EB8823B00003C51 /* HomeHeaderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -374,11 +379,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */,
 				5401BB741EB823F000003C51 /* Dao.m in Sources */,
+				5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
 				5401BB771EB864FD00003C51 /* LoginView.m in Sources */,
 				547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */,
-				542DCC421EB1F26A00EDAD91 /* ViewController.m in Sources */,
 				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
 			);
