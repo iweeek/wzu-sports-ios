@@ -12,7 +12,11 @@
 //字体大小，命名统一为S[字体大小],粗体为SS[字体大小]
 #define S10 [UIFont systemFontOfSize:10]
 #define S11 [UIFont systemFontOfSize:11]
+#define S12 [UIFont systemFontOfSize:12]
+#define S13 [UIFont systemFontOfSize:13]
 #define S14 [UIFont systemFontOfSize:14]
+#define S15 [UIFont systemFontOfSize:15]
+#define S16 [UIFont systemFontOfSize:16]
 
 #define SS14 [UIFont boldSystemFontOfSize:14]
 #define SS26 [UIFont boldSystemFontOfSize:26]

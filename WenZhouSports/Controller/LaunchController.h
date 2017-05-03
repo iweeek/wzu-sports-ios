@@ -1,5 +1,5 @@
 //
-//  HomeController.h
+//  LaunchController.h
 //  WenZhouSports
 //
 //  Created by 何聪 on 2017/5/3.
@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface HomeController : BaseViewController
+@interface LaunchController : BaseViewController
 
 @end

@@ -12,10 +12,14 @@
 		5401BB771EB864FD00003C51 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB761EB864FD00003C51 /* LoginView.m */; };
 		5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB7A1EB8796A00003C51 /* LoginController.m */; };
 		5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB801EB8823B00003C51 /* HomeHeaderView.m */; };
+		5401BB841EB972FD00003C51 /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB831EB972FD00003C51 /* HomeController.m */; };
+		5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB861EB98C8D00003C51 /* LaunchView.m */; };
+		5401BB881EB9AF1D00003C51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC461EB1F26A00EDAD91 /* Assets.xcassets */; };
+		5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB8A1EB9B2AB00003C51 /* LaunchController.m */; };
+		5401BB8E1EB9B88300003C51 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB8D1EB9B88300003C51 /* BaseViewController.m */; };
+		5401BB911EB9CE9B00003C51 /* LineTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB901EB9CE9A00003C51 /* LineTextField.m */; };
 		542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3B1EB1F26A00EDAD91 /* main.m */; };
 		542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */; };
-		542DCC451EB1F26A00EDAD91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC431EB1F26A00EDAD91 /* Main.storyboard */; };
-		542DCC471EB1F26A00EDAD91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC461EB1F26A00EDAD91 /* Assets.xcassets */; };
 		542DCC4A1EB1F26A00EDAD91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */; };
 		542DCC551EB1F26A00EDAD91 /* WenZhouSportsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC541EB1F26A00EDAD91 /* WenZhouSportsUITests.m */; };
 		547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */; };
@@ -43,11 +47,20 @@
 		5401BB7A1EB8796A00003C51 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 		5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeHeaderView.h; sourceTree = "<group>"; };
 		5401BB801EB8823B00003C51 /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeHeaderView.m; sourceTree = "<group>"; };
+		5401BB821EB972FD00003C51 /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
+		5401BB831EB972FD00003C51 /* HomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeController.m; sourceTree = "<group>"; };
+		5401BB851EB98C8D00003C51 /* LaunchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchView.h; sourceTree = "<group>"; };
+		5401BB861EB98C8D00003C51 /* LaunchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchView.m; sourceTree = "<group>"; };
+		5401BB891EB9B2AB00003C51 /* LaunchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchController.h; sourceTree = "<group>"; };
+		5401BB8A1EB9B2AB00003C51 /* LaunchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchController.m; sourceTree = "<group>"; };
+		5401BB8C1EB9B88300003C51 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		5401BB8D1EB9B88300003C51 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		5401BB8F1EB9CE9A00003C51 /* LineTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineTextField.h; sourceTree = "<group>"; };
+		5401BB901EB9CE9A00003C51 /* LineTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineTextField.m; sourceTree = "<group>"; };
 		542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenZhouSports.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		542DCC3B1EB1F26A00EDAD91 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
 		542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		542DCC441EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		542DCC461EB1F26A00EDAD91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		542DCC491EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		542DCC4B1EB1F26A00EDAD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,7 +137,6 @@
 				5470646D1EB8233C0069BFE6 /* ViewModel */,
 				542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */,
 				54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */,
-				542DCC431EB1F26A00EDAD91 /* Main.storyboard */,
 				542DCC461EB1F26A00EDAD91 /* Assets.xcassets */,
 				542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */,
 				542DCC4B1EB1F26A00EDAD91 /* Info.plist */,
@@ -155,6 +167,8 @@
 			children = (
 				5401BB721EB823F000003C51 /* Dao.h */,
 				5401BB731EB823F000003C51 /* Dao.m */,
+				5401BB8C1EB9B88300003C51 /* BaseViewController.h */,
+				5401BB8D1EB9B88300003C51 /* BaseViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -176,6 +190,8 @@
 				547064671EB822F80069BFE6 /* Color.h */,
 				547064681EB822F80069BFE6 /* Configs.h */,
 				547064691EB822F80069BFE6 /* FontSize.h */,
+				5401BB8F1EB9CE9A00003C51 /* LineTextField.h */,
+				5401BB901EB9CE9A00003C51 /* LineTextField.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -185,6 +201,10 @@
 			children = (
 				5401BB791EB8796A00003C51 /* LoginController.h */,
 				5401BB7A1EB8796A00003C51 /* LoginController.m */,
+				5401BB821EB972FD00003C51 /* HomeController.h */,
+				5401BB831EB972FD00003C51 /* HomeController.m */,
+				5401BB891EB9B2AB00003C51 /* LaunchController.h */,
+				5401BB8A1EB9B2AB00003C51 /* LaunchController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -203,6 +223,8 @@
 				5401BB761EB864FD00003C51 /* LoginView.m */,
 				5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */,
 				5401BB801EB8823B00003C51 /* HomeHeaderView.m */,
+				5401BB851EB98C8D00003C51 /* LaunchView.h */,
+				5401BB861EB98C8D00003C51 /* LaunchView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -276,7 +298,7 @@
 				TargetAttributes = {
 					542DCC361EB1F26A00EDAD91 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = YD55739445;
+						DevelopmentTeam = G65MVK3CQR;
 						ProvisioningStyle = Automatic;
 					};
 					542DCC4F1EB1F26A00EDAD91 = {
@@ -311,9 +333,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5401BB881EB9AF1D00003C51 /* Assets.xcassets in Resources */,
 				542DCC4A1EB1F26A00EDAD91 /* LaunchScreen.storyboard in Resources */,
-				542DCC471EB1F26A00EDAD91 /* Assets.xcassets in Resources */,
-				542DCC451EB1F26A00EDAD91 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,12 +401,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */,
+				5401BB8E1EB9B88300003C51 /* BaseViewController.m in Sources */,
+				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
 				5401BB741EB823F000003C51 /* Dao.m in Sources */,
 				5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
 				5401BB771EB864FD00003C51 /* LoginView.m in Sources */,
 				547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */,
 				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
+				5401BB911EB9CE9B00003C51 /* LineTextField.m in Sources */,
+				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
+				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,14 +435,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		542DCC431EB1F26A00EDAD91 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				542DCC441EB1F26A00EDAD91 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -523,7 +541,8 @@
 			baseConfigurationReference = 221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = YD55739445;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = G65MVK3CQR;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
 				INFOPLIST_FILE = WenZhouSports/Info.plist;
@@ -539,7 +558,8 @@
 			baseConfigurationReference = D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = YD55739445;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = G65MVK3CQR;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
 				INFOPLIST_FILE = WenZhouSports/Info.plist;

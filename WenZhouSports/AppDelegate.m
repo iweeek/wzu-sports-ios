@@ -7,9 +7,14 @@
 //
 
 #import "AppDelegate.h"
-#import "LoginController.h"
+#import "LaunchController.h"
+#import "HomeController.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) LaunchController *launchController;
+@property (nonatomic, strong) HomeController *homeController;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 
@@ -17,8 +22,18 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    LoginController *loginController = [[LoginController alloc] init];
-    self.window.rootViewController = loginController;
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    _launchController = [[LaunchController alloc] init];
+    _homeController = [[HomeController alloc] init];
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if (false) {
+        _navigationController = [[UINavigationController alloc] initWithRootViewController:_homeController];
+    } else {
+        _navigationController = [[UINavigationController alloc] initWithRootViewController:_launchController];
+    }
+    self.window.rootViewController = _navigationController;
     return YES;
 }
 
