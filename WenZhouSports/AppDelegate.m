@@ -28,7 +28,7 @@
     _launchController = [[LaunchController alloc] init];
     _homeController = [[HomeController alloc] init];
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (false) {
+    if (true) {
         _navigationController = [[UINavigationController alloc] initWithRootViewController:_homeController];
     } else {
         _navigationController = [[UINavigationController alloc] initWithRootViewController:_launchController];

@@ -8,33 +8,85 @@
 
 #import "HomeController.h"
 #import "HomeHeaderView.h"
+#import "PersonalCenterView.h"
 
-@interface HomeController () <UITableViewDataSource, UITableViewDelegate>
+@interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) HomeHeaderView *headerView;
+@property (nonatomic, strong) PersonalCenterView *personalCenterView;
+@property (nonatomic, strong) UIView *midView;
 
 @end
+
+CGFloat proportion = 0.84;
 
 @implementation HomeController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSubviews];
-    self.title = @"首页";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)initSubviews {
     _tableView = ({
-        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT - 64.0)];
+        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT)];
         tv.delegate = self;
         tv.dataSource = self;
-        _headerView = [[HomeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, FIT_LENGTH(238.0))];
+        _headerView = [[HomeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, FIT_LENGTH(302.0))];
         tv.tableHeaderView = _headerView;
         
         tv;
     });
     [self.view addSubview: _tableView];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
+    panGesture.delegate = self;
+    RACSignal *signal = [panGesture rac_gestureSignal];
+    [self.tableView addGestureRecognizer:panGesture];
+    
+    _midView = ({
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(WIDTH * proportion, 0.0, WIDTH * (1 - proportion), HEIGHT)];
+        view.hidden = YES;
+        view.backgroundColor = [UIColor blackColor];
+        view.alpha = 0.5;
+        
+        view;
+    });
+    [self.view addSubview:_midView];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    UIPanGestureRecognizer *midPanGesture = [[UIPanGestureRecognizer alloc] init];
+    [_midView addGestureRecognizer:midPanGesture];
+    [_midView addGestureRecognizer:tapGesture];
+    [[tapGesture rac_gestureSignal] subscribeNext:^(UIGestureRecognizer * x) {
+        [self showHomePage];
+    }];
+    
+    _personalCenterView = ({
+        PersonalCenterView *view = [[PersonalCenterView alloc] initWithFrame:CGRectMake(-WIDTH * proportion, 0.0, WIDTH * proportion, HEIGHT)];
+        
+        view;
+    });
+    [self.view addSubview:_personalCenterView];
+    
+    [[signal merge:[midPanGesture rac_gestureSignal]] subscribeNext:^(UIPanGestureRecognizer *recognizer) {
+        CGFloat x = [recognizer translationInView:self.tableView].x;
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            if (x > WIDTH * 0.42) {
+                [self showPersonalCenter];
+            } else {
+                [self showHomePage];
+            }
+        }
+    }];
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -43,6 +95,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
+}
+
+- (void)showPersonalCenter {
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        _tableView.center = CGPointMake(self.view.center.x+ WIDTH * proportion, self.view.center.y);
+        _personalCenterView.center = CGPointMake(WIDTH / 2 * proportion, self.view.center.y);
+    } completion:^(BOOL finished) {
+        if (finished) {
+            _midView.hidden = NO;
+            
+        }
+    }];
+    
+}
+
+- (void)showHomePage {
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        _tableView.center = CGPointMake(self.view.center.x, self.view.center.y);
+        _personalCenterView.center = CGPointMake(-WIDTH / 2 * proportion, self.view.center.y);
+    } completion:nil];
+    _midView.hidden = YES;
 }
 
 @end

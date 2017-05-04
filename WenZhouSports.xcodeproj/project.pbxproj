@@ -24,6 +24,7 @@
 		542DCC551EB1F26A00EDAD91 /* WenZhouSportsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC541EB1F26A00EDAD91 /* WenZhouSportsUITests.m */; };
 		547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */; };
 		547064651EB822D30069BFE6 /* UIView+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064631EB822D30069BFE6 /* UIView+Util.m */; };
+		54E92F5A1EBB2E150073BABF /* PersonalCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F591EBB2E150073BABF /* PersonalCenterView.m */; };
 		54F668A01EBABCBE00ADD4F1 /* ForgetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */; };
 		54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */; };
 /* End PBXBuildFile section */
@@ -77,6 +78,8 @@
 		547064681EB822F80069BFE6 /* Configs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configs.h; sourceTree = "<group>"; };
 		547064691EB822F80069BFE6 /* FontSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontSize.h; sourceTree = "<group>"; };
 		54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		54E92F581EBB2E150073BABF /* PersonalCenterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterView.h; sourceTree = "<group>"; };
+		54E92F591EBB2E150073BABF /* PersonalCenterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterView.m; sourceTree = "<group>"; };
 		54F6689E1EBABCBE00ADD4F1 /* ForgetPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordView.h; sourceTree = "<group>"; };
 		54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordView.m; sourceTree = "<group>"; };
 		54F668A11EBAC67A00ADD4F1 /* ForgetPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordController.h; sourceTree = "<group>"; };
@@ -227,6 +230,8 @@
 		5470646C1EB8233C0069BFE6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				54E92F581EBB2E150073BABF /* PersonalCenterView.h */,
+				54E92F591EBB2E150073BABF /* PersonalCenterView.m */,
 				5401BB751EB864FD00003C51 /* LoginView.h */,
 				5401BB761EB864FD00003C51 /* LoginView.m */,
 				5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */,
@@ -425,6 +430,7 @@
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
+				54E92F5A1EBB2E150073BABF /* PersonalCenterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
