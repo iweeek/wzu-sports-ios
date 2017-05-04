@@ -35,7 +35,7 @@
         make.edges.equalTo(self.view);
     }];
     @weakify(self);
-    [_launchView.loginSignal subscribeNext:^(id x) {
+    [self.launchView.loginSignal subscribeNext:^(id x) {
         log(@"%@", x);
         @strongify(self)
         LoginController *loginController = [[LoginController alloc] init];

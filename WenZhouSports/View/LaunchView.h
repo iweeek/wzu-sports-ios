@@ -15,9 +15,5 @@
  */
 @property (nonatomic, strong, readonly) RACSignal *loginSignal;
 
-/**
- 忘记密码点击事件
- */
-@property (nonatomic, strong, readonly) RACSignal *forgetPasswordSignal;
 
 @end

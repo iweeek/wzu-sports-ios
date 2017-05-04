@@ -12,9 +12,7 @@
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIButton *loginButton;
-@property (nonatomic, strong) UIButton *forgetPasswordButton;
 @property (nonatomic, strong) RACSignal *loginSignal;
-@property (nonatomic, strong) RACSignal *forgetPasswordSignal;
 
 @end
 
@@ -38,8 +36,7 @@
     });
     _loginButton = ({
         UIButton *btn = [[UIButton alloc] init];
-        btn.layer.cornerRadius = 21.0;
-        btn.backgroundColor = C_66A7FE;
+        [btn setBackgroundImage:[UIImage imageNamed:@"btn_login_blue"] forState:UIControlStateNormal];
         [btn setTitle:@"登录" forState:UIControlStateNormal];
         [btn.titleLabel setTextColor:[UIColor whiteColor]];
         [btn.titleLabel setFont:S16];
@@ -47,17 +44,8 @@
         
         btn;
     });
-    _forgetPasswordButton = ({
-        UIButton *btn = [[UIButton alloc] init];
-        btn.backgroundColor = [UIColor clearColor];
-        [btn setTitle:@"忘记密码" forState:UIControlStateNormal];
-        [btn.titleLabel setTextColor: [UIColor whiteColor]];
-        [btn.titleLabel setFont:S12];
-        _forgetPasswordSignal = [btn rac_signalForControlEvents:UIControlEventTouchDown];
-        
-        btn;
-    });
-    [self addSubviews:@[_backgroundImageView, _loginButton, _forgetPasswordButton]];
+
+    [self addSubviews:@[_backgroundImageView, _loginButton]];
 }
 
 - (void)makeConstraints {
@@ -65,13 +53,9 @@
         make.edges.equalTo(self);
     }];
     [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(WIDTH - FIT_LENGTH(36.0), FIT_LENGTH(42.0)));
+        make.size.mas_equalTo(CGSizeMake(WIDTH - FIT_LENGTH(36.0), FIT_LENGTH(53.0)));
         make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-FIT_LENGTH(77.0));
-    }];
-    [_forgetPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self).offset(-FIT_LENGTH(48.0));
-        make.centerX.equalTo(self);
+        make.bottom.equalTo(self).offset(-FIT_LENGTH(72.0));
     }];
 }
 

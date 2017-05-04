@@ -24,6 +24,8 @@
 		542DCC551EB1F26A00EDAD91 /* WenZhouSportsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC541EB1F26A00EDAD91 /* WenZhouSportsUITests.m */; };
 		547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */; };
 		547064651EB822D30069BFE6 /* UIView+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 547064631EB822D30069BFE6 /* UIView+Util.m */; };
+		54F668A01EBABCBE00ADD4F1 /* ForgetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */; };
+		54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +57,8 @@
 		5401BB8A1EB9B2AB00003C51 /* LaunchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchController.m; sourceTree = "<group>"; };
 		5401BB8C1EB9B88300003C51 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		5401BB8D1EB9B88300003C51 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		5401BB8F1EB9CE9A00003C51 /* LineTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineTextField.h; sourceTree = "<group>"; };
-		5401BB901EB9CE9A00003C51 /* LineTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineTextField.m; sourceTree = "<group>"; };
+		5401BB8F1EB9CE9A00003C51 /* LineTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LineTextField.h; path = ../Utils/LineTextField.h; sourceTree = "<group>"; };
+		5401BB901EB9CE9A00003C51 /* LineTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LineTextField.m; path = ../Utils/LineTextField.m; sourceTree = "<group>"; };
 		542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenZhouSports.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		542DCC3B1EB1F26A00EDAD91 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
@@ -75,6 +77,10 @@
 		547064681EB822F80069BFE6 /* Configs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configs.h; sourceTree = "<group>"; };
 		547064691EB822F80069BFE6 /* FontSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontSize.h; sourceTree = "<group>"; };
 		54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		54F6689E1EBABCBE00ADD4F1 /* ForgetPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordView.h; sourceTree = "<group>"; };
+		54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordView.m; sourceTree = "<group>"; };
+		54F668A11EBAC67A00ADD4F1 /* ForgetPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordController.h; sourceTree = "<group>"; };
+		54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordController.m; sourceTree = "<group>"; };
 		D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.release.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,6 +171,8 @@
 		5470645E1EB822990069BFE6 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				5401BB8F1EB9CE9A00003C51 /* LineTextField.h */,
+				5401BB901EB9CE9A00003C51 /* LineTextField.m */,
 				5401BB721EB823F000003C51 /* Dao.h */,
 				5401BB731EB823F000003C51 /* Dao.m */,
 				5401BB8C1EB9B88300003C51 /* BaseViewController.h */,
@@ -190,8 +198,6 @@
 				547064671EB822F80069BFE6 /* Color.h */,
 				547064681EB822F80069BFE6 /* Configs.h */,
 				547064691EB822F80069BFE6 /* FontSize.h */,
-				5401BB8F1EB9CE9A00003C51 /* LineTextField.h */,
-				5401BB901EB9CE9A00003C51 /* LineTextField.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -205,6 +211,8 @@
 				5401BB831EB972FD00003C51 /* HomeController.m */,
 				5401BB891EB9B2AB00003C51 /* LaunchController.h */,
 				5401BB8A1EB9B2AB00003C51 /* LaunchController.m */,
+				54F668A11EBAC67A00ADD4F1 /* ForgetPasswordController.h */,
+				54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -225,6 +233,8 @@
 				5401BB801EB8823B00003C51 /* HomeHeaderView.m */,
 				5401BB851EB98C8D00003C51 /* LaunchView.h */,
 				5401BB861EB98C8D00003C51 /* LaunchView.m */,
+				54F6689E1EBABCBE00ADD4F1 /* ForgetPasswordView.h */,
+				54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -400,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54F668A01EBABCBE00ADD4F1 /* ForgetPasswordView.m in Sources */,
 				5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */,
 				5401BB8E1EB9B88300003C51 /* BaseViewController.m in Sources */,
 				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
@@ -410,6 +421,7 @@
 				547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */,
 				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
 				5401BB911EB9CE9B00003C51 /* LineTextField.m in Sources */,
+				54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */,
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,

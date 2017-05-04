@@ -15,7 +15,7 @@
 @property (nonatomic, strong) LineTextField *accountTextField;
 @property (nonatomic, strong) UILabel *passwordLabel;
 @property (nonatomic, strong) LineTextField *passwordTextField;
-@property (nonatomic, strong) UIImageView *showPasswordImageView;
+@property (nonatomic, strong) UIButton *showPasswordButton;
 @property (nonatomic, strong) UIButton *loginButton;
 @property (nonatomic, strong) UIButton *forgetPasswordButton;
 
@@ -23,6 +23,7 @@
 @property (nonatomic, strong) RACSignal *forgetPasswordSignal;
 @property (nonatomic, strong) RACSignal *beginEditSignal;
 @property (nonatomic, strong) RACSignal *endEditSignal;
+@property (nonatomic, strong) RACSignal *showPasswordSignal;
 
 @end
 
@@ -84,15 +85,16 @@
         
         text;
     });
-    _showPasswordImageView = ({
-        UIImageView *imageView = [[UIImageView alloc] init];
+    _showPasswordButton = ({
+        UIButton *btn = [[UIButton alloc] init];
+        _showPasswordSignal = [btn rac_signalForControlEvents:UIControlEventTouchDown];
+        [btn setImage:[UIImage imageNamed:@"btn_eye_normal"] forState:UIControlStateNormal];
         
-        imageView;
+        btn;
     });
     _loginButton = ({
         UIButton *btn = [[UIButton alloc] init];
-        btn.layer.cornerRadius = 21.0;
-        btn.backgroundColor = [UIColor whiteColor];
+        [btn setBackgroundImage:[UIImage imageNamed:@"btn_Login_White"] forState:UIControlStateNormal];
         [btn setTitle:@"登录" forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [btn.titleLabel setFont:S16];
@@ -111,8 +113,8 @@
         btn;
     });
     
-    [self addSubviews:@[_accountLabel, _accountTextField, _passwordTextField, _showPasswordImageView,
-                        _passwordLabel, _loginButton, _forgetPasswordButton]];
+    [self addSubviews:@[_accountLabel, _accountTextField, _passwordTextField,
+                        _passwordLabel, _loginButton, _forgetPasswordButton, _showPasswordButton]];
 }
 
 - (void)makeConstraints {
@@ -135,13 +137,18 @@
         make.top.equalTo(_passwordLabel.mas_bottom);
     }];
     [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(WIDTH - FIT_LENGTH(36.0), FIT_LENGTH(42.0)));
+        make.size.mas_equalTo(CGSizeMake(WIDTH - FIT_LENGTH(36.0), FIT_LENGTH(52.0)));
         make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-FIT_LENGTH(77.0));
+        make.bottom.equalTo(self).offset(-FIT_LENGTH(72.0));
     }];
     [_forgetPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_loginButton.mas_bottom).offset(FIT_LENGTH(21.0));
+        make.top.equalTo(_loginButton.mas_bottom).offset(FIT_LENGTH(15.0));
         make.centerX.equalTo(self);
+    }];
+    [_showPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(42.0), FIT_LENGTH(20.0)));
+        make.right.equalTo(self).offset(-MARGIN_SCREEN);
+        make.centerY.equalTo(_passwordTextField);
     }];
 }
 
@@ -172,6 +179,16 @@
         [self endEditing:YES];
     }];
     [self addGestureRecognizer:tapGesture];
+    [self.showPasswordSignal subscribeNext:^(id  _Nullable x) {
+       @strongify(self)
+        if (self.passwordTextField.secureTextEntry) {
+            [self.showPasswordButton setImage:[UIImage imageNamed:@"btn_eye_select"] forState:UIControlStateNormal];
+            self.passwordTextField.secureTextEntry = NO;
+        } else {
+            [self.showPasswordButton setImage:[UIImage imageNamed:@"btn_eye_normal"] forState:UIControlStateNormal];
+            self.passwordTextField.secureTextEntry = YES;
+        }
+    }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
