@@ -45,7 +45,7 @@
     }];
     [self.loginView.loginSignal subscribeNext:^(id  _Nullable x) {
        @strongify(self)
-#warning 登录逻辑
+#warning login code
         HomeController *controller = [[HomeController alloc] init];
         UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
         [self.navigationController presentViewController:navigation animated:YES completion:nil];

@@ -137,16 +137,14 @@
         make.top.equalTo(_passwordLabel.mas_bottom);
     }];
     [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(WIDTH - FIT_LENGTH(36.0), FIT_LENGTH(52.0)));
         make.centerX.equalTo(self);
         make.bottom.equalTo(self).offset(-FIT_LENGTH(72.0));
     }];
     [_forgetPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_loginButton.mas_bottom).offset(FIT_LENGTH(15.0));
+        make.top.equalTo(_loginButton.mas_bottom).offset(FIT_LENGTH(13.0));
         make.centerX.equalTo(self);
     }];
     [_showPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(42.0), FIT_LENGTH(20.0)));
         make.right.equalTo(self).offset(-MARGIN_SCREEN);
         make.centerY.equalTo(_passwordTextField);
     }];

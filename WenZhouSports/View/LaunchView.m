@@ -53,7 +53,6 @@
         make.edges.equalTo(self);
     }];
     [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(WIDTH - FIT_LENGTH(36.0), FIT_LENGTH(53.0)));
         make.centerX.equalTo(self);
         make.bottom.equalTo(self).offset(-FIT_LENGTH(72.0));
     }];

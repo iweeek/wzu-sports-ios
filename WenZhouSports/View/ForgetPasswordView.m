@@ -51,6 +51,7 @@
     _nextButton = ({
         UIButton *btn = [[UIButton alloc] init];
         [btn.titleLabel setFont:S16];
+        [btn setBackgroundImage:[UIImage imageNamed:@"btn_Login_White"] forState:UIControlStateNormal];
         _nextSignal = [btn rac_signalForControlEvents:UIControlEventTouchDown];
         
         btn;
@@ -79,13 +80,11 @@
     }];
     [_nextButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_textView.mas_bottom).offset(FIT_LENGTH(28.0));
-        make.size.mas_equalTo(CGSizeMake(WIDTH - 2 * MARGIN_SCREEN, FIT_LENGTH(43.0)));
         make.centerX.equalTo(self);
     }];
     [_showPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-MARGIN_SCREEN);
         make.centerY.equalTo(_textView);
-        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(42.0), FIT_LENGTH(20.0)));
     }];
 }
 

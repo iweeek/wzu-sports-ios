@@ -10,6 +10,7 @@
 #define FontSize_h
 
 //字体大小，命名统一为S[字体大小],粗体为SS[字体大小]
+#define S8 [UIFont systemFontOfSize:8]
 #define S10 [UIFont systemFontOfSize:10]
 #define S11 [UIFont systemFontOfSize:11]
 #define S12 [UIFont systemFontOfSize:12]

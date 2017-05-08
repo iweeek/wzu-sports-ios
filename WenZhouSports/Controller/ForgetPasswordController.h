@@ -6,8 +6,8 @@
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface ForgetPasswordController : UIViewController
+@interface ForgetPasswordController : BaseViewController
 
 @end

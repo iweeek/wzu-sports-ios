@@ -37,19 +37,19 @@
         @strongify(self)
         switch (status) {
             case 0:
-#warning 验证手机号
+#warning verify phoneNumber
                 if ([self.forgetPasswordView.getStringOfTextField isEqualToString:@""]) {
                     [WToast showWithText:@"请输入手机号"];
                 }
                 [self.forgetPasswordView setLabel:@"验证码" textView:@"请输入验证码" button:@"下一步"];
                 break;
             case 1:
-#warning 验证验证码
+#warning verify code
                 [self.forgetPasswordView setLabel:@"新密码" textView:@"请输入6-16位密码" button:@"提交"];
                 [self.forgetPasswordView setShowPassword:YES];
                 break;
             case 2:
-#warning 验证新密码
+#warning verrify new password
                 [self.navigationController  pushViewController:homeController animated:YES];
                 break;
             default:

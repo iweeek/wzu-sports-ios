@@ -17,5 +17,8 @@
 
 //像导航栏这种使用统一颜色的控件，也可以命名为C_[控件名], 方便以后做统一修改
 #define C_NAVIGATION UIColorFromRGB(0xffffff)
+#define C_GRAY_TEXT UIColorFromRGB(0x7e848c)
+#define C_DARK_TEXT UIColorFromRGB(0x535353)
+#define C_CUTTING_LINE UIColorFromRGB(0xedeff2)
 
 #endif /* Color_h */

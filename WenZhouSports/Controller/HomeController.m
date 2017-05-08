@@ -9,6 +9,7 @@
 #import "HomeController.h"
 #import "HomeHeaderView.h"
 #import "PersonalCenterView.h"
+#import "RankingController.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -40,6 +41,10 @@ CGFloat proportion = 0.84;
         tv.dataSource = self;
         _headerView = [[HomeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, FIT_LENGTH(302.0))];
         tv.tableHeaderView = _headerView;
+        [_headerView.rankingSignal subscribeNext:^(id  _Nullable x) {
+            RankingController *controller = [[RankingController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
+        }];
         
         tv;
     });
