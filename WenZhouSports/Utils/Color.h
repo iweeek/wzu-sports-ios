@@ -14,6 +14,8 @@
 //颜色值，命名统一为C_[颜色的16进制编码]
 #define C_EDF0F2 UIColorFromRGB(0xedf0f2)
 #define C_66A7FE UIColorFromRGB(0x66a7fe)
+#define C_42CC42 UIColorFromRGB(0x42cc42)
+#define C_FF0000 UIColorFromRGB(0xff0000)
 
 //像导航栏这种使用统一颜色的控件，也可以命名为C_[控件名], 方便以后做统一修改
 #define C_NAVIGATION UIColorFromRGB(0xffffff)

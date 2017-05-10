@@ -41,7 +41,6 @@
         tableView.delegate = self;
         tableView.dataSource = self;
         
-        
         tableView;
     });
     [self addSubviews:@[_tableView]];

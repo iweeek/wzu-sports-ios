@@ -6,8 +6,8 @@
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#ifndef FontSize_h
-#define FontSize_h
+#ifndef Font_h
+#define Font_h
 
 //字体大小，命名统一为S[字体大小],粗体为SS[字体大小]
 #define S8 [UIFont systemFontOfSize:8]
@@ -18,6 +18,7 @@
 #define S14 [UIFont systemFontOfSize:14]
 #define S15 [UIFont systemFontOfSize:15]
 #define S16 [UIFont systemFontOfSize:16]
+#define S20 [UIFont systemFontOfSize:20]
 
 #define SS14 [UIFont boldSystemFontOfSize:14]
 #define SS26 [UIFont boldSystemFontOfSize:26]

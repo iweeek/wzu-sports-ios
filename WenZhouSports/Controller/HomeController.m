@@ -10,6 +10,7 @@
 #import "HomeHeaderView.h"
 #import "PersonalCenterView.h"
 #import "RankingController.h"
+#import "SportsDetailsController.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -95,11 +96,18 @@ CGFloat proportion = 0.84;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return 1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    SportsDetailsController *controller = [[SportsDetailsController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    return cell;
 }
 
 - (void)showPersonalCenter {
