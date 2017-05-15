@@ -17,12 +17,18 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 };
 
 
-@interface SportsDetailView : UIView
+@interface SportsDetailView : UIView <MAMapViewDelegate>
 
 /**
  运动开始点击事件
  */
 @property (nonatomic, strong, readonly) RACSignal *startSignal;
+
+/**
+ 运动暂停滑动事件
+ */
+@property (nonatomic, strong, readonly) RACSubject *pauseSignal;
+
 /**
  继续点击事件
  */
@@ -50,4 +56,22 @@ typedef NS_ENUM(NSInteger, SportsStation) {
  @param distance 距离
  */
 - (void)setDataWithSpeed: (NSString *)speed distance:(NSInteger)distance stage:(NSInteger)stage;
+/**
+ 设置运动结果
+
+ @param calorie 卡路里
+ @param time 时间
+ */
+- (void)setDataWithCalorie:(int)calorie time:(int)time;
+
+/**
+ 添加滑动事件
+ */
+- (void)addPauseGestureEvent;
+
+/**
+ 在地图上绘制折线
+
+ */
+- (void)addPolygonLine:(CLLocation *)location;
 @end

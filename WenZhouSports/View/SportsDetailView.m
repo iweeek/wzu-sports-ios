@@ -7,6 +7,8 @@
 //
 
 #import "SportsDetailView.h"
+#import "MAMutablePolyline.h"
+#import "MAMutablePolylineRenderer.h"
 
 @interface SportsDetailView ()
 
@@ -36,6 +38,10 @@
 @property (nonatomic, strong) UILabel *bottomStageNumberLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceNumberLabel;
+@property (nonatomic, strong) UIView *pauseView;
+@property (nonatomic, strong) UIView *pauseBackground;
+@property (nonatomic, strong) UIImageView *pauseImageView;
+@property (nonatomic, strong) UILabel *pauseLabel;
 @property (nonatomic, strong) UIButton *startButton;
 @property (nonatomic, strong) UIButton *continueButton;
 @property (nonatomic, strong) UIButton *endButton;
@@ -52,7 +58,14 @@
 @property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) UIView *shadowView;
 
+@property (nonatomic, strong) MAMapView *mapView;
+@property (nonatomic, strong) AMapLocationManager *locationManager;
+@property (nonatomic, strong) MAMutablePolyline *line;
+@property (nonatomic, strong) MAMutablePolylineRenderer *render;
+
 @property (nonatomic, strong) RACSignal *startSignal;
+@property (nonatomic, strong) RACSubject *pauseSignal;
+@property (nonatomic, strong) RACSignal *pauseGestureSignal;
 @property (nonatomic, strong) RACSignal *continueSignal;
 @property (nonatomic, strong) RACSignal *endSignal;
 @property (nonatomic, strong) RACSignal *shareSignal;
@@ -67,14 +80,23 @@
         self.backgroundColor = C_EDF0F2;
         [self initSubviews];
         [self makeConstraints];
-        [_resultView removeFromSuperview];
-        [_bottomView removeFromSuperview];
-        [self layoutIfNeeded];
+        _pauseSignal = [RACSubject subject];
     }
     return self;
 }
 
 - (void)initSubviews {
+    _mapView = ({
+        MAMapView *map = [[MAMapView alloc] initWithFrame:self.frame];
+        map.zoomLevel = 18;
+        map.showsUserLocation = YES;
+        map.userTrackingMode = MAUserTrackingModeFollow;
+        _line = [[MAMutablePolyline alloc] initWithPoints:@[]];
+        [map addOverlay:_line];
+        map.delegate = self;
+
+        map;
+    });
     _titleView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
@@ -178,6 +200,7 @@
     _resultView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
+        view.hidden = YES;
         
         view;
     });
@@ -200,6 +223,7 @@
     [_resultView addSubviews:@[_calorieResultLabel, _timeResultLabel]];
     _bottomView = ({
         UIView *view = [[UIView alloc] init];
+        view.hidden = YES;
         
         view;
     });
@@ -250,6 +274,40 @@
         lab;
     });
     [_bottomView addSubviews:@[_bottomBackgroundView, _bottomSpeedLabel, _bottomStageLabel, _bottomDistanceLabel, _bottomSpeedNumberLabel, _bottomStageNumberLabel, _bottomDistanceNumberLabel]];
+    
+    _pauseView = ({
+        UIView *view = [[UIView alloc] init];
+        view.hidden = YES;
+        
+        view;
+    });
+    _pauseBackground = ({
+        UIView *view = [[UIView alloc] init];
+        view.backgroundColor = [UIColor blackColor];
+        view.alpha = 0.5;
+        view.layer.cornerRadius = FIT_LENGTH(21.0);
+        
+        view;
+    });
+    _pauseImageView = ({
+        UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.image = [UIImage imageNamed:@"btn_right_arrow"];
+        UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] init];
+        [imageView addGestureRecognizer:gesture];
+        imageView.userInteractionEnabled = YES;
+        _pauseGestureSignal = [gesture rac_gestureSignal];
+        
+        imageView;
+    });
+    _pauseLabel = ({
+        UILabel *lab = [[UILabel alloc] init];
+        lab.text = @"滑动停止跑步";
+        lab.textColor  = [UIColor whiteColor];
+        lab.font = S14;
+        
+        lab;
+    });
+    [_pauseView addSubviews:@[_pauseBackground, _pauseImageView, _pauseLabel]];
     _shadowView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
@@ -319,8 +377,8 @@
     });
     
     
-    [self addSubviews:@[_shadowView, _middleView, _titleView, _resultView, _bottomView,
-                        _startButton, _continueButton, _endButton, _shareButton]];
+    [self addSubviews:@[_mapView ,_shadowView, _middleView, _titleView, _resultView, _bottomView,
+                        _pauseView, _startButton, _continueButton, _endButton, _shareButton]] ;
 }
 
 - (void)makeConstraints {
@@ -351,17 +409,14 @@
     }];
     [_middleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_titleView.mas_bottom);
-        make.top.equalTo(self).offset(FIT_LENGTH(11.0)).priorityHigh();
         make.left.equalTo(self).offset(MARGIN_SCREEN);
         make.right.equalTo(self).offset(-MARGIN_SCREEN);
         make.height.mas_equalTo(FIT_LENGTH(77.0));
     }];
     [_shadowView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_titleView);
-        make.top.equalTo(_middleView).priorityHigh();
         make.left.right.equalTo(_middleView);
-        make.bottom.equalTo(_middleView).priorityHigh();
-        make.bottom.equalTo(_resultView);
+        make.bottom.equalTo(_middleView);
     }];
     [_speedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_middleView).offset(FIT_LENGTH(17.0));
@@ -377,7 +432,7 @@
     }];
     [_speedNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_middleView).offset(FIT_LENGTH(20.0));
-        make.top.equalTo(_speedLabel.mas_bottom).offset(FIT_LENGTH(12.0));
+        make.top.equalTo(_speedLabel.mas_bottom);
     }];
     [_stageNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_speedNumberLabel);
@@ -407,8 +462,7 @@
     }];
     [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(_middleView);
-        make.top.equalTo(_resultView.mas_bottom);
-        make.top.equalTo(_middleView.mas_bottom).priorityHigh();
+        make.top.equalTo(_middleView.mas_bottom);
         make.height.mas_equalTo(FIT_LENGTH(53.0));
     }];
     [_bottomBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -439,6 +493,23 @@
         make.right.equalTo(_bottomDistanceLabel);
         make.top.equalTo(_bottomSpeedNumberLabel);
     }];
+    [_pauseView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self).offset(-FIT_LENGTH(70.0));
+        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(246.0), FIT_LENGTH(52.0)));
+    }];
+    [_pauseBackground mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self).offset(-FIT_LENGTH(70.0));
+        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(194.0), FIT_LENGTH(42.0)));
+    }];
+    [_pauseImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_pauseBackground.mas_left);
+        make.centerY.equalTo(_pauseBackground);
+    }];
+    [_pauseLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(_pauseBackground);
+    }];
     [_startButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(self);
         make.height.mas_equalTo(FIT_LENGTH(53.0));
@@ -465,17 +536,19 @@
             _continueButton.hidden = YES;
             _endButton.hidden = YES;
             _shareButton.hidden = YES;
-            [self addSubview:_bottomView];
-            [self layoutIfNeeded];
+            _pauseView.hidden = NO;
+            _bottomView.hidden = NO;
+
             break;
         case SportsDidPause:
             _startButton.hidden = YES;
             _continueButton.hidden = NO;
             _endButton.hidden = NO;
             _shareButton.hidden = YES;
+            _pauseView.hidden = YES;
 
             break;
-        case SportsDidEnd:
+        case SportsDidEnd: {
             _sportsAmountLabel.hidden = YES;
             _numberOfPeopleLable.hidden = YES;
             _titleLabel.hidden = NO;
@@ -484,9 +557,22 @@
             _continueButton.hidden = YES;
             _endButton.hidden = YES;
             _shareButton.hidden = NO;
-            [self addSubview:_resultView];
-            [self layoutIfNeeded];
+            _resultView.hidden = NO;
+            [_bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.equalTo(_middleView);
+                make.height.mas_equalTo(FIT_LENGTH(53.0));
+                make.top.equalTo(_resultView.mas_bottom);
+            }];
+            [_shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(_titleView);
+                make.left.right.equalTo(_middleView);
+                make.bottom.equalTo(_resultView);
+            }];
+            if (_pauseSignal) {
+                [_pauseSignal sendCompleted];
+            }
             break;
+        }
         case SportsShare:
             break;
         default:
@@ -516,4 +602,69 @@
     _distanceNumberLabel.attributedText = distanceAttributedString;
 }
 
+- (void)setDataWithCalorie:(int)calorie time:(int)time {
+    _calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%d千卡", calorie];
+    _timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%d分钟", time];
+}
+
+- (void)addPauseGestureEvent {
+    CGFloat centerX = _pauseImageView.center.x;
+    @weakify(self);
+    [self.pauseGestureSignal subscribeNext:^(UIPanGestureRecognizer *recognizer) {
+        @strongify(self)
+        CGFloat x = [recognizer translationInView:self.pauseImageView].x;
+        if (x > 0 && x < FIT_LENGTH(194.0)) {
+            [UIView animateWithDuration:0.2 animations:^{
+                self.pauseImageView.center = CGPointMake(centerX + x, self.pauseImageView.center.y);
+            }];
+        }
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            if (x > FIT_LENGTH(180.0)) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.pauseImageView.center = CGPointMake(centerX + FIT_LENGTH(194.0), self.pauseImageView.center.y);
+                } completion:^(BOOL finished) {
+                    if (finished) {
+                        [_pauseSignal sendNext:nil];
+                        self.pauseImageView.center = CGPointMake(centerX, self.pauseImageView.center.y);
+                    }
+                }];
+            } else {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.pauseImageView.center = CGPointMake(centerX, self.pauseImageView.center.y);
+                }];
+            }
+        }
+    }];
+}
+
+- (void)addPolygonLine:(CLLocation *)location {
+    [_line appendPoint:MAMapPointForCoordinate(location.coordinate)];
+    [_mapView setCenterCoordinate:location.coordinate animated:YES];
+    
+    [self.render invalidatePath];
+}
+
+/**
+ 高德地图折现配置
+
+ @param mapView mapView description
+ @param overlay overlay description
+ @return return value description
+ */
+- (MAOverlayPathRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay {
+    if ([overlay isKindOfClass:[MAMutablePolyline class]])
+    {
+        MAMutablePolylineRenderer *renderer = [[MAMutablePolylineRenderer alloc] initWithOverlay:overlay];
+        renderer.lineWidth = 4.0f;
+        
+        renderer.strokeColor = C_66A7FE;
+        
+        _render = renderer;
+        
+        return renderer;
+    }
+    
+    return nil;
+
+}
 @end

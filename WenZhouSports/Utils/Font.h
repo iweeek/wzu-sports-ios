@@ -18,6 +18,7 @@
 #define S14 [UIFont systemFontOfSize:14]
 #define S15 [UIFont systemFontOfSize:15]
 #define S16 [UIFont systemFontOfSize:16]
+#define S18 [UIFont systemFontOfSize:18]
 #define S20 [UIFont systemFontOfSize:20]
 
 #define SS14 [UIFont boldSystemFontOfSize:14]

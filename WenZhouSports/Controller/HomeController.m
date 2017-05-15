@@ -64,6 +64,7 @@ CGFloat proportion = 0.84;
         view;
     });
     [self.view addSubview:_midView];
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     UIPanGestureRecognizer *midPanGesture = [[UIPanGestureRecognizer alloc] init];
     [_midView addGestureRecognizer:midPanGesture];

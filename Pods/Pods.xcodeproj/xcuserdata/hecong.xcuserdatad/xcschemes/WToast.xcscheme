@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '96DB112F08A76619F2F1C954A84FC99D'
+               BlueprintIdentifier = '7CE5A38743E002EDC559AF85FA2B99BE'
                BlueprintName = 'WToast'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libWToast.a'>

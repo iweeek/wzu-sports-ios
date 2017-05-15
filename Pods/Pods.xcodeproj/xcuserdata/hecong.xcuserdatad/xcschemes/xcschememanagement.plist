@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>CocoaLumberjack.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>FMDB.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,7 +47,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>41BC869FDC6A74FF694A1D9FF18C18C9</key>
+		<key>1A9298B32F31A61F3742650B19EE27BD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>33EBA21AEF034F469A85BC3BA2FD7738</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>35CC26182B192B4AB75FE6B4851A9B50</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,12 +67,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8642CC820CE8C5B88C113D7F47AF4BC3</key>
+		<key>7CE5A38743E002EDC559AF85FA2B99BE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>96DB112F08A76619F2F1C954A84FC99D</key>
+		<key>8642CC820CE8C5B88C113D7F47AF4BC3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -68,11 +83,6 @@
 			<true/>
 		</dict>
 		<key>9E033EDB5EC0819481B0546434FA577B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E1061C1530A4DBA4EDEDB7E85F0148E7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

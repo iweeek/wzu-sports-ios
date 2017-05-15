@@ -6,8 +6,8 @@
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface SportsDetailsController : UIViewController
+@interface SportsDetailsController : BaseViewController
 
 @end

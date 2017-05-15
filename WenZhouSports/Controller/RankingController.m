@@ -25,6 +25,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self setTitle:@"校园排行榜"];
 }
 
 - (void)initSubviews {
@@ -33,12 +34,12 @@
     @weakify(self);
     [self.rankingView.selectCalorieSignal subscribeNext:^(id x) {
         @strongify(self)
-#warning setCalorieData
+#warning TODO:setCalorieData
         [self.rankingView setDataWithCalorie:nil];
     }];
     [self.rankingView.selectTimeSignal subscribeNext:^(id  _Nullable x) {
        @strongify(self)
-#warning setTimeData
+#warning TODO:setTimeData
         [self.rankingView setDataWithTime:nil];
     }];
 }

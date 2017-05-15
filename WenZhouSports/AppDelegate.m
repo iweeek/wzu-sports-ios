@@ -22,6 +22,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self cocoaLumberJackConfigs];
+    [self dataBaseConfigs];
+    [[AMapServices sharedServices] setEnableHTTPS:YES];
+    [AMapServices sharedServices].apiKey = @"b308932d17ffdfe0badb45817677b50c";
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -65,4 +69,40 @@
 }
 
 
+/**
+ 进行cocoaLumberjack的配置
+ */
+- (void)cocoaLumberJackConfigs {
+#ifdef DEBUG
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+#endif
+    //运动信息的文件
+    DDFileLogger *sportsFileLogger = [[DDFileLogger alloc] init];
+    //文件最大为3MB
+    [sportsFileLogger setMaximumFileSize:3 * 1024 * 1024];
+    //文件每24小时会生成一个新的
+    [sportsFileLogger setRollingFrequency:3600 * 24];
+    //最大文件数，这样可以存储最近一周的文件，后面生成文件会自动清楚前面的
+    [[sportsFileLogger logFileManager] setMaximumNumberOfLogFiles:7];
+    [DDLog addLogger:sportsFileLogger];
+}
+
+- (void)dataBaseConfigs {
+    NSString *path = [NSString stringWithFormat:@"%@/Documents/user.sqlite", NSHomeDirectory()];
+    FMDatabase *db = [FMDatabase databaseWithPath:path];
+    if ([db open]) {
+        if (![db executeUpdate:@"create table if not exists acceleration (x real, y real, z real, time integer)"]) {
+            DDLogVerbose(@"error");
+        }
+        if (![db executeUpdate:@"create table if not exists activity (activity text, confidence integer, time integer)"]) {
+            DDLogVerbose(@"error");
+        }
+        if (![db executeUpdate:@"create table if not exists sportsInfo (steps integer, stepDistance integer, mapDistance integer, totalTime integer, time integer)"]) {
+            DDLogVerbose(@"error");
+        }
+    }
+    [db close];
+}
+
 @end
+
