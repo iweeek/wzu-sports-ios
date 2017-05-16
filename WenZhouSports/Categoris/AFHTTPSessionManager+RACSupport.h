@@ -16,4 +16,8 @@
 - (RACSignal *)RAC_POST:(NSString *)path
              parameters:(id)parameters;
 
+- (RACSignal *)RAC_POST:(NSString *)path
+             parameters:(id)parameters
+         postParameters:(id)postParameters;
+
 @end

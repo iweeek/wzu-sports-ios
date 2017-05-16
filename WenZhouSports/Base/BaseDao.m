@@ -6,33 +6,31 @@
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#import "Dao.h"
+#import "BaseDao.h"
 #import "AFHTTPSessionManager+RACSupport.h"
 
-@interface Dao ()
+@interface BaseDao ()
 
 @property (nonatomic, strong) AFHTTPSessionManager *manager;
 
 @end
 
-@implementation Dao
+@implementation BaseDao
 
 + (instancetype)singletone {
-    static Dao *this;
+    static BaseDao *this;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        this = [[Dao alloc] init];
+        this = [[BaseDao alloc] init];
         this.manager = [AFHTTPSessionManager manager];
-        this.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+        this.manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        this.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/json", @"text/javascript", @"text/html",  nil];
         this.manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [this.manager.requestSerializer setTimeoutInterval:30.0];
+        [this.manager.requestSerializer setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",@"boundary"] forHTTPHeaderField:@"Content-Type"];
     });
     
     return this;
-}
-
-- (NSString *)createUrl:(NSString *)path {
-    return nil;
 }
 
 - (RACSignal *)catchError:(NSError *)error {
@@ -78,7 +76,7 @@
     NSLog(@"%@?%@", path, tmp);
     NSLog(@"===============");
     @weakify(self);
-    return [[[[self.manager RAC_GET:[self createUrl:path] parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
+    return [[[[self.manager RAC_GET:path parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
         @strongify(self)
         return [self checkData:value];
     }] catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
@@ -99,7 +97,29 @@
     NSLog(@"%@?%@", path, tmp);
     NSLog(@"===============");
     @weakify(self);
-    return [[[[self.manager RAC_GET:[self createUrl:path] parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
+    return [[[[self.manager RAC_GET:path parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
+        @strongify(self)
+        return [self checkData:value];
+    }] catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
+        @strongify(self)
+        return [self catchError:error];
+    }] deliverOnMainThread];
+}
+
+- (RACSignal *)RAC_POST:(NSString *)path parameters:(id)parameters postParameters:(id)postParameters {
+    NSDictionary *dic = parameters;
+    __block NSString *tmp = @"";
+    [dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        tmp = [NSString stringWithFormat:@"%@%@=%@&", tmp, key, obj];
+    }];
+    NSLog(@"===============");
+    NSLog(@"%@?%@", path, tmp);
+    NSLog(@"===============");
+    if ([self isReachable]){
+        DDLogVerbose(@"网络状态良好");
+    }
+    @weakify(self);
+    return [[[[self.manager RAC_POST:path parameters:parameters postParameters:postParameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
         @strongify(self)
         return [self checkData:value];
     }] catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {

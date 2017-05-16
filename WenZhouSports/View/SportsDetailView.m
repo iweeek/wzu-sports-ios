@@ -645,7 +645,7 @@
 }
 
 /**
- 高德地图折现配置
+ 高德地图折线配置
 
  @param mapView mapView description
  @param overlay overlay description

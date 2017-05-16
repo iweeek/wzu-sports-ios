@@ -18,4 +18,10 @@
 //控件距离
 #define MARGIN_SCREEN FIT_LENGTH(18.0)
 
+//face++ api key
+#define FACEPP_API_KEY @"urUktpqNurMzkX_DN-oRa9GnWapAiltI"
+#define FACEPP_API_SECRET @"vuVdYWy7_L4GgJJ5rFIrBpHv_1CTwrGC"
+//人脸比较地址
+#define COMPARE_FACE_PATH @"https://api-cn.faceplusplus.com/facepp/v3/compare"
+
 #endif /* Configs_h */

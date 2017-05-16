@@ -11,6 +11,7 @@
 #import "PersonalCenterView.h"
 #import "RankingController.h"
 #import "SportsDetailsController.h"
+#import "SportsDetailViewModel.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -102,8 +103,15 @@ CGFloat proportion = 0.84;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
+    UIImage *image = [UIImage imageNamed:@"btn_back"];
+    NSDictionary *dic = @{@"face1":image,
+                          @"face2":image};
+    [[viewModel.compareFaceCommand execute:dic] subscribeNext:^(id  _Nullable x) {
+        [WToast showWithText:@"x"];
+    }];
     SportsDetailsController *controller = [[SportsDetailsController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+//    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

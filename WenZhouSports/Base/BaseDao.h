@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Dao : NSObject
+@interface BaseDao : NSObject
+
++ (instancetype)singletone;
 
 - (RACSignal *)RAC_GET:(NSString *)path parameters:(id)patameters;
 
 - (RACSignal *)RAC_POST:(NSString *)path parameters:(id)parameters;
+
+- (RACSignal *)RAC_POST:(NSString *)path parameters:(id)parameters postParameters:(id)postParameters;
 
 @end

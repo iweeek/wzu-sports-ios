@@ -30,6 +30,7 @@
     }
     
     self.path = path;
+    CGPathRelease(path);
 }
 
 - (void)fillPath:(CGPathRef)path inContext:(CGContextRef)context

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		274EF4496B2B9BA56214BA27 /* libPods-WenZhouSports.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */; };
-		5401BB741EB823F000003C51 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* Dao.m */; };
+		5401BB741EB823F000003C51 /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* BaseDao.m */; };
 		5401BB771EB864FD00003C51 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB761EB864FD00003C51 /* LoginView.m */; };
 		5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB7A1EB8796A00003C51 /* LoginController.m */; };
 		5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB801EB8823B00003C51 /* HomeHeaderView.m */; };
@@ -25,6 +25,8 @@
 		542D6DDD1EC315FA00E26F62 /* NSNumber+SetScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 542D6DDC1EC315FA00E26F62 /* NSNumber+SetScale.m */; };
 		542D6DE01EC7021000E26F62 /* MAMutablePolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = 542D6DDF1EC7021000E26F62 /* MAMutablePolyline.m */; };
 		542D6DE31EC7028700E26F62 /* MAMutablePolylineRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 542D6DE21EC7028700E26F62 /* MAMutablePolylineRenderer.m */; };
+		542D6DE61EC9A60D00E26F62 /* SportsDetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 542D6DE51EC9A60D00E26F62 /* SportsDetailViewModel.m */; };
+		542D6DEF1EC9AA2500E26F62 /* BaseDao+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 542D6DEE1EC9AA2500E26F62 /* BaseDao+Category.m */; };
 		542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3B1EB1F26A00EDAD91 /* main.m */; };
 		542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */; };
 		542DCC4A1EB1F26A00EDAD91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC481EB1F26A00EDAD91 /* LaunchScreen.storyboard */; };
@@ -52,8 +54,8 @@
 /* Begin PBXFileReference section */
 		221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.debug.xcconfig"; sourceTree = "<group>"; };
 		503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WenZhouSports.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5401BB721EB823F000003C51 /* Dao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dao.h; sourceTree = "<group>"; };
-		5401BB731EB823F000003C51 /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
+		5401BB721EB823F000003C51 /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
+		5401BB731EB823F000003C51 /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
 		5401BB751EB864FD00003C51 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
 		5401BB761EB864FD00003C51 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
 		5401BB791EB8796A00003C51 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
@@ -84,9 +86,14 @@
 		542D6DDF1EC7021000E26F62 /* MAMutablePolyline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMutablePolyline.m; sourceTree = "<group>"; };
 		542D6DE11EC7028700E26F62 /* MAMutablePolylineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMutablePolylineRenderer.h; sourceTree = "<group>"; };
 		542D6DE21EC7028700E26F62 /* MAMutablePolylineRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMutablePolylineRenderer.m; sourceTree = "<group>"; };
+		542D6DE41EC9A60D00E26F62 /* SportsDetailViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportsDetailViewModel.h; sourceTree = "<group>"; };
+		542D6DE51EC9A60D00E26F62 /* SportsDetailViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsDetailViewModel.m; sourceTree = "<group>"; };
+		542D6DED1EC9AA2500E26F62 /* BaseDao+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BaseDao+Category.h"; sourceTree = "<group>"; };
+		542D6DEE1EC9AA2500E26F62 /* BaseDao+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BaseDao+Category.m"; sourceTree = "<group>"; };
+		542D6DF01ECAA6E400E26F62 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		542DCC371EB1F26A00EDAD91 /* WenZhouSports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WenZhouSports.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		542DCC3B1EB1F26A00EDAD91 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
+		542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		542DCC461EB1F26A00EDAD91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		542DCC491EB1F26A00EDAD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -174,6 +181,7 @@
 				5470646B1EB8233C0069BFE6 /* Model */,
 				5470646C1EB8233C0069BFE6 /* View */,
 				5470646D1EB8233C0069BFE6 /* ViewModel */,
+				542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */,
 				542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */,
 				54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */,
 				542DCC461EB1F26A00EDAD91 /* Assets.xcassets */,
@@ -210,8 +218,8 @@
 				542D6DDF1EC7021000E26F62 /* MAMutablePolyline.m */,
 				5401BB8F1EB9CE9A00003C51 /* LineTextField.h */,
 				5401BB901EB9CE9A00003C51 /* LineTextField.m */,
-				5401BB721EB823F000003C51 /* Dao.h */,
-				5401BB731EB823F000003C51 /* Dao.m */,
+				5401BB721EB823F000003C51 /* BaseDao.h */,
+				5401BB731EB823F000003C51 /* BaseDao.m */,
 				5401BB8C1EB9B88300003C51 /* BaseViewController.h */,
 				5401BB8D1EB9B88300003C51 /* BaseViewController.m */,
 				542D6DC91EC045A900E26F62 /* CellWithCuttingLine.h */,
@@ -233,6 +241,8 @@
 				542D6DD31EC2EEFC00E26F62 /* UIButton+EdgesInsertStyle.m */,
 				542D6DDB1EC315FA00E26F62 /* NSNumber+SetScale.h */,
 				542D6DDC1EC315FA00E26F62 /* NSNumber+SetScale.m */,
+				542D6DED1EC9AA2500E26F62 /* BaseDao+Category.h */,
+				542D6DEE1EC9AA2500E26F62 /* BaseDao+Category.m */,
 			);
 			path = Categoris;
 			sourceTree = "<group>";
@@ -297,7 +307,8 @@
 		5470646D1EB8233C0069BFE6 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */,
+				542D6DE41EC9A60D00E26F62 /* SportsDetailViewModel.h */,
+				542D6DE51EC9A60D00E26F62 /* SportsDetailViewModel.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -480,7 +491,7 @@
 				542D6DD11EC2AB7500E26F62 /* SportsDetailsController.m in Sources */,
 				542D6DDD1EC315FA00E26F62 /* NSNumber+SetScale.m in Sources */,
 				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
-				5401BB741EB823F000003C51 /* Dao.m in Sources */,
+				5401BB741EB823F000003C51 /* BaseDao.m in Sources */,
 				5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
 				54E92F5D1EBD98920073BABF /* RankingView.m in Sources */,
@@ -489,7 +500,9 @@
 				547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */,
 				542D6DE01EC7021000E26F62 /* MAMutablePolyline.m in Sources */,
 				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
+				542D6DE61EC9A60D00E26F62 /* SportsDetailViewModel.m in Sources */,
 				5401BB911EB9CE9B00003C51 /* LineTextField.m in Sources */,
+				542D6DEF1EC9AA2500E26F62 /* BaseDao+Category.m in Sources */,
 				54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */,
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				54E92F601EBDA9B00073BABF /* RankingController.m in Sources */,
@@ -522,6 +535,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				542DCC491EB1F26A00EDAD91 /* Base */,
+				542D6DF01ECAA6E400E26F62 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -533,6 +547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -581,6 +596,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
