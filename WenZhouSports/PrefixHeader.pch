@@ -16,10 +16,14 @@
 #import <JSONModel.h>
 #import <WToast.h>
 #import <FMDB.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <MAMapKit/MAMapKit.h>
 
 //本地配置文件
 #import "UIView+Util.h"
-#import "FontSize.h"
+#import "Font.h"
 #import "Color.h"
 #import "Configs.h"
 
@@ -27,6 +31,8 @@
 
 #ifdef DEBUG
 #define log(...) NSLog(__VA_ARGS__)
+static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #else
-#define log(...)
+#define log(...) NSLog(__VA_ARGS__)
+static const DDLogLevel ddLogLevel = DDLogLevelInfo;
 #endif

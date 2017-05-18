@@ -10,4 +10,14 @@
 
 @interface LoginView : UIView
 
+/**
+ 登录按钮点击事件
+ */
+@property (nonatomic, strong, readonly) RACSignal *loginSignal;
+
+/**
+ 忘记密码点击事件
+ */
+@property (nonatomic, strong, readonly) RACSignal *forgetPasswordSignal;
+
 @end
