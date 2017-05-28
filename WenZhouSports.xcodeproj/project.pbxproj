@@ -37,8 +37,8 @@
 		54E92F5D1EBD98920073BABF /* RankingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F5C1EBD98920073BABF /* RankingView.m */; };
 		54E92F601EBDA9B00073BABF /* RankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F5F1EBDA9B00073BABF /* RankingController.m */; };
 		54E92F661EBE01460073BABF /* UIImageView+Hexagon.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F651EBE01460073BABF /* UIImageView+Hexagon.m */; };
-		54F668A01EBABCBE00ADD4F1 /* ForgetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */; };
 		54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */; };
+		B84103941ED9D760006DC7CB /* ForgetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,9 +178,9 @@
 				5470645F1EB822D30069BFE6 /* Categoris */,
 				5470645E1EB822990069BFE6 /* Base */,
 				5470646A1EB8233C0069BFE6 /* Controller */,
-				5470646B1EB8233C0069BFE6 /* Model */,
 				5470646C1EB8233C0069BFE6 /* View */,
 				5470646D1EB8233C0069BFE6 /* ViewModel */,
+				B84103881ED9D3F3006DC7CB /* Model */,
 				542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */,
 				542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */,
 				54AD4B6A1EB2CFEA00B5245B /* PrefixHeader.pch */,
@@ -276,13 +276,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		5470646B1EB8233C0069BFE6 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		5470646C1EB8233C0069BFE6 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,10 +288,10 @@
 				5401BB851EB98C8D00003C51 /* LaunchView.h */,
 				5401BB861EB98C8D00003C51 /* LaunchView.m */,
 				54F6689E1EBABCBE00ADD4F1 /* ForgetPasswordView.h */,
-				542D6DCC1EC060DA00E26F62 /* SportsDetailView.h */,
 				54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */,
 				54E92F5B1EBD98920073BABF /* RankingView.h */,
 				54E92F5C1EBD98920073BABF /* RankingView.m */,
+				542D6DCC1EC060DA00E26F62 /* SportsDetailView.h */,
 				542D6DCD1EC060DA00E26F62 /* SportsDetailView.m */,
 			);
 			path = View;
@@ -320,6 +313,22 @@
 				D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		B84103881ED9D3F3006DC7CB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B84103891ED9D423006DC7CB /* Location */,
+			);
+			name = Model;
+			path = Mo;
+			sourceTree = "<group>";
+		};
+		B84103891ED9D423006DC7CB /* Location */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Location;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -374,7 +383,7 @@
 				TargetAttributes = {
 					542DCC361EB1F26A00EDAD91 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = G65MVK3CQR;
+						DevelopmentTeam = YZ9D33BSV8;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -481,7 +490,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54F668A01EBABCBE00ADD4F1 /* ForgetPasswordView.m in Sources */,
+				B84103941ED9D760006DC7CB /* ForgetPasswordView.m in Sources */,
 				5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */,
 				542D6DCE1EC060DA00E26F62 /* SportsDetailView.m in Sources */,
 				542D6DE31EC7028700E26F62 /* MAMutablePolylineRenderer.m in Sources */,
@@ -585,7 +594,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -628,7 +637,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -641,13 +650,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = G65MVK3CQR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = YZ9D33BSV8;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
 				INFOPLIST_FILE = WenZhouSports/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.WenZhouSports;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WenZhouSports.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -658,13 +670,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = G65MVK3CQR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = YZ9D33BSV8;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
 				INFOPLIST_FILE = WenZhouSports/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.WenZhouSports;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WenZhouSports.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

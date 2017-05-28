@@ -111,7 +111,7 @@ CGFloat proportion = 0.84;
         [WToast showWithText:@"x"];
     }];
     SportsDetailsController *controller = [[SportsDetailsController alloc] init];
-//    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

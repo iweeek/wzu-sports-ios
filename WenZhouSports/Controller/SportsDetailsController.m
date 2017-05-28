@@ -117,6 +117,7 @@
                 [_sportsDataSignal subscribeNext:^(CMPedometerData *x) {
                     distance = x.distance.floatValue;
                     steps = x.numberOfSteps.integerValue;
+                    DDLogInfo(@">>>>>>>>>步数%ld", (long)steps);
                 }];
                 if (isPause) {
                     pauseTime = -[pauseDate timeIntervalSinceNow];
@@ -124,7 +125,9 @@
                 }
                 //避免时间从0开始
                 NSNumber *speed = @((distance - pauseDistance - allPauseDistance) / (time + 1 - pauseTime));
-                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:10];
+//                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:10];
+                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:steps];
+                
         });
         dispatch_resume(_timer);
         }
@@ -239,24 +242,31 @@
     }];
 }
 
-- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location {
-    @autoreleasepool {
-        DDLogVerbose(@"latitude:%f\tlongitude:%f", location.coordinate.latitude, location.coordinate.longitude);
-        if (location) {
-            DDLogVerbose(@"%f,%f", _lastPoint.x, _lastPoint.y);
-            if (_lastPoint.x == 0.0 && _lastPoint.y == 0.0) {
-                _lastPoint = MAMapPointForCoordinate(location.coordinate);
-                DDLogVerbose(@"lastpoint");
-            }
-#warning TODO:do something when pause
-            MAMapPoint nowPoint = MAMapPointForCoordinate(location.coordinate);
-            _mapDistance += MAMetersBetweenMapPoints(_lastPoint, nowPoint);
-            _lastPoint = MAMapPointForCoordinate(location.coordinate);
-            DDLogVerbose(@"distance:%f", _mapDistance);
-            [_detailView addPolygonLine:location];
-        }
-    }
+// 本方法已废弃
+//- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location {
+//    @autoreleasepool {
+//        DDLogVerbose(@"latitude:%f\tlongitude:%f", location.coordinate.latitude, location.coordinate.longitude);
+//        if (location) {
+//            DDLogVerbose(@"%f,%f", _lastPoint.x, _lastPoint.y);
+//            if (_lastPoint.x == 0.0 && _lastPoint.y == 0.0) {
+//                _lastPoint = MAMapPointForCoordinate(location.coordinate);
+//                DDLogVerbose(@"lastpoint");
+//            }
+//#warning TODO:do something when pause
+//            MAMapPoint nowPoint = MAMapPointForCoordinate(location.coordinate);
+//            _mapDistance += MAMetersBetweenMapPoints(_lastPoint, nowPoint);
+//            _lastPoint = MAMapPointForCoordinate(location.coordinate);
+//            DDLogVerbose(@"distance:%f", _mapDistance);
+//            [_detailView addPolygonLine:location];
+//        }
+//    }
+//}
+
+- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location reGeocode:(AMapLocationReGeocode *)reGeocode {
+    
 }
+
+
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     NSString *medieType = [info objectForKey:UIImagePickerControllerMediaType];
