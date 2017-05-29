@@ -12,8 +12,10 @@
 #import "SportsDetailViewModel.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMotion/CoreMotion.h>
+#import "MAMutablePolyline.h"
+#import "MAMutablePolylineRenderer.h"
 
-@interface SportsDetailsController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AMapLocationManagerDelegate>
+@interface SportsDetailsController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AMapLocationManagerDelegate, MAMapViewDelegate>
 
 @property (nonatomic, strong) SportsDetailView *detailView;
 
@@ -34,6 +36,15 @@
 @property (nonatomic) MAMapPoint lastPoint;
 @property (nonatomic) CLLocationDistance mapDistance;
 
+//运动轨迹相关
+@property (nonatomic, strong) NSMutableArray *locationsArray;
+@property (nonatomic, strong) MAMutablePolyline *line;
+@property (nonatomic, strong) MAMutablePolylineRenderer *render;
+@property (nonatomic, assign) BOOL isRecording; //是否正在绘制
+@property (nonatomic, strong) CLLocation *lastLocatioin;
+
+@property (nonatomic, assign) BOOL isPause;
+
 @end 
 
 @implementation SportsDetailsController
@@ -43,6 +54,7 @@
     [self initSubviews];
     [self reactiveEvent];
     _pedometer = [[CMPedometer alloc] init];
+#warning TODO: 这个内存泄露，下面的@autoreleasepool可能就是要解决这个问题
     _motionManager = [[CMMotionManager alloc] init];
     _motionActivityManager = [[CMMotionActivityManager alloc] init];
     
@@ -55,7 +67,8 @@
     }];
     _locationManager = [[AMapLocationManager alloc] init];
     _locationManager.delegate = self;
-    _locationManager.distanceFilter = 1;
+    _locationManager.distanceFilter = 0;// 中心显示范围0
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;// 精确度
     _mapDistance = 0;
     _lastPoint = MAMapPointMake(0.0, 0.0);
     
@@ -64,6 +77,10 @@
 
 - (void)initSubviews {
     _detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 64.0, WIDTH, HEIGHT - 64.0)];
+    [_detailView setDelete:self];
+    _line = [[MAMutablePolyline alloc] initWithPoints:@[]];
+    [_detailView.mapView addOverlay:_line];
+
     [self.view addSubview:_detailView];
 }
 
@@ -75,6 +92,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:YES];
     [self free];
+    self.detailView = nil;
 }
 
 - (void)reactiveEvent {
@@ -98,6 +116,7 @@
     [self.detailView.startSignal subscribeNext:^(id x) {
         @strongify(self)
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            @strongify(self)
             [[self.viewModel.compareFaceCommand execute:nil] subscribeNext:^(id  _Nullable x) {
                 
             }];
@@ -117,7 +136,7 @@
                 [_sportsDataSignal subscribeNext:^(CMPedometerData *x) {
                     distance = x.distance.floatValue;
                     steps = x.numberOfSteps.integerValue;
-                    DDLogInfo(@">>>>>>>>>步数%ld", (long)steps);
+                    DDLogInfo(@"步数%ld", (long)steps);
                 }];
                 if (isPause) {
                     pauseTime = -[pauseDate timeIntervalSinceNow];
@@ -125,8 +144,8 @@
                 }
                 //避免时间从0开始
                 NSNumber *speed = @((distance - pauseDistance - allPauseDistance) / (time + 1 - pauseTime));
-//                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:10];
-                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:steps];
+                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:10];
+//                [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:steps];
                 
         });
         dispatch_resume(_timer);
@@ -163,7 +182,7 @@
         }];
         //设备当前的活动状态
          if ([CMMotionActivityManager isActivityAvailable]) {
-             @weakify(self);
+//             @weakify(self);
             [self.motionActivityManager startActivityUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMMotionActivity * _Nullable activity) {
                 @autoreleasepool {
                     @strongify(self)
@@ -213,13 +232,19 @@
         }
         [_locationManager startUpdatingLocation];
     }];
+    // 暂停
     [self.detailView.pauseSignal subscribeNext:^(id  _Nullable x) {
        @strongify(self)
         [self.detailView changeSportsStation:SportsDidPause];
         isPause = YES;
         pauseDate = [NSDate date];
         startPauseDistance = distance;
+        self.isPause = YES;
+        
+        self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
+        [self.detailView.mapView addOverlay:self.line];
     }];
+    // 继续
     [self.detailView.continueSignal subscribeNext:^(id  _Nullable x) {
        @strongify(self)
         isPause = NO;
@@ -235,6 +260,7 @@
         [self free];
         [self.detailView setDataWithCalorie:cyclingCount time:time / 60];
         [self.detailView changeSportsStation:SportsDidEnd];
+        [self.locationManager stopUpdatingLocation];
     }];
     [self.detailView.shareSignal subscribeNext:^(id  _Nullable x) {
         @strongify(self)
@@ -266,8 +292,122 @@
     
 }
 
+- (void)addPolygonLine:(CLLocation *)location {
+    [_line appendPoint:MAMapPointForCoordinate(location.coordinate)];
+    [_detailView.mapView setCenterCoordinate:location.coordinate animated:YES];
+    
+    [self.render invalidatePath];
+}
 
+#pragma mark - mapViewDelegate
+- (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation {
+    if (!updatingLocation) {
+        return;
+    }
+    // 改变箭头指向
+    if (self.detailView.userLocationAnnotationView) {
+        [UIView animateWithDuration:0.1 animations:^{
+            double degree = userLocation.heading.trueHeading;// - self.mapView.rotationDegree;
+            self.detailView.userLocationAnnotationView.transform = CGAffineTransformMakeRotation(degree * M_PI / 180.f);
+        }];
+    }
+    
+    // 移动距离小于两米属于无效的，不画
+    if (self.lastLocatioin) {
+        CLLocationDistance distance = [userLocation.location distanceFromLocation:self.lastLocatioin];
+        if (distance < 2) {
+            return;
+        }
+    }
+    self.lastLocatioin = userLocation.location;
+    
+#warning TODO:目前不判断是否在绘制
+    self.isRecording = YES;
+    if (self.isRecording) { //是否正在绘制
+        /*当定位成功后，如果horizontalAccuracy大于0，说明定位有效
+         horizontalAccuracy，该位置的纬度和经度确定的圆的中心，并且这个值表示圆的半径。负值表示该位置的纬度和经度是无效的。
+         horizontalAccuracy值越大越不准确
+         */
+        if (userLocation.location.horizontalAccuracy < 80 && userLocation.location.horizontalAccuracy > 0) {
+#warning TODO:暂时没用到，存储下坐标以备上传
+            [self.locationsArray addObject:userLocation.location];
+            
+            NSLog(@"date: %@,now :%@",userLocation.location.timestamp,[NSDate date]);
+            
+            [self.line appendPoint: MAMapPointForCoordinate(userLocation.location.coordinate)];
+            
+            [self.detailView.mapView setCenterCoordinate:userLocation.location.coordinate animated:YES];
+            
+            self.lastLocatioin = userLocation.location;
+            
+            [self.render invalidatePath];
+        }
+    }
+}
 
+/**
+ 高德地图折线配置
+ 
+ @param mapView mapView description
+ @param overlay overlay description
+ @return return value description
+ */
+- (MAOverlayPathRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay {
+    if ([overlay isKindOfClass:[MAMutablePolyline class]]) {
+        MAMutablePolylineRenderer *renderer = [[MAMutablePolylineRenderer alloc] initWithOverlay:overlay];
+        renderer.lineWidth = 12.0f;
+        
+        if (self.isPause) {
+            renderer.strokeColor = [UIColor grayColor];
+        } else {
+            renderer.strokeColor = C_66A7FE;
+        }
+        
+        _render = renderer;
+        
+        return renderer;
+    }
+    
+    return nil;
+}
+
+// 绘制方向箭头
+- (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id<MAAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MAUserLocation class]]) {
+        static NSString *userLocationStyleReuseIndetifier = @"userLocationStyleReuseIndetifier";
+        
+        MAAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:userLocationStyleReuseIndetifier];
+        
+        if (annotationView == nil) {
+            annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation                                                            reuseIdentifier:userLocationStyleReuseIndetifier];
+        }
+        
+        annotationView.image = [UIImage imageNamed:@"icon_userPosition"];
+        self.detailView.userLocationAnnotationView = annotationView;
+
+        return annotationView;
+        
+    }
+    return nil;
+}
+
+//定位失败
+- (void)mapView:(MAMapView *)mapView didFailToLocateUserWithError:(NSError *)error {
+    NSString *errorString = @"";
+    switch([error code]) {
+        case kCLErrorDenied:
+            errorString = @"Access to Location Services denied by user";
+            break;
+        case kCLErrorLocationUnknown:
+            errorString = @"Location data unavailable";
+            break;
+        default:
+            errorString = @"An unknown error has occurred";
+            break;
+    }
+}
+
+#pragma mark - faceCompare
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     NSString *medieType = [info objectForKey:UIImagePickerControllerMediaType];
     if ([medieType isEqualToString:(NSString *)kUTTypeImage]) {

@@ -7,8 +7,7 @@
 //
 
 #import "SportsDetailView.h"
-#import "MAMutablePolyline.h"
-#import "MAMutablePolylineRenderer.h"
+
 
 @interface SportsDetailView ()
 
@@ -58,10 +57,7 @@
 @property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) UIView *shadowView;
 
-@property (nonatomic, strong) MAMapView *mapView;
-@property (nonatomic, strong) AMapLocationManager *locationManager;
-@property (nonatomic, strong) MAMutablePolyline *line;
-@property (nonatomic, strong) MAMutablePolylineRenderer *render;
+//@property (nonatomic, strong) AMapLocationManager *locationManager;
 
 @property (nonatomic, strong) RACSignal *startSignal;
 @property (nonatomic, strong) RACSubject *pauseSignal;
@@ -69,10 +65,6 @@
 @property (nonatomic, strong) RACSignal *continueSignal;
 @property (nonatomic, strong) RACSignal *endSignal;
 @property (nonatomic, strong) RACSignal *shareSignal;
-
-@property (nonatomic, assign) BOOL isRecording;//是否正在绘制
-@property (nonatomic, strong) NSMutableArray *locationsArray;
-//@property (nonatomic, strong) MAMutablePolyline *mutablePolyline;
 
 @end
 
@@ -92,12 +84,9 @@
 - (void)initSubviews {
     _mapView = ({
         MAMapView *map = [[MAMapView alloc] initWithFrame:self.frame];
-        map.zoomLevel = 18;
+        map.zoomLevel = 16;
         map.showsUserLocation = YES;
-        map.userTrackingMode = MAUserTrackingModeFollow;
-        _line = [[MAMutablePolyline alloc] initWithPoints:@[]];
-        [map addOverlay:_line];
-        map.delegate = self;
+        map.userTrackingMode = MAUserTrackingModeFollow;// 追踪移动
 
         map;
     });
@@ -602,14 +591,18 @@
     [distanceAttributedString addAttributes:attribute1 range:NSMakeRange(0, distanceString.length - 1)];
     [distanceAttributedString addAttributes:attribute2 range:NSMakeRange(distanceString.length - 1, 1)];
     _speedNumberLabel.attributedText = speedAttributedString;
-//    _stageNumberLabel.attributedText = stageAttributedString;
+    _stageNumberLabel.attributedText = stageAttributedString;
     _distanceNumberLabel.attributedText = distanceAttributedString;
-    _stageNumberLabel.text= [NSString stringWithFormat:@"%ld", stage];
+//    _stageNumberLabel.text= [NSString stringWithFormat:@"%ld", stage];
 }
 
 - (void)setDataWithCalorie:(int)calorie time:(int)time {
     _calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%d千卡", calorie];
     _timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%d分钟", time];
+}
+
+- (void)setDelete:(id<MAMapViewDelegate>)delegate {
+    self.mapView.delegate = delegate;
 }
 
 - (void)addPauseGestureEvent {
@@ -642,64 +635,4 @@
     }];
 }
 
-- (void)addPolygonLine:(CLLocation *)location {
-    [_line appendPoint:MAMapPointForCoordinate(location.coordinate)];
-    [_mapView setCenterCoordinate:location.coordinate animated:YES];
-    
-    [self.render invalidatePath];
-}
-
-
-- (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
-{
-    if (!updatingLocation)
-    {
-        return;
-    }
-#warning TODO:目前不判断是否在绘制
-    self.isRecording = YES;
-    if (self.isRecording)//是否正在绘制
-    {
-        /*当定位成功后，如果horizontalAccuracy大于0，说明定位有效
-         horizontalAccuracy，该位置的纬度和经度确定的圆的中心，并且这个值表示圆的半径。负值表示该位置的纬度和经度是无效的。
-         horizontalAccuracy值越大越不准确
-         */
-        if (userLocation.location.horizontalAccuracy < 80 && userLocation.location.horizontalAccuracy > 0)
-        {
-            [self.locationsArray addObject:userLocation.location];
-            
-            NSLog(@"date: %@,now :%@",userLocation.location.timestamp,[NSDate date]);
-
-            [self.line appendPoint: MAMapPointForCoordinate(userLocation.location.coordinate)];
-            
-            [self.mapView setCenterCoordinate:userLocation.location.coordinate animated:YES];
-            
-            [self.render invalidatePath];
-        }
-    }
-}
-
-/**
- 高德地图折线配置
-
- @param mapView mapView description
- @param overlay overlay description
- @return return value description
- */
-- (MAOverlayPathRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay {
-    if ([overlay isKindOfClass:[MAMutablePolyline class]])
-    {
-        MAMutablePolylineRenderer *renderer = [[MAMutablePolylineRenderer alloc] initWithOverlay:overlay];
-        renderer.lineWidth = 4.0f;
-        
-        renderer.strokeColor = C_66A7FE;
-        
-        _render = renderer;
-        
-        return renderer;
-    }
-    
-    return nil;
-
-}
 @end
