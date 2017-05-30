@@ -16,19 +16,22 @@ typedef NS_ENUM(NSInteger, SportsStation) {
     SportsShare                     //分享运动结果
 };
 
-
 @interface SportsDetailView : UIView <MAMapViewDelegate>
 
+@property (nonatomic, strong) MAMapView *mapView;
+// 地图方向箭头
+@property (nonatomic, strong) MAAnnotationView *userLocationAnnotationView;
+
+///地图View的Delegate
+@property (nonatomic, weak) id<MAMapViewDelegate> mapDelegate;
 /**
  运动开始点击事件
  */
 @property (nonatomic, strong, readonly) RACSignal *startSignal;
-
 /**
  运动暂停滑动事件
  */
 @property (nonatomic, strong, readonly) RACSubject *pauseSignal;
-
 /**
  继续点击事件
  */
@@ -73,5 +76,8 @@ typedef NS_ENUM(NSInteger, SportsStation) {
  在地图上绘制折线
 
  */
-- (void)addPolygonLine:(CLLocation *)location;
+//- (void)addPolygonLine:(CLLocation *)location;
+
+- (void)setDelete:(id<MAMapViewDelegate>)delegate;
+
 @end
