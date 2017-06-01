@@ -17,6 +17,13 @@
 #define C_42CC42 UIColorFromRGB(0x42cc42)
 #define C_FF0000 UIColorFromRGB(0xff0000)
 
+#define cFFFFFF UIColorFromRGB(0xffffff)
+#define cSpliteLine UIColorFromRGB(0xedf0f2)
+#define c474A4F UIColorFromRGB(0x474A4F)
+#define c7E848C UIColorFromRGB(0x7E848C)
+#define cCCCCCC UIColorFromRGB(0xCCCCCC)
+#define c66A7FE UIColorFromRGB(0x66a7fe)
+
 //像导航栏这种使用统一颜色的控件，也可以命名为C_[控件名], 方便以后做统一修改
 #define C_NAVIGATION UIColorFromRGB(0xffffff)
 #define C_GRAY_TEXT UIColorFromRGB(0x7e848c)

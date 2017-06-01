@@ -10,4 +10,6 @@
 
 @interface PersonalCenterView : UIView
 
+@property (nonatomic, assign) NSInteger selectedIndex;
+
 @end

@@ -14,6 +14,7 @@
 #define WIDTH [[UIScreen mainScreen] bounds].size.width
 
 #define FIT_LENGTH(num) ((num) * WIDTH/414.0)
+#define FIX(num) ((num) * WIDTH/375)
 
 //控件距离
 #define MARGIN_SCREEN FIT_LENGTH(18.0)
