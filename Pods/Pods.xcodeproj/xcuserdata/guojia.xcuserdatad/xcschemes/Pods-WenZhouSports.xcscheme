@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0830"
+   LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D4C977D64BD60EC40A0EAE671608F405"
-               BuildableName = "libPods-WenZhouSports.a"
+               BlueprintIdentifier = "B9386CC1740623484561326A3571BB86"
+               BuildableName = "Pods_WenZhouSports.framework"
                BlueprintName = "Pods-WenZhouSports"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4C977D64BD60EC40A0EAE671608F405"
-            BuildableName = "libPods-WenZhouSports.a"
+            BlueprintIdentifier = "B9386CC1740623484561326A3571BB86"
+            BuildableName = "Pods_WenZhouSports.framework"
             BlueprintName = "Pods-WenZhouSports"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
@@ -60,15 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4C977D64BD60EC40A0EAE671608F405"
-            BuildableName = "libPods-WenZhouSports.a"
-            BlueprintName = "Pods-WenZhouSports"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

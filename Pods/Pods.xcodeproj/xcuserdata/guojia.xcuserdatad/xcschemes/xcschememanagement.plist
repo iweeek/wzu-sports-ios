@@ -6,103 +6,103 @@
 	<dict>
 		<key>AFNetworking.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>CocoaLumberjack.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>FBRetainCycleDetector.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>FMDB.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>JSONModel.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>MLeaksFinder.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Masonry.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods-WenZhouSports.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>ReactiveObjC.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>9</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>WToast.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>10</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1A9298B32F31A61F3742650B19EE27BD</key>
+		<key>1C3436CEA5C3D39764C5F54374794ECB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>55E3CFFEDC2629EE0C17B343EC00595B</key>
+		<key>21675633D1A06CCDEC0FCE999D64B577</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8642CC820CE8C5B88C113D7F47AF4BC3</key>
+		<key>23CF27B2BA6AC7125EFFEDA8C5AA819F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9DC8D9E02903E93BD0B2FEC9D846EA20</key>
+		<key>80773803E98D992E27F4D4BF0F430E5F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9E033EDB5EC0819481B0546434FA577B</key>
+		<key>9341A4EA2E1211609736A33B1A69EBC7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AC139CEF10BCCB200972B4617F3CA14E</key>
+		<key>A9A83F63385AA43314397B8DD375464B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AF9D6EADD8E530631B349B6FDC56DA82</key>
+		<key>AF21780C841830BE5AD3F34076925612</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D4C977D64BD60EC40A0EAE671608F405</key>
+		<key>B9386CC1740623484561326A3571BB86</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F8EFA7B8E644C886397ABB195D334BFE</key>
+		<key>EAAB07FDFCDC2C1E13F12B3819CE19D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FBC4DE1B6D808E43094FD68851399940</key>
+		<key>EC93C2B93A2C1DF2F31CBD109C6A1F66</key>
 		<dict>
 			<key>primary</key>
 			<true/>
