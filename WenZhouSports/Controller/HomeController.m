@@ -12,6 +12,8 @@
 #import "RankingController.h"
 #import "SportsDetailsController.h"
 #import "SportsDetailViewModel.h"
+#import "SportsHistoryController.h"
+#import "HomeItemCell.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -28,17 +30,19 @@ CGFloat proportion = 0.84;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"课外体育锻炼";
+    self.view.backgroundColor = cFFFFFF;
     [self initSubviews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)initSubviews {
     _tableView = ({
-        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT)];
+        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
         tv.delegate = self;
         tv.dataSource = self;
         _headerView = [[HomeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, FIT_LENGTH(302.0))];
@@ -47,6 +51,9 @@ CGFloat proportion = 0.84;
             RankingController *controller = [[RankingController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];
         }];
+        
+        [tv registerClass:[HomeItemCell class]
+           forCellReuseIdentifier:NSStringFromClass([HomeItemCell class])];
         
         tv;
     });
@@ -81,6 +88,23 @@ CGFloat proportion = 0.84;
     });
     [self.view addSubview:_personalCenterView];
     
+    //监听选择的分类
+    @weakify(self);
+    [[RACObserve(_personalCenterView, selectedIndex) skip:1] subscribeNext:^(id x) {
+        @strongify(self);
+        switch (self.personalCenterView.selectedIndex) {
+            case 0:
+            {
+                SportsHistoryController *vc = [[SportsHistoryController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+        
+    }];
+    
     [[signal merge:[midPanGesture rac_gestureSignal]] subscribeNext:^(UIPanGestureRecognizer *recognizer) {
         CGFloat x = [recognizer translationInView:self.tableView].x;
         if (recognizer.state == UIGestureRecognizerStateEnded) {
@@ -97,10 +121,7 @@ CGFloat proportion = 0.84;
     return YES;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
-}
-
+#pragma mark - UITableViewDelegate, UITableViewDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
@@ -115,10 +136,56 @@ CGFloat proportion = 0.84;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    if (indexPath.row == 0) {
+        return [UITableViewCell new];
+    }
+    
+    HomeItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeItemCell class]) forIndexPath:indexPath];
+    switch (indexPath.row) {
+        case SportsTypeJogging:
+        {
+            [cell initWithSportsType:SportsTypeJogging data:nil];
+            break;
+        }
+        case SportsTypeRun:
+        {
+            [cell initWithSportsType:SportsTypeRun data:nil];
+            break;
+        }
+        case SportsTypeWalk:
+        {
+            [cell initWithSportsType:SportsTypeWalk data:nil];
+            break;
+        }
+        case SportsTypeStep:
+        {
+            [cell initWithSportsType:SportsTypeStep data:nil];
+            break;
+        }
+    }
     return cell;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 5;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 10;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) {
+        return 40;
+    }
+    return 162;
+}
+
+#pragma mark - Event
 - (void)showPersonalCenter {
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _tableView.center = CGPointMake(self.view.center.x+ WIDTH * proportion, self.view.center.y);

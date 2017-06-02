@@ -145,6 +145,7 @@
         cell.imageView.image = [UIImage imageNamed:_imageArray[indexPath.row]];
     }];
     [subject sendCompleted];
+    self.selectedIndex = indexPath.row;
 }
 
 @end

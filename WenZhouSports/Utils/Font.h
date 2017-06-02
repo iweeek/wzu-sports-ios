@@ -10,6 +10,8 @@
 #define Font_h
 
 //字体大小，命名统一为S[字体大小],粗体为SS[字体大小]
+#define S(num) [UIFont systemFontOfSize:num]
+#define SS(num) [UIFont boldSystemFontOfSize:num]
 #define S8 [UIFont systemFontOfSize:8]
 #define S10 [UIFont systemFontOfSize:10]
 #define S11 [UIFont systemFontOfSize:11]
@@ -18,6 +20,7 @@
 #define S14 [UIFont systemFontOfSize:14]
 #define S15 [UIFont systemFontOfSize:15]
 #define S16 [UIFont systemFontOfSize:16]
+#define S17 [UIFont systemFontOfSize:17]
 #define S18 [UIFont systemFontOfSize:18]
 #define S20 [UIFont systemFontOfSize:20]
 

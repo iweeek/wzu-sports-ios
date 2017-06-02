@@ -164,15 +164,15 @@
         make.top.equalTo(_cuttingLine.mas_bottom);
         make.height.mas_equalTo(FIT_LENGTH(48.0));
     }];
-    [_divideView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_rankingButton.mas_bottom);
-        make.left.right.equalTo(self);
-        make.height.mas_equalTo(FIT_LENGTH(11.0));
-    }];
-    [_sportEventLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_divideView.mas_bottom).offset(FIT_LENGTH(13.0));
-        make.centerX.equalTo(self);
-    }];
+//    [_divideView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_rankingButton.mas_bottom);
+//        make.left.right.equalTo(self);
+//        make.height.mas_equalTo(FIT_LENGTH(11.0));
+//    }];
+//    [_sportEventLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_divideView.mas_bottom).offset(FIT_LENGTH(13.0));
+//        make.centerX.equalTo(self);
+//    }];
 }
 
 @end
