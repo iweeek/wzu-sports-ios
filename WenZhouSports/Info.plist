@@ -45,5 +45,7 @@
 	</array>
 	<key>privacy</key>
 	<string></string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

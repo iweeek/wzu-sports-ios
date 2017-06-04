@@ -8,7 +8,7 @@
 
 #import "LaunchController.h"
 #import "LaunchView.h"
-#import "LoginController.h"
+//#import "LoginController.h"
 
 @interface LaunchController ()
 
@@ -38,8 +38,8 @@
     [self.launchView.loginSignal subscribeNext:^(id x) {
         log(@"%@", x);
         @strongify(self)
-        LoginController *loginController = [[LoginController alloc] init];
-        [self.navigationController pushViewController:loginController animated:YES];
+//        LoginController *loginController = [[LoginController alloc] init];
+//        [self.navigationController pushViewController:loginController animated:YES];
     }];
 }
 

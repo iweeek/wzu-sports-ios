@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"历史运动概况";
-    self.view.backgroundColor = [UIColor redColor];
+    self.view.backgroundColor = cFFFFFF;
     [self.view addSubview:self.tableView];
 }
 
@@ -118,7 +118,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
 
 @end

@@ -133,7 +133,7 @@
     AFNetworkReachabilityManager *reachabilityManager = [AFNetworkReachabilityManager sharedManager];
     [reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
-            case AFNetworkReachabilityStatusNotReachable:
+            case 0:
                 reachabilty = false;
                 break;
                 

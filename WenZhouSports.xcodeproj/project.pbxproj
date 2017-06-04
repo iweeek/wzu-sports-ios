@@ -7,11 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		274EF4496B2B9BA56214BA27 /* libPods-WenZhouSports.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */; };
+		0C27DC8EDD7B979D15DF83AA /* Pods_WenZhouSports.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362BC04C77BC60C0E6C52970 /* Pods_WenZhouSports.framework */; };
 		5401BB741EB823F000003C51 /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* BaseDao.m */; };
-		5401BB771EB864FD00003C51 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB761EB864FD00003C51 /* LoginView.m */; };
-		5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB7A1EB8796A00003C51 /* LoginController.m */; };
-		5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB801EB8823B00003C51 /* HomeHeaderView.m */; };
 		5401BB841EB972FD00003C51 /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB831EB972FD00003C51 /* HomeController.m */; };
 		5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB861EB98C8D00003C51 /* LaunchView.m */; };
 		5401BB881EB9AF1D00003C51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC461EB1F26A00EDAD91 /* Assets.xcassets */; };
@@ -37,13 +34,29 @@
 		54E92F5D1EBD98920073BABF /* RankingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F5C1EBD98920073BABF /* RankingView.m */; };
 		54E92F601EBDA9B00073BABF /* RankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F5F1EBDA9B00073BABF /* RankingController.m */; };
 		54E92F661EBE01460073BABF /* UIImageView+Hexagon.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F651EBE01460073BABF /* UIImageView+Hexagon.m */; };
-		54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */; };
-		B84103941ED9D760006DC7CB /* ForgetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */; };
 		B885CBB81EDFB6550074FBEF /* SportsHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBB71EDFB6550074FBEF /* SportsHistoryController.m */; };
 		B885CBBB1EDFB8A00074FBEF /* BaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBBA1EDFB8A00074FBEF /* BaseCell.m */; };
 		B885CBBF1EE008F40074FBEF /* SportsHistoryHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBBE1EE008F40074FBEF /* SportsHistoryHeaderCell.m */; };
 		B885CBC21EE01CB30074FBEF /* SportsHistoryItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBC11EE01CB30074FBEF /* SportsHistoryItemCell.m */; };
 		B885CBC61EE036DA0074FBEF /* HomeItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBC51EE036DA0074FBEF /* HomeItemCell.m */; };
+		B8A05F6A1EE1A4B6003AEC95 /* ForgetPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F691EE1A4B6003AEC95 /* ForgetPasswordController.m */; };
+		B8A05F6D1EE1A50A003AEC95 /* ForgetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F6C1EE1A50A003AEC95 /* ForgetPasswordView.m */; };
+		B8A05F701EE1A879003AEC95 /* VerificationCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F6F1EE1A879003AEC95 /* VerificationCodeController.m */; };
+		B8A05F731EE1A90D003AEC95 /* VerificationCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F721EE1A90D003AEC95 /* VerificationCodeView.m */; };
+		B8A05F761EE1C5B6003AEC95 /* PersonInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F751EE1C5B6003AEC95 /* PersonInfoController.m */; };
+		B8A05F7A1EE1C6AD003AEC95 /* PersonInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F791EE1C6AD003AEC95 /* PersonInfoCell.m */; };
+		B8A05F7D1EE1C9D5003AEC95 /* SportsPerformanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F7C1EE1C9D5003AEC95 /* SportsPerformanceController.m */; };
+		B8A05F811EE1CA2B003AEC95 /* SportsPerformanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F801EE1CA2B003AEC95 /* SportsPerformanceCell.m */; };
+		B8A05F841EE1CC38003AEC95 /* ApproveController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F831EE1CC38003AEC95 /* ApproveController.m */; };
+		B8A05F881EE1CD0A003AEC95 /* ApproveItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F871EE1CD0A003AEC95 /* ApproveItemCell.m */; };
+		B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B522851EE106210038A83C /* HomeTotalCell.m */; };
+		B8DF48B11EE14B480088377D /* HomeRankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48B01EE14B480088377D /* HomeRankCell.m */; };
+		B8DF48B41EE14D7A0088377D /* HomeSportsTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48B31EE14D7A0088377D /* HomeSportsTypeCell.m */; };
+		B8DF48B91EE155C30088377D /* LoginTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48B81EE155C30088377D /* LoginTextView.m */; };
+		B8DF48BF1EE15F930088377D /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48BE1EE15F930088377D /* LoginView.m */; };
+		B8DF48C21EE161890088377D /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48C11EE161890088377D /* LoginController.m */; };
+		B8DF48C51EE16AA90088377D /* UINavigationItem+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48C41EE16AA90088377D /* UINavigationItem+Addition.m */; };
+		B8DF48C81EE16E270088377D /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48C71EE16E270088377D /* UINavigationBar+Awesome.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,16 +70,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.debug.xcconfig"; sourceTree = "<group>"; };
-		503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WenZhouSports.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		362BC04C77BC60C0E6C52970 /* Pods_WenZhouSports.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WenZhouSports.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5401BB721EB823F000003C51 /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
 		5401BB731EB823F000003C51 /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
-		5401BB751EB864FD00003C51 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
-		5401BB761EB864FD00003C51 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
-		5401BB791EB8796A00003C51 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
-		5401BB7A1EB8796A00003C51 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
-		5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeHeaderView.h; path = WenZhouSports/View/HomeHeaderView.h; sourceTree = SOURCE_ROOT; };
-		5401BB801EB8823B00003C51 /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeHeaderView.m; path = WenZhouSports/View/HomeHeaderView.m; sourceTree = SOURCE_ROOT; };
 		5401BB821EB972FD00003C51 /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
 		5401BB831EB972FD00003C51 /* HomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeController.m; sourceTree = "<group>"; };
 		5401BB851EB98C8D00003C51 /* LaunchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchView.h; sourceTree = "<group>"; };
@@ -122,10 +128,8 @@
 		54E92F5F1EBDA9B00073BABF /* RankingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingController.m; sourceTree = "<group>"; };
 		54E92F641EBE01460073BABF /* UIImageView+Hexagon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Hexagon.h"; sourceTree = "<group>"; };
 		54E92F651EBE01460073BABF /* UIImageView+Hexagon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Hexagon.m"; sourceTree = "<group>"; };
-		54F6689E1EBABCBE00ADD4F1 /* ForgetPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordView.h; sourceTree = "<group>"; };
-		54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordView.m; sourceTree = "<group>"; };
-		54F668A11EBAC67A00ADD4F1 /* ForgetPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordController.h; sourceTree = "<group>"; };
-		54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordController.m; sourceTree = "<group>"; };
+		78BF0E236C7CBBA2E4EF2E90 /* Pods-WenZhouSports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.release.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.release.xcconfig"; sourceTree = "<group>"; };
+		8D2D5A384E5568FC12784D69 /* Pods-WenZhouSports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.debug.xcconfig"; sourceTree = "<group>"; };
 		B885CBB61EDFB6550074FBEF /* SportsHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportsHistoryController.h; sourceTree = "<group>"; };
 		B885CBB71EDFB6550074FBEF /* SportsHistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsHistoryController.m; sourceTree = "<group>"; };
 		B885CBB91EDFB8A00074FBEF /* BaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCell.h; sourceTree = "<group>"; };
@@ -136,7 +140,42 @@
 		B885CBC11EE01CB30074FBEF /* SportsHistoryItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsHistoryItemCell.m; sourceTree = "<group>"; };
 		B885CBC41EE036DA0074FBEF /* HomeItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeItemCell.h; sourceTree = "<group>"; };
 		B885CBC51EE036DA0074FBEF /* HomeItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeItemCell.m; sourceTree = "<group>"; };
-		D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.release.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.release.xcconfig"; sourceTree = "<group>"; };
+		B8A05F681EE1A4B6003AEC95 /* ForgetPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordController.h; sourceTree = "<group>"; };
+		B8A05F691EE1A4B6003AEC95 /* ForgetPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordController.m; sourceTree = "<group>"; };
+		B8A05F6B1EE1A50A003AEC95 /* ForgetPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordView.h; sourceTree = "<group>"; };
+		B8A05F6C1EE1A50A003AEC95 /* ForgetPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordView.m; sourceTree = "<group>"; };
+		B8A05F6E1EE1A879003AEC95 /* VerificationCodeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerificationCodeController.h; sourceTree = "<group>"; };
+		B8A05F6F1EE1A879003AEC95 /* VerificationCodeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerificationCodeController.m; sourceTree = "<group>"; };
+		B8A05F711EE1A90D003AEC95 /* VerificationCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerificationCodeView.h; sourceTree = "<group>"; };
+		B8A05F721EE1A90D003AEC95 /* VerificationCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerificationCodeView.m; sourceTree = "<group>"; };
+		B8A05F741EE1C5B6003AEC95 /* PersonInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonInfoController.h; sourceTree = "<group>"; };
+		B8A05F751EE1C5B6003AEC95 /* PersonInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonInfoController.m; sourceTree = "<group>"; };
+		B8A05F781EE1C6AD003AEC95 /* PersonInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonInfoCell.h; sourceTree = "<group>"; };
+		B8A05F791EE1C6AD003AEC95 /* PersonInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonInfoCell.m; sourceTree = "<group>"; };
+		B8A05F7B1EE1C9D5003AEC95 /* SportsPerformanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportsPerformanceController.h; sourceTree = "<group>"; };
+		B8A05F7C1EE1C9D5003AEC95 /* SportsPerformanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsPerformanceController.m; sourceTree = "<group>"; };
+		B8A05F7F1EE1CA2B003AEC95 /* SportsPerformanceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportsPerformanceCell.h; sourceTree = "<group>"; };
+		B8A05F801EE1CA2B003AEC95 /* SportsPerformanceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsPerformanceCell.m; sourceTree = "<group>"; };
+		B8A05F821EE1CC38003AEC95 /* ApproveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproveController.h; sourceTree = "<group>"; };
+		B8A05F831EE1CC38003AEC95 /* ApproveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApproveController.m; sourceTree = "<group>"; };
+		B8A05F861EE1CD0A003AEC95 /* ApproveItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproveItemCell.h; sourceTree = "<group>"; };
+		B8A05F871EE1CD0A003AEC95 /* ApproveItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApproveItemCell.m; sourceTree = "<group>"; };
+		B8B522841EE106210038A83C /* HomeTotalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTotalCell.h; sourceTree = "<group>"; };
+		B8B522851EE106210038A83C /* HomeTotalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTotalCell.m; sourceTree = "<group>"; };
+		B8DF48AF1EE14B480088377D /* HomeRankCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeRankCell.h; sourceTree = "<group>"; };
+		B8DF48B01EE14B480088377D /* HomeRankCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeRankCell.m; sourceTree = "<group>"; };
+		B8DF48B21EE14D7A0088377D /* HomeSportsTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeSportsTypeCell.h; sourceTree = "<group>"; };
+		B8DF48B31EE14D7A0088377D /* HomeSportsTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeSportsTypeCell.m; sourceTree = "<group>"; };
+		B8DF48B71EE155C30088377D /* LoginTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginTextView.h; sourceTree = "<group>"; };
+		B8DF48B81EE155C30088377D /* LoginTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTextView.m; sourceTree = "<group>"; };
+		B8DF48BD1EE15F930088377D /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
+		B8DF48BE1EE15F930088377D /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
+		B8DF48C01EE161890088377D /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		B8DF48C11EE161890088377D /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
+		B8DF48C31EE16AA90088377D /* UINavigationItem+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem+Addition.h"; sourceTree = "<group>"; };
+		B8DF48C41EE16AA90088377D /* UINavigationItem+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem+Addition.m"; sourceTree = "<group>"; };
+		B8DF48C61EE16E270088377D /* UINavigationBar+Awesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Awesome.h"; sourceTree = "<group>"; };
+		B8DF48C71EE16E270088377D /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,7 +183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				274EF4496B2B9BA56214BA27 /* libPods-WenZhouSports.a in Frameworks */,
+				0C27DC8EDD7B979D15DF83AA /* Pods_WenZhouSports.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,10 +197,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E1994E4D18E28D38CAA6846 /* Frameworks */ = {
+		429EA4BBD1BBACC59E9BE0C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				503E2C3008953010B7C13429 /* libPods-WenZhouSports.a */,
+				362BC04C77BC60C0E6C52970 /* Pods_WenZhouSports.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -172,8 +211,8 @@
 				542DCC391EB1F26A00EDAD91 /* WenZhouSports */,
 				542DCC531EB1F26A00EDAD91 /* WenZhouSportsUITests */,
 				542DCC381EB1F26A00EDAD91 /* Products */,
-				79AE2FE47A2F5E48E1635017 /* Pods */,
-				0E1994E4D18E28D38CAA6846 /* Frameworks */,
+				C97793EE59150B50B0D7C334 /* Pods */,
+				429EA4BBD1BBACC59E9BE0C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -248,6 +287,10 @@
 		5470645F1EB822D30069BFE6 /* Categoris */ = {
 			isa = PBXGroup;
 			children = (
+				B8DF48C31EE16AA90088377D /* UINavigationItem+Addition.h */,
+				B8DF48C41EE16AA90088377D /* UINavigationItem+Addition.m */,
+				B8DF48C61EE16E270088377D /* UINavigationBar+Awesome.h */,
+				B8DF48C71EE16E270088377D /* UINavigationBar+Awesome.m */,
 				547064601EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.h */,
 				547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */,
 				547064621EB822D30069BFE6 /* UIView+Util.h */,
@@ -277,15 +320,12 @@
 		5470646A1EB8233C0069BFE6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B8DF48B51EE1524F0088377D /* Login */,
 				B885CBB51EDFB3DA0074FBEF /* Mine */,
-				5401BB791EB8796A00003C51 /* LoginController.h */,
-				5401BB7A1EB8796A00003C51 /* LoginController.m */,
 				5401BB821EB972FD00003C51 /* HomeController.h */,
 				5401BB831EB972FD00003C51 /* HomeController.m */,
 				5401BB891EB9B2AB00003C51 /* LaunchController.h */,
 				5401BB8A1EB9B2AB00003C51 /* LaunchController.m */,
-				54F668A11EBAC67A00ADD4F1 /* ForgetPasswordController.h */,
-				54F668A21EBAC67A00ADD4F1 /* ForgetPasswordController.m */,
 				54E92F5E1EBDA9B00073BABF /* RankingController.h */,
 				54E92F5F1EBDA9B00073BABF /* RankingController.m */,
 				542D6DCF1EC2AB7500E26F62 /* SportsDetailsController.h */,
@@ -297,16 +337,16 @@
 		5470646C1EB8233C0069BFE6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B8A05F851EE1CCEE003AEC95 /* Approve */,
+				B8A05F7E1EE1CA1D003AEC95 /* SportsPerformance */,
+				B8A05F771EE1C69D003AEC95 /* PersonInfo */,
+				B8DF48B61EE155720088377D /* Login */,
 				B885CBC31EE036C30074FBEF /* Home */,
 				B885CBBC1EE008C00074FBEF /* SportsHistory */,
 				54E92F581EBB2E150073BABF /* PersonalCenterView.h */,
 				54E92F591EBB2E150073BABF /* PersonalCenterView.m */,
-				5401BB751EB864FD00003C51 /* LoginView.h */,
-				5401BB761EB864FD00003C51 /* LoginView.m */,
 				5401BB851EB98C8D00003C51 /* LaunchView.h */,
 				5401BB861EB98C8D00003C51 /* LaunchView.m */,
-				54F6689E1EBABCBE00ADD4F1 /* ForgetPasswordView.h */,
-				54F6689F1EBABCBE00ADD4F1 /* ForgetPasswordView.m */,
 				54E92F5B1EBD98920073BABF /* RankingView.h */,
 				54E92F5C1EBD98920073BABF /* RankingView.m */,
 				542D6DCC1EC060DA00E26F62 /* SportsDetailView.h */,
@@ -322,15 +362,6 @@
 				542D6DE51EC9A60D00E26F62 /* SportsDetailViewModel.m */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		79AE2FE47A2F5E48E1635017 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */,
-				D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		B84103881ED9D3F3006DC7CB /* Model */ = {
@@ -354,6 +385,12 @@
 			children = (
 				B885CBB61EDFB6550074FBEF /* SportsHistoryController.h */,
 				B885CBB71EDFB6550074FBEF /* SportsHistoryController.m */,
+				B8A05F741EE1C5B6003AEC95 /* PersonInfoController.h */,
+				B8A05F751EE1C5B6003AEC95 /* PersonInfoController.m */,
+				B8A05F7B1EE1C9D5003AEC95 /* SportsPerformanceController.h */,
+				B8A05F7C1EE1C9D5003AEC95 /* SportsPerformanceController.m */,
+				B8A05F821EE1CC38003AEC95 /* ApproveController.h */,
+				B8A05F831EE1CC38003AEC95 /* ApproveController.m */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -372,12 +409,80 @@
 		B885CBC31EE036C30074FBEF /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				5401BB7F1EB8823B00003C51 /* HomeHeaderView.h */,
-				5401BB801EB8823B00003C51 /* HomeHeaderView.m */,
 				B885CBC41EE036DA0074FBEF /* HomeItemCell.h */,
 				B885CBC51EE036DA0074FBEF /* HomeItemCell.m */,
+				B8B522841EE106210038A83C /* HomeTotalCell.h */,
+				B8B522851EE106210038A83C /* HomeTotalCell.m */,
+				B8DF48AF1EE14B480088377D /* HomeRankCell.h */,
+				B8DF48B01EE14B480088377D /* HomeRankCell.m */,
+				B8DF48B21EE14D7A0088377D /* HomeSportsTypeCell.h */,
+				B8DF48B31EE14D7A0088377D /* HomeSportsTypeCell.m */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		B8A05F771EE1C69D003AEC95 /* PersonInfo */ = {
+			isa = PBXGroup;
+			children = (
+				B8A05F781EE1C6AD003AEC95 /* PersonInfoCell.h */,
+				B8A05F791EE1C6AD003AEC95 /* PersonInfoCell.m */,
+			);
+			path = PersonInfo;
+			sourceTree = "<group>";
+		};
+		B8A05F7E1EE1CA1D003AEC95 /* SportsPerformance */ = {
+			isa = PBXGroup;
+			children = (
+				B8A05F7F1EE1CA2B003AEC95 /* SportsPerformanceCell.h */,
+				B8A05F801EE1CA2B003AEC95 /* SportsPerformanceCell.m */,
+			);
+			path = SportsPerformance;
+			sourceTree = "<group>";
+		};
+		B8A05F851EE1CCEE003AEC95 /* Approve */ = {
+			isa = PBXGroup;
+			children = (
+				B8A05F861EE1CD0A003AEC95 /* ApproveItemCell.h */,
+				B8A05F871EE1CD0A003AEC95 /* ApproveItemCell.m */,
+			);
+			path = Approve;
+			sourceTree = "<group>";
+		};
+		B8DF48B51EE1524F0088377D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B8DF48C01EE161890088377D /* LoginController.h */,
+				B8DF48C11EE161890088377D /* LoginController.m */,
+				B8A05F681EE1A4B6003AEC95 /* ForgetPasswordController.h */,
+				B8A05F691EE1A4B6003AEC95 /* ForgetPasswordController.m */,
+				B8A05F6E1EE1A879003AEC95 /* VerificationCodeController.h */,
+				B8A05F6F1EE1A879003AEC95 /* VerificationCodeController.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		B8DF48B61EE155720088377D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B8DF48B71EE155C30088377D /* LoginTextView.h */,
+				B8DF48B81EE155C30088377D /* LoginTextView.m */,
+				B8DF48BD1EE15F930088377D /* LoginView.h */,
+				B8DF48BE1EE15F930088377D /* LoginView.m */,
+				B8A05F6B1EE1A50A003AEC95 /* ForgetPasswordView.h */,
+				B8A05F6C1EE1A50A003AEC95 /* ForgetPasswordView.m */,
+				B8A05F711EE1A90D003AEC95 /* VerificationCodeView.h */,
+				B8A05F721EE1A90D003AEC95 /* VerificationCodeView.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		C97793EE59150B50B0D7C334 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8D2D5A384E5568FC12784D69 /* Pods-WenZhouSports.debug.xcconfig */,
+				78BF0E236C7CBBA2E4EF2E90 /* Pods-WenZhouSports.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,12 +492,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 542DCC591EB1F26A00EDAD91 /* Build configuration list for PBXNativeTarget "WenZhouSports" */;
 			buildPhases = (
-				E62FCBF0D2B8B91AB4E81F66 /* [CP] Check Pods Manifest.lock */,
+				3819D7B201E101E58594A1C2 /* 📦 Check Pods Manifest.lock */,
 				542DCC331EB1F26A00EDAD91 /* Sources */,
 				542DCC341EB1F26A00EDAD91 /* Frameworks */,
 				542DCC351EB1F26A00EDAD91 /* Resources */,
-				ECAA163AF81C3FEEBE9BC506 /* [CP] Embed Pods Frameworks */,
-				5B8BCE8DB4AB3DFD66210057 /* [CP] Copy Pods Resources */,
+				D6A0A6FB817793A759C71E5C /* 📦 Embed Pods Frameworks */,
+				DB35C7D5038031146CDF3285 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -487,49 +592,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5B8BCE8DB4AB3DFD66210057 /* [CP] Copy Pods Resources */ = {
+		3819D7B201E101E58594A1C2 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E62FCBF0D2B8B91AB4E81F66 /* [CP] Check Pods Manifest.lock */ = {
+		D6A0A6FB817793A759C71E5C /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		ECAA163AF81C3FEEBE9BC506 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB35C7D5038031146CDF3285 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -539,37 +644,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B84103941ED9D760006DC7CB /* ForgetPasswordView.m in Sources */,
-				5401BB811EB8823B00003C51 /* HomeHeaderView.m in Sources */,
+				B8DF48BF1EE15F930088377D /* LoginView.m in Sources */,
+				B8A05F841EE1CC38003AEC95 /* ApproveController.m in Sources */,
+				B8DF48B91EE155C30088377D /* LoginTextView.m in Sources */,
+				B8A05F811EE1CA2B003AEC95 /* SportsPerformanceCell.m in Sources */,
+				B8DF48B41EE14D7A0088377D /* HomeSportsTypeCell.m in Sources */,
 				B885CBBB1EDFB8A00074FBEF /* BaseCell.m in Sources */,
 				542D6DCE1EC060DA00E26F62 /* SportsDetailView.m in Sources */,
 				542D6DE31EC7028700E26F62 /* MAMutablePolylineRenderer.m in Sources */,
 				542D6DCB1EC045A900E26F62 /* CellWithCuttingLine.m in Sources */,
 				5401BB8E1EB9B88300003C51 /* BaseViewController.m in Sources */,
+				B8A05F701EE1A879003AEC95 /* VerificationCodeController.m in Sources */,
+				B8DF48C51EE16AA90088377D /* UINavigationItem+Addition.m in Sources */,
+				B8A05F731EE1A90D003AEC95 /* VerificationCodeView.m in Sources */,
+				B8A05F6A1EE1A4B6003AEC95 /* ForgetPasswordController.m in Sources */,
 				B885CBB81EDFB6550074FBEF /* SportsHistoryController.m in Sources */,
 				542D6DD41EC2EEFC00E26F62 /* UIButton+EdgesInsertStyle.m in Sources */,
 				B885CBC61EE036DA0074FBEF /* HomeItemCell.m in Sources */,
 				542D6DD11EC2AB7500E26F62 /* SportsDetailsController.m in Sources */,
+				B8DF48C81EE16E270088377D /* UINavigationBar+Awesome.m in Sources */,
 				542D6DDD1EC315FA00E26F62 /* NSNumber+SetScale.m in Sources */,
 				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
 				5401BB741EB823F000003C51 /* BaseDao.m in Sources */,
-				5401BB7B1EB8796A00003C51 /* LoginController.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
+				B8A05F7A1EE1C6AD003AEC95 /* PersonInfoCell.m in Sources */,
+				B8DF48C21EE161890088377D /* LoginController.m in Sources */,
 				54E92F5D1EBD98920073BABF /* RankingView.m in Sources */,
-				5401BB771EB864FD00003C51 /* LoginView.m in Sources */,
 				54E92F661EBE01460073BABF /* UIImageView+Hexagon.m in Sources */,
 				B885CBBF1EE008F40074FBEF /* SportsHistoryHeaderCell.m in Sources */,
 				547064641EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m in Sources */,
 				542D6DE01EC7021000E26F62 /* MAMutablePolyline.m in Sources */,
+				B8A05F6D1EE1A50A003AEC95 /* ForgetPasswordView.m in Sources */,
+				B8DF48B11EE14B480088377D /* HomeRankCell.m in Sources */,
 				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
+				B8A05F881EE1CD0A003AEC95 /* ApproveItemCell.m in Sources */,
 				542D6DE61EC9A60D00E26F62 /* SportsDetailViewModel.m in Sources */,
+				B8A05F7D1EE1C9D5003AEC95 /* SportsPerformanceController.m in Sources */,
 				5401BB911EB9CE9B00003C51 /* LineTextField.m in Sources */,
 				542D6DEF1EC9AA2500E26F62 /* BaseDao+Category.m in Sources */,
-				54F668A31EBAC67A00ADD4F1 /* ForgetPasswordController.m in Sources */,
+				B8A05F761EE1C5B6003AEC95 /* PersonInfoController.m in Sources */,
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				54E92F601EBDA9B00073BABF /* RankingController.m in Sources */,
 				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
+				B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */,
 				B885CBC21EE01CB30074FBEF /* SportsHistoryItemCell.m in Sources */,
 				54E92F5A1EBB2E150073BABF /* PersonalCenterView.m in Sources */,
 			);
@@ -700,7 +818,7 @@
 		};
 		542DCC5A1EB1F26A00EDAD91 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 221706CB1E6269FD8DCD6680 /* Pods-WenZhouSports.debug.xcconfig */;
+			baseConfigurationReference = 8D2D5A384E5568FC12784D69 /* Pods-WenZhouSports.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -720,7 +838,7 @@
 		};
 		542DCC5B1EB1F26A00EDAD91 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6F1FBD969A7ABA82E8BADA2 /* Pods-WenZhouSports.release.xcconfig */;
+			baseConfigurationReference = 78BF0E236C7CBBA2E4EF2E90 /* Pods-WenZhouSports.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

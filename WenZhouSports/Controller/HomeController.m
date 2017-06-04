@@ -7,20 +7,27 @@
 //
 
 #import "HomeController.h"
-#import "HomeHeaderView.h"
 #import "PersonalCenterView.h"
 #import "RankingController.h"
 #import "SportsDetailsController.h"
 #import "SportsDetailViewModel.h"
 #import "SportsHistoryController.h"
 #import "HomeItemCell.h"
+#import "HomeTotalCell.h"
+#import "HomeRankCell.h"
+#import "HomeSportsTypeCell.h"
+#import "PersonInfoController.h"
+#import "SportsPerformanceController.h"
+#import "ApproveController.h"
+
+#import "LoginController.h"
+#import "ForgetPasswordController.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) HomeHeaderView *headerView;
 @property (nonatomic, strong) PersonalCenterView *personalCenterView;
-@property (nonatomic, strong) UIView *midView;
+@property (nonatomic, strong) UIView *midView;// 个人中心被色背景层
 
 @end
 
@@ -33,11 +40,23 @@ CGFloat proportion = 0.84;
     self.title = @"课外体育锻炼";
     self.view.backgroundColor = cFFFFFF;
     [self initSubviews];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationItem setLeftBarButtonItemWithImage:[UIImage imageNamed:@"btn_menu"] target:self action:@selector(showPersonalCenter)];
+    
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController.navigationBar lt_setBackgroundColor:c66A7FE];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    
+    // 标题白色
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:cFFFFFF,NSFontAttributeName:S(19)}];
+    [self.navigationController.navigationBar setTintColor:cFFFFFF];
+    
+    // 状态栏颜色白色
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)initSubviews {
@@ -45,15 +64,16 @@ CGFloat proportion = 0.84;
         UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
         tv.delegate = self;
         tv.dataSource = self;
-        _headerView = [[HomeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, FIT_LENGTH(302.0))];
-        tv.tableHeaderView = _headerView;
-        [_headerView.rankingSignal subscribeNext:^(id  _Nullable x) {
-            RankingController *controller = [[RankingController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
-        }];
+        tv.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         [tv registerClass:[HomeItemCell class]
            forCellReuseIdentifier:NSStringFromClass([HomeItemCell class])];
+        [tv registerClass:[HomeTotalCell class]
+           forCellReuseIdentifier:NSStringFromClass([HomeTotalCell class])];
+        [tv registerClass:[HomeRankCell class]
+           forCellReuseIdentifier:NSStringFromClass([HomeRankCell class])];
+        [tv registerClass:[HomeSportsTypeCell class]
+           forCellReuseIdentifier:NSStringFromClass([HomeSportsTypeCell class])];
         
         tv;
     });
@@ -86,22 +106,42 @@ CGFloat proportion = 0.84;
         
         view;
     });
-    [self.view addSubview:_personalCenterView];
+    [[UIApplication sharedApplication].keyWindow addSubview:_personalCenterView];
     
-    //监听选择的分类
+    //监听个人中心
     @weakify(self);
     [[RACObserve(_personalCenterView, selectedIndex) skip:1] subscribeNext:^(id x) {
         @strongify(self);
         switch (self.personalCenterView.selectedIndex) {
-            case 0:
+            case 0:// 运动历史
             {
                 SportsHistoryController *vc = [[SportsHistoryController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
+            case 1:// 体侧数据
+            {
+                PersonInfoController *vc = [[PersonInfoController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 2:// 体育成绩
+            {
+                SportsPerformanceController *vc = [[SportsPerformanceController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 3:// 审批
+            {
+                ApproveController *vc = [[ApproveController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+
             default:
                 break;
         }
+        [self showHomePage];
         
     }];
     
@@ -123,66 +163,103 @@ CGFloat proportion = 0.84;
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
-    UIImage *image = [UIImage imageNamed:@"btn_back"];
-    NSDictionary *dic = @{@"face1":image,
-                          @"face2":image};
-    [[viewModel.compareFaceCommand execute:dic] subscribeNext:^(id  _Nullable x) {
-        [WToast showWithText:@"x"];
-    }];
-    SportsDetailsController *controller = [[SportsDetailsController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
+//    UIImage *image = [UIImage imageNamed:@"btn_back"];
+//    NSDictionary *dic = @{@"face1":image,
+//                          @"face2":image};
+//    [[viewModel.compareFaceCommand execute:dic] subscribeNext:^(id  _Nullable x) {
+//        [WToast showWithText:@"x"];
+//    }];
+//    SportsDetailsController *controller = [[SportsDetailsController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+    
+//    ForgetPasswordController *vc = [[ForgetPasswordController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    LoginController *vc = [[LoginController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return [UITableViewCell new];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            HomeTotalCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeTotalCell class]) forIndexPath:indexPath];
+            [cell setupWithData:nil];
+            return cell;
+        } else {
+            HomeRankCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeRankCell class]) forIndexPath:indexPath];
+            return cell;
+        }
+    } else {
+        if (indexPath.row == 0) {
+            HomeSportsTypeCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeSportsTypeCell class]) forIndexPath:indexPath];
+            return cell;
+        } else {
+            HomeItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeItemCell class]) forIndexPath:indexPath];
+            switch (indexPath.row) {
+                case SportsTypeJogging:
+                {
+                    [cell initWithSportsType:SportsTypeJogging data:nil];
+                    break;
+                }
+                case SportsTypeRun:
+                {
+                    [cell initWithSportsType:SportsTypeRun data:nil];
+                    break;
+                }
+                case SportsTypeWalk:
+                {
+                    [cell initWithSportsType:SportsTypeWalk data:nil];
+                    break;
+                }
+                case SportsTypeStep:
+                {
+                    [cell initWithSportsType:SportsTypeStep data:nil];
+                    break;
+                }
+            }
+            return cell;
+        }
     }
-    
-    HomeItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeItemCell class]) forIndexPath:indexPath];
-    switch (indexPath.row) {
-        case SportsTypeJogging:
-        {
-            [cell initWithSportsType:SportsTypeJogging data:nil];
-            break;
-        }
-        case SportsTypeRun:
-        {
-            [cell initWithSportsType:SportsTypeRun data:nil];
-            break;
-        }
-        case SportsTypeWalk:
-        {
-            [cell initWithSportsType:SportsTypeWalk data:nil];
-            break;
-        }
-        case SportsTypeStep:
-        {
-            [cell initWithSportsType:SportsTypeStep data:nil];
-            break;
-        }
-    }
-    return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 2;
+    }
     return 5;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 0.1;
+    }
     return 10;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return 40;
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            return 156;
+        } else {
+            return 44;
+        }
+    } else {
+        if (indexPath.row == 0) {
+            return 40;
+        } else {
+            return FIX(162);
+        }
     }
-    return 162;
 }
 
 #pragma mark - Event
@@ -193,10 +270,8 @@ CGFloat proportion = 0.84;
     } completion:^(BOOL finished) {
         if (finished) {
             _midView.hidden = NO;
-            
         }
     }];
-    
 }
 
 - (void)showHomePage {
