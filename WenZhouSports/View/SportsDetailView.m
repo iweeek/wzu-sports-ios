@@ -17,18 +17,21 @@
 @property (nonatomic, strong) UILabel *sportsAmountLabel;
 @property (nonatomic, strong) UILabel *numberOfPeopleLable;
 @property (nonatomic, strong) UIView *topCuttingLine;
+
 @property (nonatomic, strong) UIView *middleView;
 @property (nonatomic, strong) UIView *middleCuttingLine;
-@property (nonatomic, strong) UILabel *speedLabel;
+@property (nonatomic, strong) UILabel *speedLabel;// 本次距离
 @property (nonatomic, strong) UILabel *speedNumberLabel;
-@property (nonatomic, strong) UILabel *stageLabel;
+@property (nonatomic, strong) UILabel *stageLabel; // 本次时间
 @property (nonatomic, strong) UILabel *stageNumberLabel;
-@property (nonatomic, strong) UILabel *distanceLabel;
+@property (nonatomic, strong) UILabel *distanceLabel; // 本次速度
 @property (nonatomic, strong) UILabel *distanceNumberLabel;
+
 @property (nonatomic, strong) UIView *resultView;
 @property (nonatomic, strong) UIView *resultCuttingLine;
 @property (nonatomic, strong) UILabel *calorieResultLabel;
 @property (nonatomic, strong) UILabel *timeResultLabel;
+
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIView *bottomBackgroundView;
 @property (nonatomic, strong) UILabel *bottomSpeedLabel;
@@ -37,14 +40,17 @@
 @property (nonatomic, strong) UILabel *bottomStageNumberLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceNumberLabel;
+
 @property (nonatomic, strong) UIView *pauseView;
 @property (nonatomic, strong) UIView *pauseBackground;
 @property (nonatomic, strong) UIImageView *pauseImageView;
 @property (nonatomic, strong) UILabel *pauseLabel;
+
 @property (nonatomic, strong) UIButton *startButton;
 @property (nonatomic, strong) UIButton *continueButton;
 @property (nonatomic, strong) UIButton *endButton;
 @property (nonatomic, strong) UIButton *shareButton;
+
 @property (nonatomic, strong) UIView *maskView;
 @property (nonatomic, strong) UIView *shareView;
 @property (nonatomic, strong) UIButton *weiboButton;
@@ -84,12 +90,14 @@
 - (void)initSubviews {
     _mapView = ({
         MAMapView *map = [[MAMapView alloc] initWithFrame:self.frame];
-        map.zoomLevel = 16;
+        map.zoomLevel = 18;
         map.showsUserLocation = YES;
         map.userTrackingMode = MAUserTrackingModeFollow;// 追踪移动
 
         map;
     });
+    
+    // 上方标题view
     _titleView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
@@ -137,6 +145,8 @@
         lab;
     });
     [_titleView addSubviews:@[_titleLabel, _standardLabel, _topCuttingLine, _sportsAmountLabel, _numberOfPeopleLable]];
+    
+    // 当前信息View
     _middleView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
@@ -145,7 +155,7 @@
     });
     _speedLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"本次速度";
+        lab.text = @"本次距离";
         lab.textColor = C_GRAY_TEXT;
         lab.font = S12;
         
@@ -153,7 +163,7 @@
     });
     _stageLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"完成段数";
+        lab.text = @"耗时";
         lab.textColor = C_GRAY_TEXT;
         lab.font = S12;
         
@@ -161,7 +171,7 @@
     });
     _distanceLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"本次运动距离";
+        lab.text = @"即时速度";
         lab.font = S12;
         lab.textColor = C_GRAY_TEXT;
         
@@ -169,16 +179,22 @@
     });
     _speedNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
+        lab.font = SS26;
+        lab.textColor = c474A4F;
         
         lab;
     });
     _stageNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
+        lab.font = SS26;
+        lab.textColor = c474A4F;
         
         lab;
     });
     _distanceNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
+        lab.font = SS26;
+        lab.textColor = c474A4F;
         
         lab;
     });
@@ -190,6 +206,8 @@
     });
 
     [_middleView addSubviews:@[_speedLabel, _stageLabel, _distanceLabel, _middleCuttingLine, _speedNumberLabel, _stageNumberLabel, _distanceNumberLabel]];
+    
+    // 运动结果view
     _resultView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
@@ -214,6 +232,8 @@
         lab;
     });
     [_resultView addSubviews:@[_calorieResultLabel, _timeResultLabel]];
+    
+    // 达标View
     _bottomView = ({
         UIView *view = [[UIView alloc] init];
         view.hidden = YES;
@@ -230,14 +250,14 @@
     _bottomSpeedLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.textColor = [UIColor whiteColor];
-        lab.text = @"达标速度";
+        lab.text = @"达标距离";
         lab.font = S12;
         
         lab;
     });
     _bottomStageLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"分段段数";
+        lab.text = @"达标耗时";
         lab.textColor = [UIColor whiteColor];
         lab.font = S12;
         
@@ -245,7 +265,7 @@
     });
     _bottomDistanceLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"每段最短距离";
+        lab.text = @"达标平均速度";
         lab.textColor = [UIColor whiteColor];
         lab.font = S12;
         
@@ -253,21 +273,31 @@
     });
     _bottomSpeedNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
+        lab.text = @"6000 米";
+        lab.textColor = cFFFFFF;
+        lab.font = S12;
         
         lab;
     });
     _bottomDistanceNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
+        lab.text = @"1.0 米/秒";
+        lab.textColor = cFFFFFF;
+        lab.font = S12;
         
         lab;
     });
     _bottomStageNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
+        lab.text = @"120 分钟";
+        lab.textColor = cFFFFFF;
+        lab.font = S12;
         
         lab;
     });
     [_bottomView addSubviews:@[_bottomBackgroundView, _bottomSpeedLabel, _bottomStageLabel, _bottomDistanceLabel, _bottomSpeedNumberLabel, _bottomStageNumberLabel, _bottomDistanceNumberLabel]];
     
+    // 暂停View
     _pauseView = ({
         UIView *view = [[UIView alloc] init];
         view.hidden = YES;
@@ -276,14 +306,19 @@
     });
     _pauseBackground = ({
         UIView *view = [[UIView alloc] init];
-        view.backgroundColor = [UIColor blackColor];
+        view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         view.alpha = 0.5;
-        view.layer.cornerRadius = FIT_LENGTH(21.0);
+        view.layer.cornerRadius = 23;
+        view.layer.masksToBounds = YES;
         
         view;
     });
     _pauseImageView = ({
         UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.backgroundColor = c66A7FE;
+        imageView.layer.cornerRadius = 28;
+        imageView.layer.masksToBounds = YES;
+        imageView.alpha = 1;
         imageView.image = [UIImage imageNamed:@"btn_right_arrow"];
         UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] init];
         [imageView addGestureRecognizer:gesture];
@@ -301,6 +336,8 @@
         lab;
     });
     [_pauseView addSubviews:@[_pauseBackground, _pauseImageView, _pauseLabel]];
+    
+    
     _shadowView = ({
         UIView *view = [[UIView alloc] init];
         view.backgroundColor = [UIColor whiteColor];
@@ -369,12 +406,17 @@
         view;
     });
     
-    
     [self addSubviews:@[_mapView ,_shadowView, _middleView, _titleView, _resultView, _bottomView,
                         _pauseView, _startButton, _continueButton, _endButton, _shareButton]] ;
 }
 
 - (void)makeConstraints {
+    [_mapView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+    }];
     [_titleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(MARGIN_SCREEN);
         make.right.equalTo(self).offset(-MARGIN_SCREEN);
@@ -488,24 +530,27 @@
     }];
     [_pauseView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-FIT_LENGTH(70.0));
-        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(246.0), FIT_LENGTH(52.0)));
+        make.bottom.equalTo(self).offset(-72);
+        make.height.mas_equalTo(56);
+        make.left.mas_equalTo(73);
+        make.right.mas_equalTo(-73);
     }];
     [_pauseBackground mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-FIT_LENGTH(70.0));
-        make.size.mas_equalTo(CGSizeMake(FIT_LENGTH(194.0), FIT_LENGTH(42.0)));
+        make.bottom.equalTo(self).offset(-72);
+        make.size.mas_equalTo(CGSizeMake(230, 45));
     }];
     [_pauseImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_pauseBackground.mas_left);
+        make.left.equalTo(_pauseBackground.mas_left);
         make.centerY.equalTo(_pauseBackground);
+        make.size.mas_equalTo(CGSizeMake(56, 56));
     }];
     [_pauseLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(_pauseBackground);
     }];
     [_startButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(self);
-        make.height.mas_equalTo(FIT_LENGTH(53.0));
+        make.height.mas_equalTo(56);
     }];
     [_continueButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.equalTo(self);
@@ -551,18 +596,18 @@
             _endButton.hidden = YES;
             _shareButton.hidden = NO;
             _resultView.hidden = NO;
-            [_bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            [self.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.right.equalTo(_middleView);
                 make.height.mas_equalTo(FIT_LENGTH(53.0));
                 make.top.equalTo(_resultView.mas_bottom);
             }];
-            [_shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            [self.shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(_titleView);
                 make.left.right.equalTo(_middleView);
                 make.bottom.equalTo(_resultView);
             }];
-            if (_pauseSignal) {
-                [_pauseSignal sendCompleted];
+            if (self.pauseSignal) {
+                [self.pauseSignal sendCompleted];
             }
             break;
         }
@@ -590,15 +635,38 @@
     [stageAttributedString addAttributes:attribute2 range:NSMakeRange(stageString.length - 1, 1)];
     [distanceAttributedString addAttributes:attribute1 range:NSMakeRange(0, distanceString.length - 1)];
     [distanceAttributedString addAttributes:attribute2 range:NSMakeRange(distanceString.length - 1, 1)];
-    _speedNumberLabel.attributedText = speedAttributedString;
-    _stageNumberLabel.attributedText = stageAttributedString;
-    _distanceNumberLabel.attributedText = distanceAttributedString;
-//    _stageNumberLabel.text= [NSString stringWithFormat:@"%ld", stage];
+    self.speedNumberLabel.attributedText = speedAttributedString;
+    self.stageNumberLabel.attributedText = stageAttributedString;
+    self.distanceNumberLabel.attributedText = distanceAttributedString;
+}
+
+- (void)setDataWithDistance:(double)distance
+                       time:(NSInteger)time
+                      speed:(float)speed {
+    
+    NSString *distanceStr = [NSString stringWithFormat:@"%d 米", (int)distance];
+    NSString *timeStr = [NSString stringWithFormat:@"%ld 分钟", time / 60];
+    NSString *speedStr = [NSString stringWithFormat:@"%d 米/秒", (int)speed];
+    
+    NSDictionary *attribute = @{NSFontAttributeName : S10,
+                                 NSForegroundColorAttributeName : C_GRAY_TEXT};
+    
+    NSMutableAttributedString *distanceAttributedString = [[NSMutableAttributedString alloc] initWithString:distanceStr];
+    NSMutableAttributedString *timeAttributedString = [[NSMutableAttributedString alloc] initWithString:timeStr];
+    NSMutableAttributedString *speedAttributedString = [[NSMutableAttributedString alloc] initWithString:speedStr];
+    
+    [distanceAttributedString addAttributes:attribute range:NSMakeRange(distanceAttributedString.length - 1, 1)];
+    [timeAttributedString addAttributes:attribute range:NSMakeRange(timeAttributedString.length - 2, 2)];
+    [speedAttributedString addAttributes:attribute range:NSMakeRange(speedAttributedString.length - 3, 3)];
+    
+    self.speedNumberLabel.attributedText = distanceAttributedString;
+    self.stageNumberLabel.attributedText = timeAttributedString;
+    self.distanceNumberLabel.attributedText = speedAttributedString;
 }
 
 - (void)setDataWithCalorie:(int)calorie time:(int)time {
-    _calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%d千卡", calorie];
-    _timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%d分钟", time];
+    self.calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%d千卡", calorie];
+    self.timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%d分钟", time];
 }
 
 - (void)setDelete:(id<MAMapViewDelegate>)delegate {
@@ -606,7 +674,7 @@
 }
 
 - (void)addPauseGestureEvent {
-    CGFloat centerX = _pauseImageView.center.x;
+    CGFloat centerX = self.pauseImageView.center.x;
     @weakify(self);
     [self.pauseGestureSignal subscribeNext:^(UIPanGestureRecognizer *recognizer) {
         @strongify(self)
@@ -622,7 +690,7 @@
                     self.pauseImageView.center = CGPointMake(centerX + FIT_LENGTH(194.0), self.pauseImageView.center.y);
                 } completion:^(BOOL finished) {
                     if (finished) {
-                        [_pauseSignal sendNext:nil];
+                        [self.pauseSignal sendNext:nil];
                         self.pauseImageView.center = CGPointMake(centerX, self.pauseImageView.center.y);
                     }
                 }];

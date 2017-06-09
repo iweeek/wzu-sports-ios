@@ -36,6 +36,7 @@ PODS:
   - ReactiveObjC (3.0.0)
   - Reveal-iOS-SDK (1.6.2)
   - WToast (2.0.1)
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - ReactiveObjC
   - Reveal-iOS-SDK
   - WToast (~> 2.0.1)
+  - YYModel (~> 1.0.4)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -64,7 +66,8 @@ SPEC CHECKSUMS:
   ReactiveObjC: ce79989e8684b9086b5f8d0c74bc7b81a8729c9e
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   WToast: 42eee7b063677717a9050ce855adea0395e645bd
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: ecd00dcedeae823c11672cc534f35b0b3c655717
+PODFILE CHECKSUM: 8223e5794bd05f8681ae65c1a4f21b47367334cd
 
 COCOAPODS: 1.0.0

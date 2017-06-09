@@ -20,7 +20,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         _compareFaceCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id input) {
-            return [[BaseDao singletone] compareFaceWithFace1:input[@"face1"] face2:input[@"face2"]];
+            return [[Dao share] compareFaceWithFace1:input[@"face1"] face2:input[@"face2"]];
         }];
     }
     return self;

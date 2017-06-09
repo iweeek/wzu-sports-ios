@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C27DC8EDD7B979D15DF83AA /* Pods_WenZhouSports.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362BC04C77BC60C0E6C52970 /* Pods_WenZhouSports.framework */; };
-		5401BB741EB823F000003C51 /* BaseDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* BaseDao.m */; };
+		5401BB741EB823F000003C51 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB731EB823F000003C51 /* Dao.m */; };
 		5401BB841EB972FD00003C51 /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB831EB972FD00003C51 /* HomeController.m */; };
 		5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5401BB861EB98C8D00003C51 /* LaunchView.m */; };
 		5401BB881EB9AF1D00003C51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 542DCC461EB1F26A00EDAD91 /* Assets.xcassets */; };
@@ -34,6 +34,11 @@
 		54E92F5D1EBD98920073BABF /* RankingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F5C1EBD98920073BABF /* RankingView.m */; };
 		54E92F601EBDA9B00073BABF /* RankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F5F1EBDA9B00073BABF /* RankingController.m */; };
 		54E92F661EBE01460073BABF /* UIImageView+Hexagon.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E92F651EBE01460073BABF /* UIImageView+Hexagon.m */; };
+		B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */; };
+		B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A301EE98B5D00ACBC8D /* APIInterface.m */; };
+		B8604A341EE9AABB00ACBC8D /* StudentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A331EE9AABB00ACBC8D /* StudentModel.m */; };
+		B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */; };
+		B8604A3C1EEAA0EB00ACBC8D /* Dao+Home.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A3B1EEAA0EB00ACBC8D /* Dao+Home.m */; };
 		B885CBB81EDFB6550074FBEF /* SportsHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBB71EDFB6550074FBEF /* SportsHistoryController.m */; };
 		B885CBBB1EDFB8A00074FBEF /* BaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBBA1EDFB8A00074FBEF /* BaseCell.m */; };
 		B885CBBF1EE008F40074FBEF /* SportsHistoryHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B885CBBE1EE008F40074FBEF /* SportsHistoryHeaderCell.m */; };
@@ -49,6 +54,8 @@
 		B8A05F811EE1CA2B003AEC95 /* SportsPerformanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F801EE1CA2B003AEC95 /* SportsPerformanceCell.m */; };
 		B8A05F841EE1CC38003AEC95 /* ApproveController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F831EE1CC38003AEC95 /* ApproveController.m */; };
 		B8A05F881EE1CD0A003AEC95 /* ApproveItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F871EE1CD0A003AEC95 /* ApproveItemCell.m */; };
+		B8A05F8B1EE25AE0003AEC95 /* SettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F8A1EE25AE0003AEC95 /* SettingController.m */; };
+		B8A05F8E1EE2F38F003AEC95 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B8A05F8D1EE2F38F003AEC95 /* UIViewController+BackButtonHandler.m */; };
 		B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B522851EE106210038A83C /* HomeTotalCell.m */; };
 		B8DF48B11EE14B480088377D /* HomeRankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48B01EE14B480088377D /* HomeRankCell.m */; };
 		B8DF48B41EE14D7A0088377D /* HomeSportsTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DF48B31EE14D7A0088377D /* HomeSportsTypeCell.m */; };
@@ -71,8 +78,8 @@
 
 /* Begin PBXFileReference section */
 		362BC04C77BC60C0E6C52970 /* Pods_WenZhouSports.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WenZhouSports.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5401BB721EB823F000003C51 /* BaseDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseDao.h; sourceTree = "<group>"; };
-		5401BB731EB823F000003C51 /* BaseDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDao.m; sourceTree = "<group>"; };
+		5401BB721EB823F000003C51 /* Dao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dao.h; sourceTree = "<group>"; };
+		5401BB731EB823F000003C51 /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
 		5401BB821EB972FD00003C51 /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
 		5401BB831EB972FD00003C51 /* HomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeController.m; sourceTree = "<group>"; };
 		5401BB851EB98C8D00003C51 /* LaunchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchView.h; sourceTree = "<group>"; };
@@ -130,6 +137,16 @@
 		54E92F651EBE01460073BABF /* UIImageView+Hexagon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Hexagon.m"; sourceTree = "<group>"; };
 		78BF0E236C7CBBA2E4EF2E90 /* Pods-WenZhouSports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.release.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.release.xcconfig"; sourceTree = "<group>"; };
 		8D2D5A384E5568FC12784D69 /* Pods-WenZhouSports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WenZhouSports.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WenZhouSports/Pods-WenZhouSports.debug.xcconfig"; sourceTree = "<group>"; };
+		B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewModel.h; sourceTree = "<group>"; };
+		B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewModel.m; sourceTree = "<group>"; };
+		B8604A2F1EE98B5D00ACBC8D /* APIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIInterface.h; sourceTree = "<group>"; };
+		B8604A301EE98B5D00ACBC8D /* APIInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIInterface.m; sourceTree = "<group>"; };
+		B8604A321EE9AABB00ACBC8D /* StudentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentModel.h; sourceTree = "<group>"; };
+		B8604A331EE9AABB00ACBC8D /* StudentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentModel.m; sourceTree = "<group>"; };
+		B8604A361EEA8BE300ACBC8D /* NSString+JsonToDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JsonToDictionary.h"; sourceTree = "<group>"; };
+		B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JsonToDictionary.m"; sourceTree = "<group>"; };
+		B8604A3A1EEAA0EB00ACBC8D /* Dao+Home.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Dao+Home.h"; sourceTree = "<group>"; };
+		B8604A3B1EEAA0EB00ACBC8D /* Dao+Home.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Dao+Home.m"; sourceTree = "<group>"; };
 		B885CBB61EDFB6550074FBEF /* SportsHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportsHistoryController.h; sourceTree = "<group>"; };
 		B885CBB71EDFB6550074FBEF /* SportsHistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsHistoryController.m; sourceTree = "<group>"; };
 		B885CBB91EDFB8A00074FBEF /* BaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCell.h; sourceTree = "<group>"; };
@@ -160,6 +177,10 @@
 		B8A05F831EE1CC38003AEC95 /* ApproveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApproveController.m; sourceTree = "<group>"; };
 		B8A05F861EE1CD0A003AEC95 /* ApproveItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproveItemCell.h; sourceTree = "<group>"; };
 		B8A05F871EE1CD0A003AEC95 /* ApproveItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApproveItemCell.m; sourceTree = "<group>"; };
+		B8A05F891EE25AE0003AEC95 /* SettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingController.h; sourceTree = "<group>"; };
+		B8A05F8A1EE25AE0003AEC95 /* SettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingController.m; sourceTree = "<group>"; };
+		B8A05F8C1EE2F38E003AEC95 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		B8A05F8D1EE2F38F003AEC95 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		B8B522841EE106210038A83C /* HomeTotalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTotalCell.h; sourceTree = "<group>"; };
 		B8B522851EE106210038A83C /* HomeTotalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTotalCell.m; sourceTree = "<group>"; };
 		B8DF48AF1EE14B480088377D /* HomeRankCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeRankCell.h; sourceTree = "<group>"; };
@@ -234,6 +255,7 @@
 				5470646A1EB8233C0069BFE6 /* Controller */,
 				5470646C1EB8233C0069BFE6 /* View */,
 				5470646D1EB8233C0069BFE6 /* ViewModel */,
+				B8604A351EEA31E400ACBC8D /* DAO */,
 				B84103881ED9D3F3006DC7CB /* Model */,
 				542DCC3D1EB1F26A00EDAD91 /* AppDelegate.h */,
 				542DCC3E1EB1F26A00EDAD91 /* AppDelegate.m */,
@@ -272,8 +294,8 @@
 				542D6DDF1EC7021000E26F62 /* MAMutablePolyline.m */,
 				5401BB8F1EB9CE9A00003C51 /* LineTextField.h */,
 				5401BB901EB9CE9A00003C51 /* LineTextField.m */,
-				5401BB721EB823F000003C51 /* BaseDao.h */,
-				5401BB731EB823F000003C51 /* BaseDao.m */,
+				5401BB721EB823F000003C51 /* Dao.h */,
+				5401BB731EB823F000003C51 /* Dao.m */,
 				B885CBB91EDFB8A00074FBEF /* BaseCell.h */,
 				B885CBBA1EDFB8A00074FBEF /* BaseCell.m */,
 				5401BB8C1EB9B88300003C51 /* BaseViewController.h */,
@@ -291,8 +313,12 @@
 				B8DF48C41EE16AA90088377D /* UINavigationItem+Addition.m */,
 				B8DF48C61EE16E270088377D /* UINavigationBar+Awesome.h */,
 				B8DF48C71EE16E270088377D /* UINavigationBar+Awesome.m */,
+				B8A05F8C1EE2F38E003AEC95 /* UIViewController+BackButtonHandler.h */,
+				B8A05F8D1EE2F38F003AEC95 /* UIViewController+BackButtonHandler.m */,
 				547064601EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.h */,
 				547064611EB822D30069BFE6 /* AFHTTPSessionManager+RACSupport.m */,
+				B8604A361EEA8BE300ACBC8D /* NSString+JsonToDictionary.h */,
+				B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */,
 				547064621EB822D30069BFE6 /* UIView+Util.h */,
 				547064631EB822D30069BFE6 /* UIView+Util.m */,
 				54E92F641EBE01460073BABF /* UIImageView+Hexagon.h */,
@@ -312,6 +338,8 @@
 			children = (
 				547064671EB822F80069BFE6 /* Color.h */,
 				547064681EB822F80069BFE6 /* Configs.h */,
+				B8604A2F1EE98B5D00ACBC8D /* APIInterface.h */,
+				B8604A301EE98B5D00ACBC8D /* APIInterface.m */,
 				547064691EB822F80069BFE6 /* Font.h */,
 			);
 			path = Utils;
@@ -360,6 +388,8 @@
 			children = (
 				542D6DE41EC9A60D00E26F62 /* SportsDetailViewModel.h */,
 				542D6DE51EC9A60D00E26F62 /* SportsDetailViewModel.m */,
+				B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */,
+				B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -368,6 +398,8 @@
 			isa = PBXGroup;
 			children = (
 				B84103891ED9D423006DC7CB /* Location */,
+				B8604A321EE9AABB00ACBC8D /* StudentModel.h */,
+				B8604A331EE9AABB00ACBC8D /* StudentModel.m */,
 			);
 			name = Model;
 			path = Mo;
@@ -378,6 +410,23 @@
 			children = (
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		B8604A351EEA31E400ACBC8D /* DAO */ = {
+			isa = PBXGroup;
+			children = (
+				B8604A391EEA9D0100ACBC8D /* Home */,
+			);
+			path = DAO;
+			sourceTree = "<group>";
+		};
+		B8604A391EEA9D0100ACBC8D /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B8604A3A1EEAA0EB00ACBC8D /* Dao+Home.h */,
+				B8604A3B1EEAA0EB00ACBC8D /* Dao+Home.m */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		B885CBB51EDFB3DA0074FBEF /* Mine */ = {
@@ -391,6 +440,8 @@
 				B8A05F7C1EE1C9D5003AEC95 /* SportsPerformanceController.m */,
 				B8A05F821EE1CC38003AEC95 /* ApproveController.h */,
 				B8A05F831EE1CC38003AEC95 /* ApproveController.m */,
+				B8A05F891EE25AE0003AEC95 /* SettingController.h */,
+				B8A05F8A1EE25AE0003AEC95 /* SettingController.m */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -537,7 +588,7 @@
 				TargetAttributes = {
 					542DCC361EB1F26A00EDAD91 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = YZ9D33BSV8;
+						DevelopmentTeam = 4YEG8PXLF9;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -648,16 +699,19 @@
 				B8A05F841EE1CC38003AEC95 /* ApproveController.m in Sources */,
 				B8DF48B91EE155C30088377D /* LoginTextView.m in Sources */,
 				B8A05F811EE1CA2B003AEC95 /* SportsPerformanceCell.m in Sources */,
+				B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */,
 				B8DF48B41EE14D7A0088377D /* HomeSportsTypeCell.m in Sources */,
 				B885CBBB1EDFB8A00074FBEF /* BaseCell.m in Sources */,
 				542D6DCE1EC060DA00E26F62 /* SportsDetailView.m in Sources */,
 				542D6DE31EC7028700E26F62 /* MAMutablePolylineRenderer.m in Sources */,
 				542D6DCB1EC045A900E26F62 /* CellWithCuttingLine.m in Sources */,
+				B8A05F8B1EE25AE0003AEC95 /* SettingController.m in Sources */,
 				5401BB8E1EB9B88300003C51 /* BaseViewController.m in Sources */,
 				B8A05F701EE1A879003AEC95 /* VerificationCodeController.m in Sources */,
 				B8DF48C51EE16AA90088377D /* UINavigationItem+Addition.m in Sources */,
 				B8A05F731EE1A90D003AEC95 /* VerificationCodeView.m in Sources */,
 				B8A05F6A1EE1A4B6003AEC95 /* ForgetPasswordController.m in Sources */,
+				B8604A341EE9AABB00ACBC8D /* StudentModel.m in Sources */,
 				B885CBB81EDFB6550074FBEF /* SportsHistoryController.m in Sources */,
 				542D6DD41EC2EEFC00E26F62 /* UIButton+EdgesInsertStyle.m in Sources */,
 				B885CBC61EE036DA0074FBEF /* HomeItemCell.m in Sources */,
@@ -665,7 +719,7 @@
 				B8DF48C81EE16E270088377D /* UINavigationBar+Awesome.m in Sources */,
 				542D6DDD1EC315FA00E26F62 /* NSNumber+SetScale.m in Sources */,
 				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
-				5401BB741EB823F000003C51 /* BaseDao.m in Sources */,
+				5401BB741EB823F000003C51 /* Dao.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
 				B8A05F7A1EE1C6AD003AEC95 /* PersonInfoCell.m in Sources */,
 				B8DF48C21EE161890088377D /* LoginController.m in Sources */,
@@ -677,6 +731,7 @@
 				B8A05F6D1EE1A50A003AEC95 /* ForgetPasswordView.m in Sources */,
 				B8DF48B11EE14B480088377D /* HomeRankCell.m in Sources */,
 				542DCC3F1EB1F26A00EDAD91 /* AppDelegate.m in Sources */,
+				B8A05F8E1EE2F38F003AEC95 /* UIViewController+BackButtonHandler.m in Sources */,
 				B8A05F881EE1CD0A003AEC95 /* ApproveItemCell.m in Sources */,
 				542D6DE61EC9A60D00E26F62 /* SportsDetailViewModel.m in Sources */,
 				B8A05F7D1EE1C9D5003AEC95 /* SportsPerformanceController.m in Sources */,
@@ -686,10 +741,13 @@
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				54E92F601EBDA9B00073BABF /* RankingController.m in Sources */,
 				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
+				B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
+				B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */,
 				B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */,
 				B885CBC21EE01CB30074FBEF /* SportsHistoryItemCell.m in Sources */,
 				54E92F5A1EBB2E150073BABF /* PersonalCenterView.m in Sources */,
+				B8604A3C1EEAA0EB00ACBC8D /* Dao+Home.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,7 +882,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = YZ9D33BSV8;
+				DEVELOPMENT_TEAM = 4YEG8PXLF9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
 				INFOPLIST_FILE = WenZhouSports/Info.plist;
@@ -844,7 +902,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = YZ9D33BSV8;
+				DEVELOPMENT_TEAM = 4YEG8PXLF9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/WenZhouSports/PrefixHeader.pch";
 				INFOPLIST_FILE = WenZhouSports/Info.plist;

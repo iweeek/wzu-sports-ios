@@ -8,7 +8,7 @@
 
 #import "BaseDao+Category.h"
 
-@implementation BaseDao (Category)
+@implementation Dao (Category)
 
 - (RACSignal *)compareFaceWithFace1:(UIImage *)face1 face2:(UIImage *)face2 {
 //    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];

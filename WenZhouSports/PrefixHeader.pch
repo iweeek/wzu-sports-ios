@@ -20,6 +20,7 @@
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import <MAMapKit/MAMapKit.h>
+#import <YYModel/YYModel.h>
 
 //本地配置文件
 #import "UIView+Util.h"

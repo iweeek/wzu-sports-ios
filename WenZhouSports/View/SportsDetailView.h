@@ -59,6 +59,9 @@ typedef NS_ENUM(NSInteger, SportsStation) {
  @param distance 距离
  */
 - (void)setDataWithSpeed: (NSString *)speed distance:(NSInteger)distance stage:(NSInteger)stage;
+- (void)setDataWithDistance:(double)distance
+                       time:(NSInteger)time
+                      speed:(float)speed;
 /**
  设置运动结果
 

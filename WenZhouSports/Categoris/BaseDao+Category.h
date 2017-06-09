@@ -5,9 +5,9 @@
 //  Created by 何聪 on 2017/5/15.
 //  Copyright © 2017年 何聪. All rights reserved.
 //
-#import "BaseDao.h"
+#import "Dao.h"
 
-@interface BaseDao (Category)
+@interface Dao (Category)
 
 
 /**

@@ -18,5 +18,6 @@ pod 'AMap2DMap'
 pod 'AMapLocation'
 pod 'MLeaksFinder'
 pod 'Reveal-iOS-SDK',           :configurations => ['Debug']
+pod 'YYModel', '~> 1.0.4'
 
 end

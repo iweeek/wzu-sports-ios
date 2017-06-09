@@ -19,7 +19,10 @@
 #import "PersonInfoController.h"
 #import "SportsPerformanceController.h"
 #import "ApproveController.h"
+#import "SettingController.h"
+#import "HomeViewModel.h"
 
+#import "StudentModel.h"
 #import "LoginController.h"
 #import "ForgetPasswordController.h"
 
@@ -28,6 +31,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) PersonalCenterView *personalCenterView;
 @property (nonatomic, strong) UIView *midView;// 个人中心被色背景层
+@property (nonatomic, strong) HomeViewModel *vm;
 
 @end
 
@@ -40,13 +44,25 @@ CGFloat proportion = 0.84;
     self.title = @"课外体育锻炼";
     self.view.backgroundColor = cFFFFFF;
     [self initSubviews];
-
+    self.vm = [[HomeViewModel alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationItem setLeftBarButtonItemWithImage:[UIImage imageNamed:@"btn_menu"] target:self action:@selector(showPersonalCenter)];
     
+    // JSON Body
+    NSDictionary* bodyObject = @{@"query":@"{student(id:1){id name studentNo isMan universityId userId classId}}"};
+
+    [[self.vm.cmdGraphql execute:bodyObject] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"XXXXXX:%@", x);
+    } error:^(NSError * _Nullable error) {
+        NSLog(@"EEEEEEEEE:%@", [error localizedDescription]);
+    }];
+    
+    // 隐藏返回按钮文字
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault]; 
+    
+    // 导航栏背景蓝色
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController.navigationBar lt_setBackgroundColor:c66A7FE];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
@@ -137,6 +153,12 @@ CGFloat proportion = 0.84;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
+            case 5:// 设置
+            {
+                SettingController *vc = [[SettingController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
 
             default:
                 break;
@@ -163,6 +185,15 @@ CGFloat proportion = 0.84;
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+//        NSDictionary *dic = @{@"query":@"{student(id:1){id name studentNo isMan universityId userId classId}}"};
+        NSDictionary* bodyObject = @{@"query":@"{student(id:1){id name studentNo isMan universityId userId classId}}"};
+        [[self.vm.cmdGraphql execute:bodyObject] subscribeNext:^(StudentModel *x) {
+            NSLog(@"XXXXXX:%@", x.name);
+        } error:^(NSError * _Nullable error) {
+            NSLog(@"EEEEEEEEE:%@", [error description]);
+        }];
+    }
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 //    SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
 //    UIImage *image = [UIImage imageNamed:@"btn_back"];
@@ -171,14 +202,17 @@ CGFloat proportion = 0.84;
 //    [[viewModel.compareFaceCommand execute:dic] subscribeNext:^(id  _Nullable x) {
 //        [WToast showWithText:@"x"];
 //    }];
-//    SportsDetailsController *controller = [[SportsDetailsController alloc] init];
-//    [self.navigationController pushViewController:controller animated:YES];
+
     
 //    ForgetPasswordController *vc = [[ForgetPasswordController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
     
-    LoginController *vc = [[LoginController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+//    LoginController *vc = [[LoginController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    if (indexPath.section == 1) {
+        SportsDetailsController *controller = [[SportsDetailsController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
