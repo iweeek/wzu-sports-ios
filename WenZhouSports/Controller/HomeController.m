@@ -21,6 +21,8 @@
 #import "ApproveController.h"
 #import "SettingController.h"
 #import "HomeViewModel.h"
+#import "runningProjectsModel.h"
+#import "runningProjectItemModel.h"
 
 #import "StudentModel.h"
 #import "LoginController.h"
@@ -32,6 +34,7 @@
 @property (nonatomic, strong) PersonalCenterView *personalCenterView;
 @property (nonatomic, strong) UIView *midView;// 个人中心被色背景层
 @property (nonatomic, strong) HomeViewModel *vm;
+@property (nonatomic, strong) NSArray *dataList;
 
 @end
 
@@ -49,16 +52,7 @@ CGFloat proportion = 0.84;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    // JSON Body
-    NSDictionary* bodyObject = @{@"query":@"{student(id:1){id name studentNo isMan universityId userId classId}}"};
 
-    [[self.vm.cmdGraphql execute:bodyObject] subscribeNext:^(id  _Nullable x) {
-        NSLog(@"XXXXXX:%@", x);
-    } error:^(NSError * _Nullable error) {
-        NSLog(@"EEEEEEEEE:%@", [error localizedDescription]);
-    }];
-    
     // 隐藏返回按钮文字
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault]; 
     
@@ -73,6 +67,17 @@ CGFloat proportion = 0.84;
     
     // 状态栏颜色白色
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+- (void)initData {
+    @weakify(self);
+    NSDictionary *dic = @{@"query":@"{runningProjects(universityId:1){id name qualifiedDistance qualifiedCostTime}}"};
+    [[self.vm.cmdRunningProjects execute:dic] subscribeNext:^(runningProjectsModel *x) {
+        @strongify(self);
+        [self.tableView reloadData];
+    } error:^(NSError * _Nullable error) {
+        NSLog(@"error:%@", [error localizedDescription]);
+    }];
 }
 
 - (void)initSubviews {
@@ -186,13 +191,11 @@ CGFloat proportion = 0.84;
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-//        NSDictionary *dic = @{@"query":@"{student(id:1){id name studentNo isMan universityId userId classId}}"};
-        NSDictionary* bodyObject = @{@"query":@"{student(id:1){id name studentNo isMan universityId userId classId}}"};
-        [[self.vm.cmdGraphql execute:bodyObject] subscribeNext:^(StudentModel *x) {
-            NSLog(@"XXXXXX:%@", x.name);
-        } error:^(NSError * _Nullable error) {
-            NSLog(@"EEEEEEEEE:%@", [error description]);
-        }];
+        [self initData];
+        
+//        [[self.vm.cmdRuningActivitys execute:nil] subscribeNext:^(id  _Nullable x) {
+//            NSLog(@"cmdRuningActivitys:%@", x);
+//        }];
     }
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 //    SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
@@ -231,25 +234,32 @@ CGFloat proportion = 0.84;
             return cell;
         } else {
             HomeItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeItemCell class]) forIndexPath:indexPath];
+            
+            
+            
             switch (indexPath.row) {
                 case SportsTypeJogging:
                 {
-                    [cell initWithSportsType:SportsTypeJogging data:nil];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeJogging data:runProject];
                     break;
                 }
                 case SportsTypeRun:
                 {
-                    [cell initWithSportsType:SportsTypeRun data:nil];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeRun data:runProject];
                     break;
                 }
                 case SportsTypeWalk:
                 {
-                    [cell initWithSportsType:SportsTypeWalk data:nil];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeWalk data:runProject];
                     break;
                 }
                 case SportsTypeStep:
                 {
-                    [cell initWithSportsType:SportsTypeStep data:nil];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeStep data:runProject];
                     break;
                 }
             }

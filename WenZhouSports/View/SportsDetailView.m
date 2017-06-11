@@ -92,8 +92,16 @@
         MAMapView *map = [[MAMapView alloc] initWithFrame:self.frame];
         map.zoomLevel = 18;
         map.showsUserLocation = YES;
+        map.showsCompass = NO;
+        map.scrollEnabled = YES;
         map.userTrackingMode = MAUserTrackingModeFollow;// 追踪移动
-
+        MAUserLocationRepresentation *representation = [[MAUserLocationRepresentation alloc] init];
+        representation.showsAccuracyRing = NO;//精度圈是否显示，默认YES
+        representation.showsHeadingIndicator = YES;///是否显示方向指示
+        
+        //执行
+        [self.mapView updateUserLocationRepresentation:representation];
+        
         map;
     });
     

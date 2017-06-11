@@ -10,6 +10,7 @@
 
 @interface Dao (Home)
 
-- (RACSignal *)HomePage:(NSDictionary *)dic;
+- (RACSignal *)runningProjects:(NSDictionary *)dic;
+- (RACSignal *)runActivity:(NSDictionary *)dic;
 
 @end

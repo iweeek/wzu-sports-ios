@@ -7,6 +7,7 @@
 //
 
 #import "SettingController.h"
+#import "AboutUsController.h"
 
 @interface SettingController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -87,7 +88,16 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section == 0) {
+        //修改密码
+    } else {
+        if (indexPath.row == 0) {
+            AboutUsController *vc = [[AboutUsController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            //检查更新
+        }
+    }
 }
 
 #pragma mark - getter && setter
@@ -99,8 +109,6 @@
         _tableView.dataSource = self;
         _tableView.userInteractionEnabled = YES;
         
-//        [_tableView registerClass:[SportsPerformanceCell class]
-//           forCellReuseIdentifier:NSStringFromClass([SportsPerformanceCell class])];
     }
     return _tableView;
 }

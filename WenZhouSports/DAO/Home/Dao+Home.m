@@ -7,15 +7,29 @@
 //
 
 #import "Dao+Home.h"
-#import "StudentModel.h"
+#import "runningProjectsModel.h"
 
 @implementation Dao (Home)
 
-- (RACSignal *)HomePage:(NSDictionary *)dic {
-    return [[self RAC_POST:@"graphql" parameters:dic]
+- (RACSignal *)runningProjects:(NSDictionary *)dic {
+    return [[self RAC_POST:@"graphql/query" parameters:dic]
         map:^id _Nullable(id  _Nullable value) {
-            return [self jsonToMode:[StudentModel class] dictionary:value];
+            return [self jsonToMode:[runningProjectsModel class] dictionary:value key:@"runningProjects"];
         }];
+}
+
+- (RACSignal *)runActivity:(NSDictionary *)dic {
+    NSDictionary *dic3 = @{@"projectId":@(1),
+                          @"studentId":@(1),
+                          @"distance":@(100),
+                          @"costTime":@(14),
+                          @"targetTime":@(15),
+                          @"startTime":@(1497171815)};
+    
+    return [[self RAC_POST:@"runningActivitys" parameters:dic3]
+            map:^id _Nullable(id  _Nullable value) {
+                return [self jsonToMode:[runningProjectsModel class] dictionary:value key:nil];
+            }];
 }
 
 @end

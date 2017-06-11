@@ -1,89 +1,49 @@
 //
 //  MAMutablePolyline.m
-//  test3D
+//  officialDemo2D
 //
-//  Created by xiaoming han on 15/7/15.
+//  Created by PC on 15/7/15.
 //  Copyright (c) 2015年 AutoNavi. All rights reserved.
 //
 
-#import "MAMutablePolyline.h"
-#import <MAMapKit/MAGeometry.h>
+#import "MAMutablePolyline2D.h"
 
-@interface MAMutablePolyline ()
-{
-    MAMapRect _boundingRect;
-    NSMutableArray *_pointArray;
-}
+@interface MAMutablePolyline2D()
+
+@property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
+
+@property (nonatomic, readwrite) MAMapRect boundingMapRect;
 
 @end
 
-@implementation MAMutablePolyline
 
-- (instancetype)initWithPoints:(NSArray *)points
-{
-    self = [super init];
-    if (self)
-    {
-        [self updatePoints:points];
-    }
-    return self;
-}
+@implementation MAMutablePolyline2D
 
-- (void)dealloc
-{
-    if (_points != NULL)
-    {
-        free(_points), _points = NULL;
-    }
-}
+#pragma mark - interface
 
-- (void)removeAllPoints
+- (MAMapRect)showRect
 {
-    [_pointArray removeAllObjects];
-    [self calculateBoundingMapRect];
-    [self buildPoints];
+    return self.boundingMapRect;
 }
 
 - (void)updatePoints:(NSArray *)points
 {
     _pointArray = [NSMutableArray arrayWithArray:points];
     [self calculateBoundingMapRect];
-    [self buildPoints];
 }
 
 - (void)appendPoint:(MAMapPoint)point
 {
     [_pointArray addObject:[NSValue valueWithMAMapPoint:point]];
     [self calculateBoundingMapRect];
-    [self buildPoints];
 }
 
 #pragma mark - Helper
 
-- (void)buildPoints
+- (MAMapPoint)mapPointForPointAt:(NSUInteger)index
 {
-    if (_points != NULL)
-    {
-        free(_points), _points = NULL;
-    }
-    
-    _pointCount = _pointArray.count;
-    
-    if (_pointCount < 2)
-    {
-        NSLog(@"points count must greater than 2");
-        return;
-    }
-    
-    _points = (MAMapPoint *)malloc(_pointCount * sizeof(MAMapPoint));
-    
-    int i = 0;
-    for (NSValue *value in _pointArray)
-    {
-        MAMapPoint point = [value MAMapPointValue];
-        _points[i] = point;
-        ++i;
-    }
+    NSValue *value = [self.pointArray objectAtIndex:index];
+    return [value MAMapPointValue];
 }
 
 - (void)calculateBoundingMapRect
@@ -132,8 +92,7 @@
             }
             ++index;
         }
-        _boundingRect = MAMapRectMake(minX, minY, fabs(maxX - minX), fabs(maxY - minY));
-        
+        _boundingMapRect = MAMapRectMake(minX, minY, fabs(maxX - minX), fabs(maxY - minY));
     }
 }
 
@@ -141,13 +100,24 @@
 
 - (MAMapRect)boundingMapRect
 {
-    return _boundingRect;
+    return _boundingMapRect;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-    return MACoordinateForMapPoint(MAMapPointMake(MAMapRectGetMidX(_boundingRect), MAMapRectGetMidY(_boundingRect)));
+    return MACoordinateForMapPoint(MAMapPointMake(MAMapRectGetMidX(_boundingMapRect), MAMapRectGetMidY(_boundingMapRect)));
 }
 
+#pragma mark - Life Cycle
+
+- (instancetype)initWithPoints:(NSArray *)nsvaluePoints
+{
+    if (self = [super init])
+    {
+        [self updatePoints:nsvaluePoints];
+    }
+    
+    return self;
+}
 
 @end

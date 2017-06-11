@@ -26,12 +26,14 @@
     dispatch_once(&onceToken, ^{
         this = [[Dao alloc] init];
         this.manager = [AFHTTPSessionManager manager];
-        this.manager.requestSerializer = [AFJSONRequestSerializer serializer];
         this.manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         this.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/json", @"text/javascript", @"text/html",  nil];
         
+//        this.manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        this.manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         [this.manager.requestSerializer setTimeoutInterval:30.0];
-        [this.manager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+//        [this.manager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        [this.manager.requestSerializer setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     });
     
     return this;
@@ -100,11 +102,11 @@
     [dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key,
                                              id  _Nonnull obj,
                                              BOOL * _Nonnull stop) {
-        tmp = [NSString stringWithFormat:@"%@%@=%@&", tmp, key, obj];
+        tmp = [NSString stringWithFormat:@"%@%@=%@", tmp, key, obj];
     }];
     NSString *requestPath = [NSString stringWithFormat:Server, path];
     NSLog(@"===============");
-    NSLog(@"%@?%@", requestPath, tmp);
+    NSLog(@"%@?%@", Server, tmp);
     NSLog(@"===============");
     @weakify(self);
     return [[[[self.manager RAC_POST:requestPath parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
@@ -155,18 +157,16 @@
     return reachabilty;
 }
 
-- (id)jsonToMode:(Class)className dictionary:(id)value {
-    NSLog(@"%@", value);
+- (id)jsonToMode:(Class)className dictionary:(id)value key:(NSString *)key {
     NSString *jsonStr = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
     NSDictionary *jsonDic = [jsonStr toDictionary];
-    NSDictionary *data = jsonDic[@"data"];
-    NSDictionary *student = data[@"student"];
-    
-    if (!data) {
+//    id data = jsonDic[key];
+    NSLog(@"========data:%@", jsonDic);
+    if (!jsonDic) {
         return nil;
     }
     
-    id obj = [className yy_modelWithJSON:student];
+    id obj = [className yy_modelWithDictionary:jsonDic];
     return obj;
 }
 @end

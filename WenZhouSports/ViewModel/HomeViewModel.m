@@ -15,10 +15,19 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.cmdGraphql = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
-            return [[Dao share] HomePage:input];
+        self.cmdRunningProjects = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
+            return [[[Dao share] runningProjects:input]
+                    doNext:^(id  _Nullable x) {
+                        self.runningProjects = x;
+                    }];
+        }];
+        
+        self.cmdRuningActivitys = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
+            return [[Dao share] runActivity:nil];
         }];
     }
+    
+    
     return self;
 }
 

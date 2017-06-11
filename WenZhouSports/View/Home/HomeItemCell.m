@@ -7,6 +7,7 @@
 //
 
 #import "HomeItemCell.h"
+#import "runningProjectItemModel.h"
 
 @interface HomeItemCell ()
 
@@ -42,6 +43,11 @@
         default:
             break;
     }
+    
+    runningProjectItemModel *item = (runningProjectItemModel *)data;
+    self.labSportsType.text = item.name;
+    self.labDistance.text = [NSString stringWithFormat:@"%ld", item.qualifiedDistance];
+    self.labTime.text = [NSString stringWithFormat:@"%ld", item.qualifiedCostTime];
     
 }
 

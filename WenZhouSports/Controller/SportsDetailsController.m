@@ -13,8 +13,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMotion/CoreMotion.h>
 #import "MAMutablePolyline.h"
-#import "MAMutablePolylineRenderer.h"
+#import "MAMutablePolylineRenderer3D.h"
 #import "UIViewController+BackButtonHandler.h"
+#import "AMapRouteRecord.h"
 
 @interface SportsDetailsController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AMapLocationManagerDelegate, MAMapViewDelegate ,AMapLocationManagerDelegate>
 
@@ -39,7 +40,7 @@
 //运动轨迹相关
 @property (nonatomic, strong) NSMutableArray *locationsArray;
 @property (nonatomic, strong) MAMutablePolyline *line;
-@property (nonatomic, strong) MAMutablePolylineRenderer *render;
+@property (nonatomic, strong) MAMutablePolylineRenderer3D *render;
 @property (nonatomic, assign) BOOL isRecording; //是否正在绘制
 @property (nonatomic, strong) CLLocation *lastLocatioin;
 
@@ -48,8 +49,10 @@
 @property (nonatomic, assign) double distance;
 @property (nonatomic, assign) float speed;
 
-//@property (nonatomic, assign) double latitude;
-//@property (nonatomic, assign) double longitude;
+@property (nonatomic, strong) NSMutableArray *tracedPolylines;
+@property (nonatomic, strong) NSMutableArray *tempTraceLocations;
+@property (nonatomic, strong) MATraceManager *traceManager;
+@property (nonatomic, strong) AMapRouteRecord *currentRecord;
 
 @property (nonatomic, strong) UILabel *labLatitude;
 @property (nonatomic, strong) UILabel *lablongitude;
@@ -78,12 +81,17 @@
     self.locationManager.delegate = self;
     [self.locationManager setLocatingWithReGeocode:YES];
     [self.locationManager startUpdatingLocation];
-    self.locationManager.distanceFilter = 10;// 超出10米执行回调
+    self.locationManager.distanceFilter = 0;//10;// 超出10米执行回调
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;// 精确度
     self.mapDistance = 0;
     self.lastPoint = MAMapPointMake(0.0, 0.0);
     
     self.viewModel = [[SportsDetailViewModel alloc] init];
+    
+    self.tracedPolylines = [NSMutableArray array];
+    self.tempTraceLocations = [NSMutableArray array];
+    self.traceManager = [[MATraceManager alloc] init];
+    self.currentRecord = [[AMapRouteRecord alloc] init];
 }
 
 - (void)initSubviews {
@@ -174,6 +182,10 @@
     [self.detailView.startSignal subscribeNext:^(id x) {
         @strongify(self)
         self.isRecording = YES;
+        self.currentRecord = [[AMapRouteRecord alloc] init];
+        // 全程请求trace
+        [self.detailView.mapView removeOverlays:self.tracedPolylines];
+        [self queryTraceWithLocations:self.currentRecord.locations withSaving:YES];
         [self.navigationController.navigationItem setHidesBackButton:YES];
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             @strongify(self)
@@ -207,12 +219,7 @@
                 pauseTime = -[pauseDate timeIntervalSinceNow];
                 pauseDistance = distance - startPauseDistance;
             }
-            
-            //避免时间从0开始
-//            NSNumber *speed = @((distance - pauseDistance - allPauseDistance) / (time + 1 - pauseTime));
-//            [self.detailView setDataWithSpeed:[speed getNumberWithScale:2] distance:(int)(distance - pauseDistance - allPauseDistance) stage:10];
-            
-//            float speed = self.distance / self.sportsTime;
+
             [self.detailView setDataWithDistance:self.distance
                                             time:self.sportsTime
                                            speed:self.speed];
@@ -345,26 +352,6 @@
     }];
 }
 
-// 本方法已废弃
-//- (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location {
-//    @autoreleasepool {
-//        DDLogVerbose(@"latitude:%f\tlongitude:%f", location.coordinate.latitude, location.coordinate.longitude);
-//        if (location) {
-//            DDLogVerbose(@"%f,%f", _lastPoint.x, _lastPoint.y);
-//            if (_lastPoint.x == 0.0 && _lastPoint.y == 0.0) {
-//                _lastPoint = MAMapPointForCoordinate(location.coordinate);
-//                DDLogVerbose(@"lastpoint");
-//            }
-//#warning TODO:do something when pause
-//            MAMapPoint nowPoint = MAMapPointForCoordinate(location.coordinate);
-//            _mapDistance += MAMetersBetweenMapPoints(_lastPoint, nowPoint);
-//            _lastPoint = MAMapPointForCoordinate(location.coordinate);
-//            DDLogVerbose(@"distance:%f", _mapDistance);
-//            [_detailView addPolygonLine:location];
-//        }
-//    }
-//}
-
 - (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location reGeocode:(AMapLocationReGeocode *)reGeocode {
     CLLocationManager *locationManager = [[CLLocationManager alloc] init];
     [locationManager startUpdatingLocation];
@@ -375,11 +362,8 @@
 //    NSLog(@"CLlatitude:%f   CLlongitude:%f", locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude);
 //    NSLog(@"latitude:%f   longitude:%f", location.coordinate.latitude, location.coordinate.longitude);
 //    NSLog(@"%@", reGeocode.formattedAddress);
-    
-    
-    
-#warning TODO:目前不判断是否在绘制
-//    self.isRecording = YES;
+
+
     if (self.isRecording) { //是否正在绘制
         CLLocationDistance tempDistance = 0;
         // 移动距离小于10米属于无效的，不画
@@ -416,22 +400,105 @@
             
             NSLog(@"date: %@,now :%@",location.timestamp,[NSDate date]);
             
-            [self.line appendPoint: MAMapPointForCoordinate(location.coordinate)];
+            [self.currentRecord addLocation:location];
             
+            [self.line appendPoint: MAMapPointForCoordinate(location.coordinate)];
+            [self.render referenceDidChange];
             [self.detailView.mapView setCenterCoordinate:location.coordinate animated:YES];
             
             self.lastLocatioin = location;
             
-            [self.render invalidatePath];
+            // trace
+//            [self.tempTraceLocations addObject:location];
+//            if (self.tempTraceLocations.count >= 2)
+//            {
+//                [self queryTraceWithLocations:self.tempTraceLocations withSaving:NO];
+//                [self.tempTraceLocations removeAllObjects];
+//                
+//                // 把最后一个再add一遍，否则会有缝隙
+//                [self.tempTraceLocations addObject:location];
+//            }
         }
     }
 }
 
-- (void)addPolygonLine:(CLLocation *)location {
-    [_line appendPoint:MAMapPointForCoordinate(location.coordinate)];
-    [_detailView.mapView setCenterCoordinate:location.coordinate animated:YES];
+- (void)mapView:(MAMapView *)mapView didChangeOpenGLESDisabled:(BOOL)openGLESDisabled {
+    MAMutablePolyline *polyline = [self.render mutablePolyline];
     
-    [self.render invalidatePath];
+    if (polyline.points == NULL || polyline.pointCount < 2)
+    {
+        return;
+    }
+    
+    self.render.glPoints = [self.render glPointsForMapPoints:polyline.points count:polyline.pointCount];
+    self.render.glPointCount = polyline.pointCount;
+}
+
+- (void)queryTraceWithLocations:(NSArray<CLLocation *> *)locations withSaving:(BOOL)saving
+{
+    NSMutableArray *mArr = [NSMutableArray array];
+    for(CLLocation *loc in locations)
+    {
+        MATraceLocation *tLoc = [[MATraceLocation alloc] init];
+        tLoc.loc = loc.coordinate;
+        
+        tLoc.speed = loc.speed * 3.6; //m/s  转 km/h
+        tLoc.time = [loc.timestamp timeIntervalSince1970] * 1000;
+        tLoc.angle = loc.course;
+        [mArr addObject:tLoc];
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    __unused NSOperation *op = [self.traceManager queryProcessedTraceWith:mArr type:-1 processingCallback:nil  finishCallback:^(NSArray<MATracePoint *> *points, double distance) {
+        
+        NSLog(@"trace query done!");
+        
+        [weakSelf addFullTrace:points];
+        
+    } failedCallback:^(int errorCode, NSString *errorDesc) {
+        NSLog(@"query trace point failed :%@", errorDesc);
+    }];
+}
+
+- (void)addFullTrace:(NSArray<MATracePoint*> *)tracePoints
+{
+    MAPolyline *polyline = [self makePolylineWith:tracePoints];
+    if(!polyline)
+    {
+        return;
+    }
+    
+    [self.tracedPolylines addObject:polyline];
+    [self.detailView.mapView addOverlay:polyline];
+}
+
+- (MAPolyline *)makePolylineWith:(NSArray<MATracePoint*> *)tracePoints
+{
+    if(tracePoints.count < 2)
+    {
+        return nil;
+    }
+    
+    CLLocationCoordinate2D *pCoords = malloc(sizeof(CLLocationCoordinate2D) * tracePoints.count);
+    if(!pCoords) {
+        return nil;
+    }
+    
+    for(int i = 0; i < tracePoints.count; ++i) {
+        MATracePoint *p = [tracePoints objectAtIndex:i];
+        CLLocationCoordinate2D *pCur = pCoords + i;
+        pCur->latitude = p.latitude;
+        pCur->longitude = p.longitude;
+    }
+    
+    MAPolyline *polyline = [MAPolyline polylineWithCoordinates:pCoords count:tracePoints.count];
+    
+    if(pCoords)
+    {
+        free(pCoords);
+    }
+    
+    return polyline;
 }
 
 #pragma mark - mapViewDelegate
@@ -442,52 +509,10 @@
     // 改变箭头指向
     if (self.detailView.userLocationAnnotationView) {
         [UIView animateWithDuration:0.1 animations:^{
-            double degree = userLocation.heading.trueHeading;// - self.mapView.rotationDegree;
+            double degree = userLocation.heading.trueHeading - self.detailView.mapView.rotationDegree;
             self.detailView.userLocationAnnotationView.transform = CGAffineTransformMakeRotation(degree * M_PI / 180.f);
         }];
     }
-//    
-//    CLLocationDistance tempDistance = 0;
-//    // 移动距离小于10米属于无效的，不画
-//    if (self.lastLocatioin) {
-//        tempDistance = [userLocation.location distanceFromLocation:self.lastLocatioin];
-//        self.speed = 0;
-//        self.speed = (float)tempDistance;
-//        
-//        if (tempDistance < 10) {
-//            return;
-//        }
-//        
-//        if (self.isSporting) {
-//            // 总距离增加
-//            self.distance += tempDistance;
-//        }
-//    }
-//    
-//    self.lastLocatioin = userLocation.location;
-//    
-//#warning TODO:目前不判断是否在绘制
-//    self.isRecording = YES;
-//    if (self.isRecording) { //是否正在绘制
-//        /*当定位成功后，如果horizontalAccuracy大于0，说明定位有效
-//         horizontalAccuracy，该位置的纬度和经度确定的圆的中心，并且这个值表示圆的半径。负值表示该位置的纬度和经度是无效的。
-//         horizontalAccuracy值越大越不准确
-//         */
-//        if (userLocation.location.horizontalAccuracy < 80 && userLocation.location.horizontalAccuracy > 0) {
-//#warning TODO:暂时没用到，存储下坐标以备上传
-//            [self.locationsArray addObject:userLocation.location];
-//            
-//            NSLog(@"date: %@,now :%@",userLocation.location.timestamp,[NSDate date]);
-//            
-//            [self.line appendPoint: MAMapPointForCoordinate(userLocation.location.coordinate)];
-//            
-//            [self.detailView.mapView setCenterCoordinate:userLocation.location.coordinate animated:YES];
-//            
-//            self.lastLocatioin = userLocation.location;
-//            
-//            [self.render invalidatePath];
-//        }
-//    }
 }
 
 /**
@@ -499,21 +524,15 @@
  */
 - (MAOverlayPathRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id<MAOverlay>)overlay {
     if ([overlay isKindOfClass:[MAMutablePolyline class]]) {
-        MAMutablePolylineRenderer *renderer = [[MAMutablePolylineRenderer alloc] initWithOverlay:overlay];
+        MAMutablePolylineRenderer3D *renderer = [[MAMutablePolylineRenderer3D alloc] initWithOverlay:overlay];
         renderer.lineWidth = 10.0f;
         
         renderer.strokeColor = [UIColor yellowColor];
-
-//        if (self.isPause) {
-//            renderer.strokeColor = [UIColor grayColor];
-//        } else {
-//        }
         
         _render = renderer;
         
         return renderer;
     }
-    
     return nil;
 }
 
@@ -532,7 +551,6 @@
         self.detailView.userLocationAnnotationView = annotationView;
 
         return annotationView;
-        
     }
     return nil;
 }
