@@ -26,7 +26,8 @@
     dispatch_once(&onceToken, ^{
         this = [[Dao alloc] init];
         this.manager = [AFHTTPSessionManager manager];
-        this.manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//        this.manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        this.manager.responseSerializer = [AFJSONResponseSerializer serializer];
         this.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/json", @"text/javascript", @"text/html",  nil];
         
 //        this.manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -54,22 +55,21 @@
 
 - (RACSignal *)checkData:(id)json {
     return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
-        [subscriber sendNext:json];
-        [subscriber sendCompleted];
-//        if ([[json objectForKey:@"status"] boolValue]) {
-//            [subscriber sendNext:json];
-//            [subscriber sendCompleted];
-//        } else {
-//            NSString *message = [json objectForKey:@"message"];
-//            NSInteger code = 1004;
-//            if (![self isReachable]) {
-//                code = 1006;
-//                message = @"没有网络";
-//            }
-//            [subscriber sendError:[NSError errorWithDomain:@""
-//                                                      code:code
-//                                                  userInfo:@{@"msg":message}]];
-//        }
+        NSArray *errorsArray = [json objectForKey:@"errors"];
+        if (errorsArray.count == 0) {
+            [subscriber sendNext:json];
+            [subscriber sendCompleted];
+        } else {
+            NSString *message = [json objectForKey:@"message"];
+            NSInteger code = 1004;
+            if (![self isReachable]) {
+                code = 1006;
+                message = @"没有网络";
+            }
+            [subscriber sendError:[NSError errorWithDomain:@""
+                                                      code:code
+                                                  userInfo:@{@"msg":message}]];
+        }
         return nil;
     }];
 }
@@ -158,15 +158,15 @@
 }
 
 - (id)jsonToMode:(Class)className dictionary:(id)value key:(NSString *)key {
-    NSString *jsonStr = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-    NSDictionary *jsonDic = [jsonStr toDictionary];
-//    id data = jsonDic[key];
-    NSLog(@"========data:%@", jsonDic);
-    if (!jsonDic) {
+//    NSString *jsonStr = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
+//    NSDictionary *jsonDic = [jsonStr toDictionary];
+    id responseData = value[@"data"];
+    NSLog(@"========data:%@", responseData);
+    if (!responseData) {
         return nil;
     }
     
-    id obj = [className yy_modelWithDictionary:jsonDic];
+    id obj = [className yy_modelWithDictionary:responseData];
     return obj;
 }
 @end

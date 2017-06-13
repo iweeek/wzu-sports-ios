@@ -22,8 +22,8 @@
 @property (nonatomic, strong) UIView *middleCuttingLine;
 @property (nonatomic, strong) UILabel *speedLabel;// 本次距离
 @property (nonatomic, strong) UILabel *speedNumberLabel;
-@property (nonatomic, strong) UILabel *stageLabel; // 本次时间
-@property (nonatomic, strong) UILabel *stageNumberLabel;
+@property (nonatomic, strong) UILabel *timeLabel; // 本次时间
+@property (nonatomic, strong) UILabel *timeNumberLabel;
 @property (nonatomic, strong) UILabel *distanceLabel; // 本次速度
 @property (nonatomic, strong) UILabel *distanceNumberLabel;
 
@@ -36,8 +36,8 @@
 @property (nonatomic, strong) UIView *bottomBackgroundView;
 @property (nonatomic, strong) UILabel *bottomSpeedLabel;
 @property (nonatomic, strong) UILabel *bottomSpeedNumberLabel;
-@property (nonatomic, strong) UILabel *bottomStageLabel;
-@property (nonatomic, strong) UILabel *bottomStageNumberLabel;
+@property (nonatomic, strong) UILabel *bottomTimeLabel;
+@property (nonatomic, strong) UILabel *bottomTimeNumberLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceNumberLabel;
 
@@ -85,6 +85,73 @@
         _pauseSignal = [RACSubject subject];
     }
     return self;
+}
+
+- (void)changeSportsStation:(SportsStation)station {
+    switch (station) {
+        case SportsWillStart:
+        {
+            _sportsAmountLabel.text = self.runningProject.name;
+            _distanceLabel.text = @"达标距离";
+            _timeLabel.text = @"达标时间";
+            _speedLabel.text = @"达标速度";
+            
+            [self setDataWithDistance:self.runningProject.qualifiedDistance
+                                 time:self.runningProject.qualifiedCostTime / 60
+                                speed:self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime];
+//            _distanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningProject.qualifiedDistance];
+//            _timeNumberLabel.text =  [NSString stringWithFormat:@"%ld 分钟", self.runningProject.qualifiedCostTime / 60];
+//            float speed = self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime;
+//            _speedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", speed];
+            break;
+        }
+        case SportsDidStart:
+            _startButton.hidden = YES;
+            _continueButton.hidden = YES;
+            _endButton.hidden = YES;
+            _shareButton.hidden = YES;
+            _pauseView.hidden = NO;
+            _bottomView.hidden = NO;
+            
+            break;
+        case SportsDidPause:
+            _startButton.hidden = YES;
+            _continueButton.hidden = NO;
+            _endButton.hidden = NO;
+            _shareButton.hidden = YES;
+            _pauseView.hidden = YES;
+            
+            break;
+        case SportsDidEnd: {
+            _sportsAmountLabel.hidden = YES;
+            _numberOfPeopleLable.hidden = YES;
+            _titleLabel.hidden = NO;
+            _standardLabel.hidden = NO;
+            _startButton.hidden = YES;
+            _continueButton.hidden = YES;
+            _endButton.hidden = YES;
+            _shareButton.hidden = NO;
+            _resultView.hidden = NO;
+            [self.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.equalTo(_middleView);
+                make.height.mas_equalTo(FIT_LENGTH(53.0));
+                make.top.equalTo(_resultView.mas_bottom);
+            }];
+            [self.shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(_titleView);
+                make.left.right.equalTo(_middleView);
+                make.bottom.equalTo(_resultView);
+            }];
+            if (self.pauseSignal) {
+                [self.pauseSignal sendCompleted];
+            }
+            break;
+        }
+        case SportsShare:
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)initSubviews {
@@ -163,13 +230,13 @@
     });
     _speedLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"本次距离";
+        lab.text = @"本次速度";
         lab.textColor = C_GRAY_TEXT;
         lab.font = S12;
         
         lab;
     });
-    _stageLabel = ({
+    _timeLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.text = @"耗时";
         lab.textColor = C_GRAY_TEXT;
@@ -179,7 +246,7 @@
     });
     _distanceLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"即时速度";
+        lab.text = @"即时距离";
         lab.font = S12;
         lab.textColor = C_GRAY_TEXT;
         
@@ -192,7 +259,7 @@
         
         lab;
     });
-    _stageNumberLabel = ({
+    _timeNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.font = SS26;
         lab.textColor = c474A4F;
@@ -213,7 +280,7 @@
         view;
     });
 
-    [_middleView addSubviews:@[_speedLabel, _stageLabel, _distanceLabel, _middleCuttingLine, _speedNumberLabel, _stageNumberLabel, _distanceNumberLabel]];
+    [_middleView addSubviews:@[_speedLabel, _timeLabel, _distanceLabel, _middleCuttingLine, _speedNumberLabel, _timeNumberLabel, _distanceNumberLabel]];
     
     // 运动结果view
     _resultView = ({
@@ -263,7 +330,7 @@
         
         lab;
     });
-    _bottomStageLabel = ({
+    _bottomTimeLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.text = @"达标耗时";
         lab.textColor = [UIColor whiteColor];
@@ -295,7 +362,7 @@
         
         lab;
     });
-    _bottomStageNumberLabel = ({
+    _bottomTimeNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.text = @"120 分钟";
         lab.textColor = cFFFFFF;
@@ -303,7 +370,7 @@
         
         lab;
     });
-    [_bottomView addSubviews:@[_bottomBackgroundView, _bottomSpeedLabel, _bottomStageLabel, _bottomDistanceLabel, _bottomSpeedNumberLabel, _bottomStageNumberLabel, _bottomDistanceNumberLabel]];
+    [_bottomView addSubviews:@[_bottomBackgroundView, _bottomSpeedLabel, _bottomTimeLabel, _bottomDistanceLabel, _bottomSpeedNumberLabel, _bottomTimeNumberLabel, _bottomDistanceNumberLabel]];
     
     // 暂停View
     _pauseView = ({
@@ -461,30 +528,32 @@
         make.left.right.equalTo(_middleView);
         make.bottom.equalTo(_middleView);
     }];
-    [_speedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_distanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_middleView).offset(FIT_LENGTH(17.0));
         make.left.equalTo(_middleView).offset(FIT_LENGTH(20.0));
     }];
-    [_stageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_speedLabel);
+    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_distanceLabel);
         make.centerX.equalTo(_middleView);
     }];
-    [_distanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_speedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(_middleView).offset(-FIT_LENGTH(20.0));
-        make.top.equalTo(_speedLabel);
+        make.top.equalTo(_distanceLabel);
+    }];
+    
+    [_distanceNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_distanceLabel.mas_bottom);
+        make.left.equalTo(_middleView).offset(FIT_LENGTH(20.0));
+    }];
+    [_timeNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_distanceNumberLabel);
+        make.centerX.equalTo(_timeLabel);
     }];
     [_speedNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_middleView).offset(FIT_LENGTH(20.0));
-        make.top.equalTo(_speedLabel.mas_bottom);
+        make.top.equalTo(_distanceNumberLabel);
+        make.right.equalTo(_speedLabel);
     }];
-    [_stageNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_speedNumberLabel);
-        make.centerX.equalTo(_stageLabel);
-    }];
-    [_distanceNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_speedNumberLabel);
-        make.right.equalTo(_distanceLabel);
-    }];
+    
     [_middleCuttingLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(_middleView);
         make.height.mas_equalTo(1.0);
@@ -516,7 +585,7 @@
         make.left.equalTo(_bottomView).offset(MARGIN_SCREEN);
         make.top.equalTo(_bottomView).offset(FIT_LENGTH(10.0));
     }];
-    [_bottomStageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_bottomTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_bottomView);
         make.top.equalTo(_bottomSpeedLabel);
     }];
@@ -528,8 +597,8 @@
         make.top.equalTo(_bottomSpeedLabel.mas_bottom).offset(FIT_LENGTH(8.0));
         make.left.equalTo(_bottomSpeedLabel);
     }];
-    [_bottomStageNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_bottomStageLabel);
+    [_bottomTimeNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_bottomTimeLabel);
         make.top.equalTo(_bottomSpeedNumberLabel);
     }];
     [_bottomDistanceNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -573,59 +642,6 @@
     }];
 }
 
-- (void)changeSportsStation:(SportsStation)station {
-    switch (station) {
-        case SportsWillStart:
-            break;
-        case SportsDidStart:
-            _startButton.hidden = YES;
-            _continueButton.hidden = YES;
-            _endButton.hidden = YES;
-            _shareButton.hidden = YES;
-            _pauseView.hidden = NO;
-            _bottomView.hidden = NO;
-
-            break;
-        case SportsDidPause:
-            _startButton.hidden = YES;
-            _continueButton.hidden = NO;
-            _endButton.hidden = NO;
-            _shareButton.hidden = YES;
-            _pauseView.hidden = YES;
-
-            break;
-        case SportsDidEnd: {
-            _sportsAmountLabel.hidden = YES;
-            _numberOfPeopleLable.hidden = YES;
-            _titleLabel.hidden = NO;
-            _standardLabel.hidden = NO;
-            _startButton.hidden = YES;
-            _continueButton.hidden = YES;
-            _endButton.hidden = YES;
-            _shareButton.hidden = NO;
-            _resultView.hidden = NO;
-            [self.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.right.equalTo(_middleView);
-                make.height.mas_equalTo(FIT_LENGTH(53.0));
-                make.top.equalTo(_resultView.mas_bottom);
-            }];
-            [self.shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_titleView);
-                make.left.right.equalTo(_middleView);
-                make.bottom.equalTo(_resultView);
-            }];
-            if (self.pauseSignal) {
-                [self.pauseSignal sendCompleted];
-            }
-            break;
-        }
-        case SportsShare:
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)setDataWithSpeed:(NSString *)speed distance:(NSInteger)distance stage:(NSInteger)stage {
     NSString *speedString = [NSString stringWithFormat:@"%@米/秒", speed];
     NSString *stageString = [NSString stringWithFormat:@"%ld段", distance / stage];
@@ -644,7 +660,7 @@
     [distanceAttributedString addAttributes:attribute1 range:NSMakeRange(0, distanceString.length - 1)];
     [distanceAttributedString addAttributes:attribute2 range:NSMakeRange(distanceString.length - 1, 1)];
     self.speedNumberLabel.attributedText = speedAttributedString;
-    self.stageNumberLabel.attributedText = stageAttributedString;
+    self.timeNumberLabel.attributedText = stageAttributedString;
     self.distanceNumberLabel.attributedText = distanceAttributedString;
 }
 
@@ -654,7 +670,7 @@
     
     NSString *distanceStr = [NSString stringWithFormat:@"%d 米", (int)distance];
     NSString *timeStr = [NSString stringWithFormat:@"%ld 分钟", time / 60];
-    NSString *speedStr = [NSString stringWithFormat:@"%d 米/秒", (int)speed];
+    NSString *speedStr = [NSString stringWithFormat:@"%.1f 米/秒", speed];
     
     NSDictionary *attribute = @{NSFontAttributeName : S10,
                                  NSForegroundColorAttributeName : C_GRAY_TEXT};
@@ -667,9 +683,9 @@
     [timeAttributedString addAttributes:attribute range:NSMakeRange(timeAttributedString.length - 2, 2)];
     [speedAttributedString addAttributes:attribute range:NSMakeRange(speedAttributedString.length - 3, 3)];
     
-    self.speedNumberLabel.attributedText = distanceAttributedString;
-    self.stageNumberLabel.attributedText = timeAttributedString;
-    self.distanceNumberLabel.attributedText = speedAttributedString;
+    self.distanceNumberLabel.attributedText = distanceAttributedString;
+    self.timeNumberLabel.attributedText = timeAttributedString;
+    self.speedNumberLabel.attributedText = speedAttributedString;
 }
 
 - (void)setDataWithCalorie:(int)calorie time:(int)time {

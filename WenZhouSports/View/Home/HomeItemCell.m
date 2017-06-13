@@ -45,10 +45,34 @@
     }
     
     runningProjectItemModel *item = (runningProjectItemModel *)data;
-    self.labSportsType.text = item.name;
-    self.labDistance.text = [NSString stringWithFormat:@"%ld", item.qualifiedDistance];
-    self.labTime.text = [NSString stringWithFormat:@"%ld", item.qualifiedCostTime];
     
+    NSDictionary *attribute = @{NSFontAttributeName : S10,
+                                 NSForegroundColorAttributeName : cFFFFFF};
+    
+    NSString *qualifiedDistance = [NSString stringWithFormat:@"%ld 米", item.qualifiedDistance];
+    NSString *qualifiedCostTime = [NSString stringWithFormat:@"%ld 分钟", item.qualifiedCostTime / 60];
+    NSString *speed = @"0 米/秒";
+    if (item.qualifiedCostTime > 0) {
+        float sp = item.qualifiedDistance * 1.0 / item.qualifiedCostTime;
+        speed = [NSString stringWithFormat:@"%.1f 米/秒", sp];
+    }
+    
+    NSMutableAttributedString *qualifiedDistanceAttributedString = [[NSMutableAttributedString alloc] initWithString:qualifiedDistance];
+    NSMutableAttributedString *qualifiedCostTimeAttributedString = [[NSMutableAttributedString alloc] initWithString:qualifiedCostTime];
+    NSMutableAttributedString *speedAttributedString = [[NSMutableAttributedString alloc] initWithString:speed];
+    
+    [qualifiedDistanceAttributedString addAttributes:attribute range:NSMakeRange(qualifiedDistanceAttributedString.length - 1, 1)];
+    [qualifiedCostTimeAttributedString addAttributes:attribute range:NSMakeRange(qualifiedCostTimeAttributedString.length - 2, 2)];
+    [speedAttributedString addAttributes:attribute range:NSMakeRange(speedAttributedString.length - 3, 3)];
+    
+    self.labSportsType.text = item.name;
+    self.labDistance.attributedText = qualifiedDistanceAttributedString;
+    self.labTime.attributedText = qualifiedCostTimeAttributedString;
+    self.labSpeed.attributedText = speedAttributedString;
+}
+
+- (void)setupPersonCount:(int)count {
+    self.labPersonCount.text = [NSString stringWithFormat:@"%d人正在参加", count];
 }
 
 - (void)createUI {

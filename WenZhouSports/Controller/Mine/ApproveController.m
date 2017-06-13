@@ -8,10 +8,14 @@
 
 #import "ApproveController.h"
 #import "ApproveItemCell.h"
+#import "ApproveAddController.h"
+#import "ApproveDetailController.h"
 
 @interface ApproveController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIButton *btnAddApprove;
+@property (nonatomic, strong) RACSignal *signalAddApprove;
 
 @end
 
@@ -22,11 +26,29 @@
     self.title = @"审批";
     self.view.backgroundColor = cFFFFFF;
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.btnAddApprove];
+    
+    [self initEvent];
+    
+    [self.btnAddApprove mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-20);
+        make.bottom.mas_equalTo(-30);
+        make.size.mas_equalTo(CGSizeMake(60, 60));
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)initEvent {
+    @weakify(self);
+    [self.signalAddApprove subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        ApproveAddController *vc = [[ApproveAddController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -57,7 +79,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    ApproveDetailController *vc = [[ApproveDetailController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - getter && setter
@@ -73,6 +96,19 @@
            forCellReuseIdentifier:NSStringFromClass([ApproveItemCell class])];
     }
     return _tableView;
+}
+
+- (UIButton *)btnAddApprove {
+    if (!_btnAddApprove) {
+        _btnAddApprove = [UIButton buttonWithType:UIButtonTypeCustom];
+        _btnAddApprove.userInteractionEnabled = YES;
+        [_btnAddApprove setImage:[UIImage imageNamed:@"icon_addApprove"] forState:UIControlStateNormal];
+        _btnAddApprove.layer.cornerRadius = 30;
+        _btnAddApprove.layer.masksToBounds = YES;
+        
+        self.signalAddApprove = [_btnAddApprove rac_signalForControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnAddApprove;
 }
 
 - (void)didReceiveMemoryWarning {

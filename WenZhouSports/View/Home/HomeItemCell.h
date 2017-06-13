@@ -19,5 +19,6 @@ typedef NS_ENUM(NSInteger, SportsType) {
 
 - (void)initWithSportsType:(SportsType)type
                       data:(id)data;
+- (void)setupPersonCount:(int)count;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "runningProjectItemModel.h"
 
 typedef NS_ENUM(NSInteger, SportsStation) {
     SportsWillStart = 0,            //运动未开始
@@ -19,6 +20,7 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 @interface SportsDetailView : UIView <MAMapViewDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
+@property (nonatomic, strong) runningProjectItemModel *runningProject;
 // 地图方向箭头
 @property (nonatomic, strong) MAAnnotationView *userLocationAnnotationView;
 
@@ -58,7 +60,6 @@ typedef NS_ENUM(NSInteger, SportsStation) {
  @param speed 速度
  @param distance 距离
  */
-- (void)setDataWithSpeed: (NSString *)speed distance:(NSInteger)distance stage:(NSInteger)stage;
 - (void)setDataWithDistance:(double)distance
                        time:(NSInteger)time
                       speed:(float)speed;

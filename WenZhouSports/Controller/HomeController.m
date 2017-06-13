@@ -48,6 +48,7 @@ CGFloat proportion = 0.84;
     self.view.backgroundColor = cFFFFFF;
     [self initSubviews];
     self.vm = [[HomeViewModel alloc] init];
+    [self initData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -78,6 +79,10 @@ CGFloat proportion = 0.84;
     } error:^(NSError * _Nullable error) {
         NSLog(@"error:%@", [error localizedDescription]);
     }];
+}
+
+-(int)getRandomNumber:(int)from to:(int)to {
+    return (int)(from + (arc4random() % (to - from + 1)));
 }
 
 - (void)initSubviews {
@@ -213,8 +218,9 @@ CGFloat proportion = 0.84;
 //    LoginController *vc = [[LoginController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
     if (indexPath.section == 1) {
-        SportsDetailsController *controller = [[SportsDetailsController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
+        SportsDetailsController *vc = [[SportsDetailsController alloc] init];
+        vc.runningProject = self.vm.runningProjects.runningProjects[indexPath.row - 1];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -235,31 +241,35 @@ CGFloat proportion = 0.84;
         } else {
             HomeItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeItemCell class]) forIndexPath:indexPath];
             
-            
+            int personCount = [self getRandomNumber:0 to:100];
             
             switch (indexPath.row) {
                 case SportsTypeJogging:
                 {
                     runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeJogging data:runProject];
+                    [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeRun:
                 {
                     runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeRun data:runProject];
+                    [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeWalk:
                 {
                     runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeWalk data:runProject];
+                    [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeStep:
                 {
                     runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeStep data:runProject];
+                    [cell setupPersonCount:personCount];
                     break;
                 }
             }

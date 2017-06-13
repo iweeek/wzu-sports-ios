@@ -81,7 +81,7 @@
     self.locationManager.delegate = self;
     [self.locationManager setLocatingWithReGeocode:YES];
     [self.locationManager startUpdatingLocation];
-    self.locationManager.distanceFilter = 0;//10;// 超出10米执行回调
+    self.locationManager.distanceFilter = 10;// 超出10米执行回调
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;// 精确度
     self.mapDistance = 0;
     self.lastPoint = MAMapPointMake(0.0, 0.0);
@@ -97,6 +97,9 @@
 - (void)initSubviews {
     self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 64, WIDTH, HEIGHT - 64)];
     [self.detailView setDelete:self];
+    self.detailView.runningProject = self.runningProject;
+    [self.detailView changeSportsStation:SportsWillStart];
+    
     self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
     [self.detailView.mapView addOverlay:self.line];
     [self.view addSubview:self.detailView];
@@ -154,12 +157,13 @@
 }
 
 // 拦截系统返回按钮，返回前释放timer，避免循环引用
-//-(BOOL)navigationShouldPopOnBackButton {
-//    if (self.timer) {
-//        dispatch_source_cancel(self.timer);
-//    }
-//    return YES; // 返回按钮有效
-//}
+-(BOOL)navigationShouldPopOnBackButton {
+    if (self.isRecording) {
+        [WToast showWithText:@"请先结束运动"];
+        return NO;
+    }
+    return YES; // 返回按钮有效
+}
 
 - (void)reactiveEvent {
     _sportsDataSignal = [[RACSubject alloc] init];
@@ -193,7 +197,7 @@
                 
             }];
         });
-        [self.detailView setDataWithSpeed:@"0.0" distance:0 stage:10];
+//        [self.detailView setDataWithSpeed:@"0.0" distance:0 stage:10];
         [self.detailView addPauseGestureEvent];
         NSDate *nowDate = [NSDate date];
         [self.detailView changeSportsStation:SportsDidStart];
@@ -358,11 +362,6 @@
     
     self.labLatitude.text = [NSString stringWithFormat:@"CLlatitude:%f \nCLlongitude:%f \n%@", locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude, reGeocode.formattedAddress];
     self.lablongitude.text = [NSString stringWithFormat:@"latitude:%f \nlongitude:%f", location.coordinate.latitude, location.coordinate.longitude];
-     
-//    NSLog(@"CLlatitude:%f   CLlongitude:%f", locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude);
-//    NSLog(@"latitude:%f   longitude:%f", location.coordinate.latitude, location.coordinate.longitude);
-//    NSLog(@"%@", reGeocode.formattedAddress);
-
 
     if (self.isRecording) { //是否正在绘制
         CLLocationDistance tempDistance = 0;
