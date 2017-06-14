@@ -103,46 +103,6 @@
     self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
     [self.detailView.mapView addOverlay:self.line];
     [self.view addSubview:self.detailView];
-    
-//    UIView *tempView = [[UIView alloc] init];
-//    tempView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-//    
-//    _labLatitude = ({
-//        UILabel *lab = [[UILabel alloc] init];
-//        lab.textColor = cFFFFFF;
-//        lab.font = S14;
-//        lab.numberOfLines = 0;
-//        
-//        lab;
-//    });
-//    
-//    _lablongitude = ({
-//        UILabel *lab = [[UILabel alloc] init];
-//        lab.textColor = cFFFFFF;
-//        lab.font = S14;
-//        lab.numberOfLines = 0;
-//        
-//        lab;
-//    });
-//
-//    [self.view addSubview:tempView];
-//    [tempView addSubview:_labLatitude];
-//    [tempView addSubview:_lablongitude];
-//    
-//    [tempView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(400);
-//        make.left.mas_equalTo(0);
-//        make.size.mas_equalTo(CGSizeMake(240, 110));
-//    }];
-//    [_labLatitude mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(tempView).offset(10);
-//        make.left.mas_equalTo(7);
-//    }];
-//    [_lablongitude mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(self.labLatitude.mas_bottom).offset(10);
-//        make.left.mas_equalTo(7);
-//    }];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -186,6 +146,7 @@
     [self.detailView.startSignal subscribeNext:^(id x) {
         @strongify(self)
         self.isRecording = YES;
+        [self.detailView setQualifiedData];
         self.currentRecord = [[AMapRouteRecord alloc] init];
         // 全程请求trace
         [self.detailView.mapView removeOverlays:self.tracedPolylines];
@@ -311,44 +272,49 @@
         [self.locationManager startUpdatingLocation];
     }];
     
-    // 暂停
+    // 停止（原来是暂停，注释掉暂停逻辑）
     [self.detailView.pauseSignal subscribeNext:^(id  _Nullable x) {
-       @strongify(self)
-        // 停止运动
-        self.isSporting = NO;
-        dispatch_suspend(self.timer);
-        [self.detailView changeSportsStation:SportsDidPause];
-        isPause = YES;
-        pauseDate = [NSDate date];
-        startPauseDistance = distance;
-        
-        self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
-        [self.detailView.mapView addOverlay:self.line];
-    }];
-    // 继续
-    [self.detailView.continueSignal subscribeNext:^(id  _Nullable x) {
-       @strongify(self)
-        // 开始运动
-        self.isSporting = YES;
-        dispatch_resume(self.timer);
-        isPause = NO;
-        allPauseDistance += pauseDistance;
-        pauseDistance = 0;
-        [self.detailView changeSportsStation:SportsDidStart];
-    }];
-    [self.detailView.endSignal subscribeNext:^(id  _Nullable x) {
-        @strongify(self)
+        @strongify(self);
+        // 释放计时器
+        dispatch_source_cancel(self.timer);
+        // 停止画轨迹
         self.isRecording = NO;
         // 停止运动
         self.isSporting = NO;
-        [self.navigationController.navigationItem setHidesBackButton:NO];
+        
         int timeStamp = [[NSDate date] timeIntervalSince1970];
         [self.db executeUpdate:@"insert into sportsInfo(steps, stepDistance, mapDistance, totalTime, time) values(?,?,?,?,?);", @(steps), @((int)distance), @((int)self.mapDistance), @(time), @(timeStamp)];
-        dispatch_source_cancel(self.timer);
+        
         [self free];
-        [self.detailView setDataWithCalorie:cyclingCount time:time / 60];
+        [self.detailView setDataWithCalorie:cyclingCount time:self.sportsTime / 60];
         [self.detailView changeSportsStation:SportsDidEnd];
         [self.locationManager stopUpdatingLocation];
+        
+//        // 停止运动
+//        self.isSporting = NO;
+//        dispatch_suspend(self.timer);
+//        [self.detailView changeSportsStation:SportsDidPause];
+//        isPause = YES;
+//        pauseDate = [NSDate date];
+//        startPauseDistance = distance;
+//        
+//        self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
+//        [self.detailView.mapView addOverlay:self.line];
+    }];
+//    // 继续
+//    [self.detailView.continueSignal subscribeNext:^(id  _Nullable x) {
+//       @strongify(self)
+//        // 开始运动
+//        self.isSporting = YES;
+//        dispatch_resume(self.timer);
+//        isPause = NO;
+//        allPauseDistance += pauseDistance;
+//        pauseDistance = 0;
+//        [self.detailView changeSportsStation:SportsDidStart];
+//    }];
+    [self.detailView.endSignal subscribeNext:^(id  _Nullable x) {
+//        @strongify(self)
+        
     }];
     [self.detailView.shareSignal subscribeNext:^(id  _Nullable x) {
         @strongify(self)

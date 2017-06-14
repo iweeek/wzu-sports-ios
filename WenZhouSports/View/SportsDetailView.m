@@ -34,12 +34,12 @@
 
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIView *bottomBackgroundView;
-@property (nonatomic, strong) UILabel *bottomSpeedLabel;
-@property (nonatomic, strong) UILabel *bottomSpeedNumberLabel;
-@property (nonatomic, strong) UILabel *bottomTimeLabel;
-@property (nonatomic, strong) UILabel *bottomTimeNumberLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceLabel;
 @property (nonatomic, strong) UILabel *bottomDistanceNumberLabel;
+@property (nonatomic, strong) UILabel *bottomTimeLabel;
+@property (nonatomic, strong) UILabel *bottomTimeNumberLabel;
+@property (nonatomic, strong) UILabel *bottomSpeedLabel;
+@property (nonatomic, strong) UILabel *bottomSpeedNumberLabel;
 
 @property (nonatomic, strong) UIView *pauseView;
 @property (nonatomic, strong) UIView *pauseBackground;
@@ -66,7 +66,7 @@
 //@property (nonatomic, strong) AMapLocationManager *locationManager;
 
 @property (nonatomic, strong) RACSignal *startSignal;
-@property (nonatomic, strong) RACSubject *pauseSignal;
+//@property (nonatomic, strong) RACSubject *pauseSignal;
 @property (nonatomic, strong) RACSignal *pauseGestureSignal;
 @property (nonatomic, strong) RACSignal *continueSignal;
 @property (nonatomic, strong) RACSignal *endSignal;
@@ -97,12 +97,8 @@
             _speedLabel.text = @"达标速度";
             
             [self setDataWithDistance:self.runningProject.qualifiedDistance
-                                 time:self.runningProject.qualifiedCostTime / 60
+                                 time:self.runningProject.qualifiedCostTime
                                 speed:self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime];
-//            _distanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningProject.qualifiedDistance];
-//            _timeNumberLabel.text =  [NSString stringWithFormat:@"%ld 分钟", self.runningProject.qualifiedCostTime / 60];
-//            float speed = self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime;
-//            _speedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", speed];
             break;
         }
         case SportsDidStart:
@@ -121,8 +117,13 @@
             _shareButton.hidden = YES;
             _pauseView.hidden = YES;
             
+            _distanceLabel.text = @"本次距离";
+            _timeLabel.text = @"耗时";
+            _speedLabel.text = @"即时速度";
+            
             break;
         case SportsDidEnd: {
+            _pauseView.hidden = YES;
             _sportsAmountLabel.hidden = YES;
             _numberOfPeopleLable.hidden = YES;
             _titleLabel.hidden = NO;
@@ -132,6 +133,11 @@
             _endButton.hidden = YES;
             _shareButton.hidden = NO;
             _resultView.hidden = NO;
+            
+            _distanceLabel.text = @"本次距离";
+            _timeLabel.text = @"本次耗时";
+            _speedLabel.text = @"本次速度";
+            
             [self.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.right.equalTo(_middleView);
                 make.height.mas_equalTo(FIT_LENGTH(53.0));
@@ -213,7 +219,7 @@
     });
     _numberOfPeopleLable = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"?人正在参加";
+        lab.text = @"37人正在参加";
         lab.font = S10;
         lab.textColor = C_GRAY_TEXT;
         
@@ -322,7 +328,7 @@
         
         view;
     });
-    _bottomSpeedLabel = ({
+    _bottomDistanceLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.textColor = [UIColor whiteColor];
         lab.text = @"达标距离";
@@ -338,7 +344,7 @@
         
         lab;
     });
-    _bottomDistanceLabel = ({
+    _bottomSpeedLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.text = @"达标平均速度";
         lab.textColor = [UIColor whiteColor];
@@ -346,7 +352,7 @@
         
         lab;
     });
-    _bottomSpeedNumberLabel = ({
+    _bottomDistanceNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.text = @"6000 米";
         lab.textColor = cFFFFFF;
@@ -354,7 +360,7 @@
         
         lab;
     });
-    _bottomDistanceNumberLabel = ({
+    _bottomSpeedNumberLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.text = @"1.0 米/秒";
         lab.textColor = cFFFFFF;
@@ -370,7 +376,7 @@
         
         lab;
     });
-    [_bottomView addSubviews:@[_bottomBackgroundView, _bottomSpeedLabel, _bottomTimeLabel, _bottomDistanceLabel, _bottomSpeedNumberLabel, _bottomTimeNumberLabel, _bottomDistanceNumberLabel]];
+    [_bottomView addSubviews:@[_bottomBackgroundView, _bottomDistanceLabel, _bottomTimeLabel, _bottomSpeedLabel, _bottomDistanceNumberLabel, _bottomTimeNumberLabel, _bottomSpeedNumberLabel]];
     
     // 暂停View
     _pauseView = ({
@@ -581,29 +587,29 @@
         make.size.equalTo(_bottomView);
         make.edges.equalTo(_bottomView);
     }];
-    [_bottomSpeedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_bottomDistanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_bottomView).offset(MARGIN_SCREEN);
         make.top.equalTo(_bottomView).offset(FIT_LENGTH(10.0));
     }];
     [_bottomTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_bottomView);
-        make.top.equalTo(_bottomSpeedLabel);
+        make.top.equalTo(_bottomDistanceLabel);
     }];
-    [_bottomDistanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_bottomSpeedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(_bottomView).offset(-MARGIN_SCREEN);
-        make.top.equalTo(_bottomSpeedLabel);
+        make.top.equalTo(_bottomDistanceLabel);
     }];
-    [_bottomSpeedNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_bottomSpeedLabel.mas_bottom).offset(FIT_LENGTH(8.0));
-        make.left.equalTo(_bottomSpeedLabel);
+    [_bottomDistanceNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_bottomDistanceLabel.mas_bottom).offset(FIT_LENGTH(8.0));
+        make.left.equalTo(_bottomDistanceLabel);
     }];
     [_bottomTimeNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_bottomTimeLabel);
-        make.top.equalTo(_bottomSpeedNumberLabel);
+        make.top.equalTo(_bottomDistanceNumberLabel);
     }];
-    [_bottomDistanceNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_bottomDistanceLabel);
-        make.top.equalTo(_bottomSpeedNumberLabel);
+    [_bottomSpeedNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_bottomSpeedLabel);
+        make.top.equalTo(_bottomDistanceNumberLabel);
     }];
     [_pauseView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
@@ -688,9 +694,15 @@
     self.speedNumberLabel.attributedText = speedAttributedString;
 }
 
-- (void)setDataWithCalorie:(int)calorie time:(int)time {
+- (void)setQualifiedData {
+    self.bottomDistanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningProject.qualifiedDistance];
+    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningProject.qualifiedCostTime / 60];
+    self.bottomSpeedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime];
+}
+
+- (void)setDataWithCalorie:(int)calorie time:(NSInteger)time {
     self.calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%d千卡", calorie];
-    self.timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%d分钟", time];
+    self.timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%ld分钟", time];
 }
 
 - (void)setDelete:(id<MAMapViewDelegate>)delegate {
