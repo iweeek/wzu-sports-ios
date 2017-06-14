@@ -44,6 +44,7 @@
 		B8136D701EEE95CE0000D062 /* ApproveDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8136D6F1EEE95CE0000D062 /* ApproveDetailController.m */; };
 		B8136D731EEEBB880000D062 /* ApproveDetailItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8136D721EEEBB880000D062 /* ApproveDetailItemCell.m */; };
 		B8136D761EEEBE760000D062 /* ApproveDetailImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8136D751EEEBE760000D062 /* ApproveDetailImageCell.m */; };
+		B8136D7A1EF1704D0000D062 /* Dao+Sports.m in Sources */ = {isa = PBXBuildFile; fileRef = B8136D791EF1704D0000D062 /* Dao+Sports.m */; };
 		B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */; };
 		B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A301EE98B5D00ACBC8D /* APIInterface.m */; };
 		B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */; };
@@ -169,6 +170,8 @@
 		B8136D721EEEBB880000D062 /* ApproveDetailItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApproveDetailItemCell.m; sourceTree = "<group>"; };
 		B8136D741EEEBE760000D062 /* ApproveDetailImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproveDetailImageCell.h; sourceTree = "<group>"; };
 		B8136D751EEEBE760000D062 /* ApproveDetailImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApproveDetailImageCell.m; sourceTree = "<group>"; };
+		B8136D781EF1704D0000D062 /* Dao+Sports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Dao+Sports.h"; sourceTree = "<group>"; };
+		B8136D791EF1704D0000D062 /* Dao+Sports.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Dao+Sports.m"; sourceTree = "<group>"; };
 		B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewModel.h; sourceTree = "<group>"; };
 		B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewModel.m; sourceTree = "<group>"; };
 		B8604A2F1EE98B5D00ACBC8D /* APIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIInterface.h; sourceTree = "<group>"; };
@@ -465,9 +468,19 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		B8136D771EF170370000D062 /* Sports */ = {
+			isa = PBXGroup;
+			children = (
+				B8136D781EF1704D0000D062 /* Dao+Sports.h */,
+				B8136D791EF1704D0000D062 /* Dao+Sports.m */,
+			);
+			path = Sports;
+			sourceTree = "<group>";
+		};
 		B8604A351EEA31E400ACBC8D /* DAO */ = {
 			isa = PBXGroup;
 			children = (
+				B8136D771EF170370000D062 /* Sports */,
 				B8604A391EEA9D0100ACBC8D /* Home */,
 			);
 			path = DAO;
@@ -817,6 +830,7 @@
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				54E92F601EBDA9B00073BABF /* RankingController.m in Sources */,
 				B8136D6A1EEE85090000D062 /* ApproveAddItemCell.m in Sources */,
+				B8136D7A1EF1704D0000D062 /* Dao+Sports.m in Sources */,
 				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
 				B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,

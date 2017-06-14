@@ -8,6 +8,7 @@
 
 #import "SportsDetailViewModel.h"
 #import "BaseDao+Category.h"
+#import "Dao+Sports.h"
 
 @interface SportsDetailViewModel ()
 
@@ -21,6 +22,13 @@
     if (self = [super init]) {
         _compareFaceCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id input) {
             return [[Dao share] compareFaceWithFace1:input[@"face1"] face2:input[@"face2"]];
+        }];
+        
+        _cmdRunActivity = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[[Dao share] runActivity:input]
+                catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
+                return [RACSignal error:error];
+            }];
         }];
     }
     return self;

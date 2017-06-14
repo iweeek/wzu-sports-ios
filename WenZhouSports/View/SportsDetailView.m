@@ -102,6 +102,7 @@
             break;
         }
         case SportsDidStart:
+        {
             _startButton.hidden = YES;
             _continueButton.hidden = YES;
             _endButton.hidden = YES;
@@ -109,17 +110,18 @@
             _pauseView.hidden = NO;
             _bottomView.hidden = NO;
             
+            _distanceLabel.text = @"本次距离";
+            _timeLabel.text = @"耗时";
+            _speedLabel.text = @"即时速度";
+            
             break;
+        }
         case SportsDidPause:
             _startButton.hidden = YES;
             _continueButton.hidden = NO;
             _endButton.hidden = NO;
             _shareButton.hidden = YES;
             _pauseView.hidden = YES;
-            
-            _distanceLabel.text = @"本次距离";
-            _timeLabel.text = @"耗时";
-            _speedLabel.text = @"即时速度";
             
             break;
         case SportsDidEnd: {

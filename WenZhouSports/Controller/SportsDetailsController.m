@@ -46,6 +46,7 @@
 
 @property (nonatomic, assign) BOOL isSporting;// 是否正在运动
 @property (nonatomic, assign) NSInteger sportsTime;
+@property (nonatomic, assign) NSTimeInterval startTime;
 @property (nonatomic, assign) double distance;
 @property (nonatomic, assign) float speed;
 
@@ -145,6 +146,7 @@
     //运动开始点击事件
     [self.detailView.startSignal subscribeNext:^(id x) {
         @strongify(self)
+        self.startTime = (long)[[NSDate date] timeIntervalSince1970];
         self.isRecording = YES;
         [self.detailView setQualifiedData];
         self.currentRecord = [[AMapRouteRecord alloc] init];
@@ -174,7 +176,7 @@
             self.sportsTime++;
             //点击开始后开始计时
             time = -[nowDate timeIntervalSinceNow];
-            NSLog(@"时间：%ld", self.sportsTime);
+            NSLog(@"时间：%ld", (long)self.sportsTime);
             [self.sportsDataSignal subscribeNext:^(CMPedometerData *x) {
                 distance = x.distance.floatValue;
                 steps = x.numberOfSteps.integerValue;
@@ -200,7 +202,7 @@
                     log(@"%@", error);
                 }
                 [self.sportsDataSignal sendNext:pedometerData];
-                log(@"距离：%ld", pedometerData.distance.integerValue);
+                log(@"距离：%ld", (long)pedometerData.distance.integerValue);
             }];
         }
         //设备硬件状态
@@ -289,6 +291,17 @@
         [self.detailView setDataWithCalorie:cyclingCount time:self.sportsTime / 60];
         [self.detailView changeSportsStation:SportsDidEnd];
         [self.locationManager stopUpdatingLocation];
+        
+        NSDictionary *dic = @{@"projectId":@(self.runningProject.id),
+                              @"studentId":@(1),
+                              @"distance":@(self.distance),
+                              @"costTime":@(self.sportsTime),
+                              @"targetTime":@(self.sportsTime),
+                              @"startTime":@(self.startTime)};
+
+        [[self.viewModel.cmdRunActivity execute:dic] subscribeError:^(NSError * _Nullable error) {
+            NSLog(@"error>>>>>>>>>:%@", [error localizedDescription]);
+        }];;
         
 //        // 停止运动
 //        self.isSporting = NO;
