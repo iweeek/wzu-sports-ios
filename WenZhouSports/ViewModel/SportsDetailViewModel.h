@@ -12,6 +12,7 @@
 
 //人脸比较
 @property (nonatomic, strong, readonly) RACCommand *compareFaceCommand;
+@property (nonatomic, strong) RACCommand *cmdRunActivity;
 
 
 @end

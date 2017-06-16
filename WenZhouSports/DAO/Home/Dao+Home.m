@@ -18,18 +18,6 @@
         }];
 }
 
-- (RACSignal *)runActivity:(NSDictionary *)dic {
-    NSDictionary *dic3 = @{@"projectId":@(1),
-                          @"studentId":@(1),
-                          @"distance":@(100),
-                          @"costTime":@(14),
-                          @"targetTime":@(15),
-                          @"startTime":@(1497171815)};
-    
-    return [[self RAC_POST:@"runningActivitys" parameters:dic3]
-            map:^id _Nullable(id  _Nullable value) {
-                return [self jsonToMode:[runningProjectsModel class] dictionary:value key:nil];
-            }];
-}
+
 
 @end

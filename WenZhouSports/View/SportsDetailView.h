@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 /**
  运动暂停滑动事件
  */
-@property (nonatomic, strong, readonly) RACSubject *pauseSignal;
+@property (nonatomic, strong) RACSubject *pauseSignal;
 /**
  继续点击事件
  */
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 - (void)changeSportsStation: (SportsStation)station;
 
 /**
- 设置当前速度和juli
+ 设置当前速度和距离
 
  @param speed 速度
  @param distance 距离
@@ -63,13 +63,17 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 - (void)setDataWithDistance:(double)distance
                        time:(NSInteger)time
                       speed:(float)speed;
+
+// 设置“合格”数据
+- (void)setQualifiedData;
+
 /**
  设置运动结果
 
  @param calorie 卡路里
  @param time 时间
  */
-- (void)setDataWithCalorie:(int)calorie time:(int)time;
+- (void)setDataWithCalorie:(int)calorie time:(NSInteger)time;
 
 /**
  添加滑动事件
