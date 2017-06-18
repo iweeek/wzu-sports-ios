@@ -68,7 +68,7 @@
             }
             [subscriber sendError:[NSError errorWithDomain:@""
                                                       code:code
-                                                  userInfo:@{@"msg":message}]];
+                                                  userInfo:@{@"msg":@""}]];
         }
         return nil;
     }];

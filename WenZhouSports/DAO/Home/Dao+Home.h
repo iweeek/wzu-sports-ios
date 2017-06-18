@@ -11,6 +11,6 @@
 @interface Dao (Home)
 
 - (RACSignal *)runningProjects:(NSDictionary *)dic;
-- (RACSignal *)runActivity:(NSDictionary *)dic;
+- (RACSignal *)sportTotal:(NSDictionary *)dic;
 
 @end

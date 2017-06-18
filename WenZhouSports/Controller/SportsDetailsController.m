@@ -120,7 +120,7 @@
 // 拦截系统返回按钮，返回前释放timer，避免循环引用
 -(BOOL)navigationShouldPopOnBackButton {
     if (self.isRecording) {
-        [WToast showWithText:@"请先结束运动"];
+        [LNDProgressHUD showErrorMessage:@"请先结束运动" inView:self.view];
         return NO;
     }
     return YES; // 返回按钮有效
