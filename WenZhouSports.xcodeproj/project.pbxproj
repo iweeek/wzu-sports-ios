@@ -67,6 +67,10 @@
 		B82203171EF656A200B7626B /* NetErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203161EF656A200B7626B /* NetErrorView.m */; };
 		B822031D1EF6C85F00B7626B /* RankingHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B822031C1EF6C85F00B7626B /* RankingHeaderCell.m */; };
 		B82203201EF6C86A00B7626B /* RankingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B822031F1EF6C86A00B7626B /* RankingItemCell.m */; };
+		B82203241EF7C80000B7626B /* RankingViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203231EF7C80000B7626B /* RankingViewModel.m */; };
+		B82203281EF7CC9C00B7626B /* StudentTimeCostedModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203271EF7CC9C00B7626B /* StudentTimeCostedModel.m */; };
+		B822032B1EF7CD0700B7626B /* StudentTimeCostedPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B822032A1EF7CD0700B7626B /* StudentTimeCostedPageModel.m */; };
+		B822032F1EF7D02500B7626B /* Dao+Ranking.m in Sources */ = {isa = PBXBuildFile; fileRef = B822032E1EF7D02500B7626B /* Dao+Ranking.m */; };
 		B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */; };
 		B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A301EE98B5D00ACBC8D /* APIInterface.m */; };
 		B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */; };
@@ -239,6 +243,14 @@
 		B822031C1EF6C85F00B7626B /* RankingHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingHeaderCell.m; sourceTree = "<group>"; };
 		B822031E1EF6C86A00B7626B /* RankingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingItemCell.h; sourceTree = "<group>"; };
 		B822031F1EF6C86A00B7626B /* RankingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingItemCell.m; sourceTree = "<group>"; };
+		B82203221EF7C80000B7626B /* RankingViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingViewModel.h; sourceTree = "<group>"; };
+		B82203231EF7C80000B7626B /* RankingViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingViewModel.m; sourceTree = "<group>"; };
+		B82203261EF7CC9C00B7626B /* StudentTimeCostedModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentTimeCostedModel.h; sourceTree = "<group>"; };
+		B82203271EF7CC9C00B7626B /* StudentTimeCostedModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentTimeCostedModel.m; sourceTree = "<group>"; };
+		B82203291EF7CD0700B7626B /* StudentTimeCostedPageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentTimeCostedPageModel.h; sourceTree = "<group>"; };
+		B822032A1EF7CD0700B7626B /* StudentTimeCostedPageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentTimeCostedPageModel.m; sourceTree = "<group>"; };
+		B822032D1EF7D02500B7626B /* Dao+Ranking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Dao+Ranking.h"; sourceTree = "<group>"; };
+		B822032E1EF7D02500B7626B /* Dao+Ranking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Dao+Ranking.m"; sourceTree = "<group>"; };
 		B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewModel.h; sourceTree = "<group>"; };
 		B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewModel.m; sourceTree = "<group>"; };
 		B8604A2F1EE98B5D00ACBC8D /* APIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIInterface.h; sourceTree = "<group>"; };
@@ -504,6 +516,8 @@
 				542D6DE51EC9A60D00E26F62 /* SportsDetailViewModel.m */,
 				B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */,
 				B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */,
+				B82203221EF7C80000B7626B /* RankingViewModel.h */,
+				B82203231EF7C80000B7626B /* RankingViewModel.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -511,6 +525,7 @@
 		B8136D591EED88AB0000D062 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B82203251EF7CC7E00B7626B /* Ranking */,
 				B8136D5E1EED88CD0000D062 /* Home */,
 				B8136D5A1EED88AB0000D062 /* Location */,
 				B8136D5B1EED88AB0000D062 /* StudentModel.h */,
@@ -651,9 +666,30 @@
 			path = Refresh;
 			sourceTree = "<group>";
 		};
+		B82203251EF7CC7E00B7626B /* Ranking */ = {
+			isa = PBXGroup;
+			children = (
+				B82203261EF7CC9C00B7626B /* StudentTimeCostedModel.h */,
+				B82203271EF7CC9C00B7626B /* StudentTimeCostedModel.m */,
+				B82203291EF7CD0700B7626B /* StudentTimeCostedPageModel.h */,
+				B822032A1EF7CD0700B7626B /* StudentTimeCostedPageModel.m */,
+			);
+			path = Ranking;
+			sourceTree = "<group>";
+		};
+		B822032C1EF7CFE200B7626B /* Ranking */ = {
+			isa = PBXGroup;
+			children = (
+				B822032D1EF7D02500B7626B /* Dao+Ranking.h */,
+				B822032E1EF7D02500B7626B /* Dao+Ranking.m */,
+			);
+			path = Ranking;
+			sourceTree = "<group>";
+		};
 		B8604A351EEA31E400ACBC8D /* DAO */ = {
 			isa = PBXGroup;
 			children = (
+				B822032C1EF7CFE200B7626B /* Ranking */,
 				B8136D771EF170370000D062 /* Sports */,
 				B8604A391EEA9D0100ACBC8D /* Home */,
 			);
@@ -957,12 +993,14 @@
 				B8A05F811EE1CA2B003AEC95 /* SportsPerformanceCell.m in Sources */,
 				B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */,
 				B8DF48B41EE14D7A0088377D /* HomeSportsTypeCell.m in Sources */,
+				B82203281EF7CC9C00B7626B /* StudentTimeCostedModel.m in Sources */,
 				B885CBBB1EDFB8A00074FBEF /* BaseCell.m in Sources */,
 				542D6DCE1EC060DA00E26F62 /* SportsDetailView.m in Sources */,
 				542D6DE31EC7028700E26F62 /* MAMutablePolylineRenderer2D.m in Sources */,
 				542D6DCB1EC045A900E26F62 /* CellWithCuttingLine.m in Sources */,
 				B8A05F8B1EE25AE0003AEC95 /* SettingController.m in Sources */,
 				B8136D641EED910C0000D062 /* runningProjectItemModel.m in Sources */,
+				B82203241EF7C80000B7626B /* RankingViewModel.m in Sources */,
 				B8136D831EF2BB100000D062 /* FlipTableView.m in Sources */,
 				5401BB8E1EB9B88300003C51 /* BaseViewController.m in Sources */,
 				B82203101EF6546A00B7626B /* ZBJRefreshFooterContentView.m in Sources */,
@@ -986,6 +1024,7 @@
 				B8DF48C81EE16E270088377D /* UINavigationBar+Awesome.m in Sources */,
 				542D6DDD1EC315FA00E26F62 /* NSNumber+SetScale.m in Sources */,
 				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
+				B822032F1EF7D02500B7626B /* Dao+Ranking.m in Sources */,
 				5401BB741EB823F000003C51 /* Dao.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
 				B8A05F7A1EE1C6AD003AEC95 /* PersonInfoCell.m in Sources */,
@@ -1033,6 +1072,7 @@
 				B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */,
 				B8F5C2771EEB8ECF008305C2 /* MAMutablePolyline.m in Sources */,
 				B8136D701EEE95CE0000D062 /* ApproveDetailController.m in Sources */,
+				B822032B1EF7CD0700B7626B /* StudentTimeCostedPageModel.m in Sources */,
 				B885CBC21EE01CB30074FBEF /* SportsHistoryItemCell.m in Sources */,
 				B82202F31EF6163800B7626B /* RunningActivityModel.m in Sources */,
 				B82202F61EF61CA900B7626B /* HomePageModel.m in Sources */,

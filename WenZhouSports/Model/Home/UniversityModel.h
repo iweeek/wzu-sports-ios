@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TermModel.h"
+#import "StudentTimeCostedPageModel.h"
 
 @interface UniversityModel : NSObject
 
@@ -15,5 +16,6 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) NSInteger teachersCount;
 @property (nonatomic, strong) TermModel *currentTerm;
+@property (nonatomic, strong) StudentTimeCostedPageModel *timeCostedRanking;
 
 @end

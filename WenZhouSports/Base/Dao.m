@@ -106,7 +106,7 @@
     }];
     NSString *requestPath = [NSString stringWithFormat:Server, path];
     NSLog(@"===============");
-    NSLog(@"%@?%@", Server, tmp);
+    NSLog(@"%@", requestPath);
     NSLog(@"===============");
     @weakify(self);
     return [[[[self.manager RAC_POST:requestPath parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {

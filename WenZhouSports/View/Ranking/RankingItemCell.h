@@ -10,4 +10,6 @@
 
 @interface RankingItemCell : BaseCell
 
+- (void)setupWithData:(id)data index:(NSInteger)index;
+
 @end

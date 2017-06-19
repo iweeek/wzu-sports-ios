@@ -7,6 +7,7 @@
 //
 
 #import "RankingHeaderCell.h"
+#import "StudentTimeCostedModel.h"
 
 @interface RankingHeaderCell ()
 
@@ -31,13 +32,18 @@
 @implementation RankingHeaderCell
 
 - (void)setupWithData:(id)data {
-    [self.imgAvatarLeft sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    [self.imgAvatarRight sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    [self.imgAvatarCenter sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    NSArray<StudentTimeCostedModel *> *array = data;
+    StudentTimeCostedModel *model1 = array[0];
+    StudentTimeCostedModel *model2 = array[1];
+    StudentTimeCostedModel *model3 = array[2];
     
-    self.labNameLeft.text = @"王晓燕";
-    self.labNameCenter.text = @"王晓燕";
-    self.labNameRight.text = @"王晓燕";
+    [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    
+    self.labNameLeft.text = model2.studentName;
+    self.labNameCenter.text = model1.studentName;
+    self.labNameRight.text = model3.studentName;
     
     self.labDescLeft.text = @"2313 千卡";
     self.labDescCenter.text = @"2313 千卡";
