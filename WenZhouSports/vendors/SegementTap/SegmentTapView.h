@@ -45,6 +45,8 @@
  字体大小
  */
 @property (nonatomic, assign)CGFloat titleFont;
+
+@property (nonatomic, strong)UIColor *spliteLineColor;
 /**
 Initialization
  

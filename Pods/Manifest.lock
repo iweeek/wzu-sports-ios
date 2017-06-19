@@ -35,6 +35,9 @@ PODS:
     - FBRetainCycleDetector
   - ReactiveObjC (3.0.0)
   - Reveal-iOS-SDK (1.6.2)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
   - WToast (2.0.1)
   - YYModel (1.0.4)
 
@@ -49,6 +52,7 @@ DEPENDENCIES:
   - MLeaksFinder
   - ReactiveObjC
   - Reveal-iOS-SDK
+  - SDWebImage (~> 4.0.0)
   - WToast (~> 2.0.1)
   - YYModel (~> 1.0.4)
 
@@ -65,9 +69,10 @@ SPEC CHECKSUMS:
   MLeaksFinder: 0850e2f2abc7227adc4d4e2d1992b431264eb4d5
   ReactiveObjC: ce79989e8684b9086b5f8d0c74bc7b81a8729c9e
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   WToast: 42eee7b063677717a9050ce855adea0395e645bd
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 6a8a47c7505929cbfa6908f6a58043af06e21d57
+PODFILE CHECKSUM: 1023dee2cc32657a687fe2997ee2205c447975be
 
 COCOAPODS: 1.0.0

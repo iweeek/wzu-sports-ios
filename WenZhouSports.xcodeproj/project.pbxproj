@@ -65,6 +65,8 @@
 		B82203131EF6546A00B7626B /* ZBJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B822030B1EF6546A00B7626B /* ZBJRefreshHeaderView.m */; };
 		B82203141EF6546A00B7626B /* ZBJRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = B822030D1EF6546A00B7626B /* ZBJRefreshView.m */; };
 		B82203171EF656A200B7626B /* NetErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203161EF656A200B7626B /* NetErrorView.m */; };
+		B822031D1EF6C85F00B7626B /* RankingHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B822031C1EF6C85F00B7626B /* RankingHeaderCell.m */; };
+		B82203201EF6C86A00B7626B /* RankingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B822031F1EF6C86A00B7626B /* RankingItemCell.m */; };
 		B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */; };
 		B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A301EE98B5D00ACBC8D /* APIInterface.m */; };
 		B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */; };
@@ -233,6 +235,10 @@
 		B822030D1EF6546A00B7626B /* ZBJRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBJRefreshView.m; sourceTree = "<group>"; };
 		B82203151EF656A200B7626B /* NetErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetErrorView.h; sourceTree = "<group>"; };
 		B82203161EF656A200B7626B /* NetErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetErrorView.m; sourceTree = "<group>"; };
+		B822031B1EF6C85F00B7626B /* RankingHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingHeaderCell.h; sourceTree = "<group>"; };
+		B822031C1EF6C85F00B7626B /* RankingHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingHeaderCell.m; sourceTree = "<group>"; };
+		B822031E1EF6C86A00B7626B /* RankingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingItemCell.h; sourceTree = "<group>"; };
+		B822031F1EF6C86A00B7626B /* RankingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingItemCell.m; sourceTree = "<group>"; };
 		B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewModel.h; sourceTree = "<group>"; };
 		B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewModel.m; sourceTree = "<group>"; };
 		B8604A2F1EE98B5D00ACBC8D /* APIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIInterface.h; sourceTree = "<group>"; };
@@ -575,6 +581,10 @@
 		B8136D841EF2BB920000D062 /* Ranking */ = {
 			isa = PBXGroup;
 			children = (
+				B822031B1EF6C85F00B7626B /* RankingHeaderCell.h */,
+				B822031C1EF6C85F00B7626B /* RankingHeaderCell.m */,
+				B822031E1EF6C86A00B7626B /* RankingItemCell.h */,
+				B822031F1EF6C86A00B7626B /* RankingItemCell.m */,
 			);
 			path = Ranking;
 			sourceTree = "<group>";
@@ -997,6 +1007,7 @@
 				B8A05F8E1EE2F38F003AEC95 /* UIViewController+BackButtonHandler.m in Sources */,
 				B8A05F881EE1CD0A003AEC95 /* ApproveItemCell.m in Sources */,
 				542D6DE61EC9A60D00E26F62 /* SportsDetailViewModel.m in Sources */,
+				B822031D1EF6C85F00B7626B /* RankingHeaderCell.m in Sources */,
 				B8A05F7D1EE1C9D5003AEC95 /* SportsPerformanceController.m in Sources */,
 				B822030E1EF6546A00B7626B /* UIScrollView+PullToRefresh.m in Sources */,
 				5401BB911EB9CE9B00003C51 /* LineTextField.m in Sources */,
@@ -1017,6 +1028,7 @@
 				5401BB841EB972FD00003C51 /* HomeController.m in Sources */,
 				B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
+				B82203201EF6C86A00B7626B /* RankingItemCell.m in Sources */,
 				B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */,
 				B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */,
 				B8F5C2771EEB8ECF008305C2 /* MAMutablePolyline.m in Sources */,

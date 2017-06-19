@@ -18,7 +18,7 @@
 #define C_FF0000 UIColorFromRGB(0xff0000)
 
 #define cFFFFFF UIColorFromRGB(0xFFFFFF)
-#define cEEEEEE UIColorFromRGB(0xEEEEEE) // 进度条北京灰色
+#define cEEEEEE UIColorFromRGB(0xEEEEEE) // 进度条背景灰色
 #define cSpliteLine UIColorFromRGB(0xEDF0F2)
 #define c474A4F UIColorFromRGB(0x474A4F)
 #define c7E848C UIColorFromRGB(0x7E848C)

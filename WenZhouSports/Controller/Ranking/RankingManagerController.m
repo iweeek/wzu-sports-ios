@@ -39,11 +39,8 @@
     self.segment.textSelectedColor = c66A7FE;
     self.segment.lineColor = c66A7FE;
     self.segment.delegate = self;
+    self.segment.spliteLineColor = cEEEEEE;
     [self.view addSubview:self.segment];
-    
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 64 + 50, WIDTH, 1)];
-    line.backgroundColor = c7E848C;
-    [self.view addSubview:line];
     
     if (!self.controllsArray) {
         self.controllsArray = [[NSMutableArray alloc] init];
@@ -59,7 +56,7 @@
     [self.controllsArray addObject:calorieVC];
     [self.controllsArray addObject:TimeVC];
     
-    self.flipView = [[FlipTableView alloc] initWithFrame:CGRectMake(0, 64 + 51, WIDTH, HEIGHT - 50) withArray:_controllsArray];
+    self.flipView = [[FlipTableView alloc] initWithFrame:CGRectMake(0, 64 + 50, WIDTH, HEIGHT - 50) withArray:_controllsArray];
     
     self.flipView.delegate = self;
     [self.view addSubview:self.flipView];

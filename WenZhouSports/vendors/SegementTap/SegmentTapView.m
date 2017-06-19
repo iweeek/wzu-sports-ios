@@ -60,6 +60,10 @@
             [self addSubview:line];
         }
     }
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 1 , WIDTH, 2)];
+    line.backgroundColor = cEEEEEE;
+    [self addSubview:line];
+    
     self.lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 3, width, 3)];
     self.lineImageView.backgroundColor = _lineColor;
     [self addSubview:self.lineImageView];
