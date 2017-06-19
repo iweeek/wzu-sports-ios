@@ -7,15 +7,15 @@
 //
 
 #import "RankingView.h"
-#import "RankingController.h"
+#import "OldRankingController.h"
 
-@interface RankingController ()
+@interface OldRankingController ()
 
 @property (nonatomic, strong) RankingView *rankingView;
 
 @end
 
-@implementation RankingController
+@implementation OldRankingController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -49,6 +49,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>WToast.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,17 +82,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3558D0E7ED0CF1054935921403999E4A</key>
+		<key>7D0CDDD573121F88588BA1D796A1CF9D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>58F80DA14D2AFEF16B2F826468BE0C03</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9202791481181847C5E541BC956C0C4A</key>
+		<key>87F830C877DC6AEC56D1974DBBF8AEA5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,12 +102,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AAAD01EE7CAE576162E2DF5BE7EC2F8D</key>
+		<key>ACCC528E10C453E4E57E14E5185B14F0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>AF21780C841830BE5AD3F34076925612</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B76EA7FB4E18E15C348672AF78AC839F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C0AEED635615EBA24B46E37BD17AA078</key>
 		<dict>
 			<key>primary</key>
 			<true/>

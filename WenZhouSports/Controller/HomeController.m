@@ -8,7 +8,7 @@
 
 #import "HomeController.h"
 #import "PersonalCenterView.h"
-#import "RankingController.h"
+#import "OldRankingController.h"
 #import "SportsDetailsController.h"
 #import "SportsDetailViewModel.h"
 #import "SportsHistoryController.h"
@@ -23,14 +23,14 @@
 #import "HomeViewModel.h"
 #import "runningProjectsModel.h"
 #import "runningProjectItemModel.h"
-
-#import "StudentModel.h"
-#import "LoginController.h"
-#import "ForgetPasswordController.h"
+#import "RankingManagerController.h"
+#import "ZBJRefresh.h"
+#import "NetErrorView.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NetErrorView *netErrorView;
 @property (nonatomic, strong) PersonalCenterView *personalCenterView;
 @property (nonatomic, strong) UIView *midView;// 个人中心被色背景层
 @property (nonatomic, strong) HomeViewModel *vm;
@@ -45,9 +45,13 @@ CGFloat proportion = 0.84;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"课外体育锻炼";
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
     self.view.backgroundColor = cFFFFFF;
-    [self initSubviews];
     self.vm = [[HomeViewModel alloc] init];
+    
+    [self initSubviews];
+    [self setupRefresh];
     [self initData];
 }
 
@@ -56,7 +60,7 @@ CGFloat proportion = 0.84;
 
     // 隐藏返回按钮文字
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault]; 
-    
+
     // 导航栏背景蓝色
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController.navigationBar lt_setBackgroundColor:c66A7FE];
@@ -70,13 +74,66 @@ CGFloat proportion = 0.84;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
+- (void)setupRefresh {
+    // 下拉刷新
+//    @weakify(self);
+//    self.tableView.zbjRefreshHeaderView =[ZBJRefreshHeaderView headerWithRefreshingBlock:^{
+//        @strongify(self);
+//        [self initData];
+//    }];
+    
+    // 网络故障
+    self.netErrorView = [[NetErrorView alloc] initWithFrame:self.view.bounds];
+    self.netErrorView.hidden = YES;
+    @weakify(self);
+    [self.netErrorView reloadView:^{
+        @strongify(self);
+        [self initData];
+//        [self.tableView.zbjRefreshHeaderView refresh];
+    }];
+    [self.view addSubview:self.netErrorView];
+}
+
 - (void)initData {
     @weakify(self);
-    NSDictionary *dic = @{@"query":@"{runningProjects(universityId:1){id name qualifiedDistance qualifiedCostTime}}"};
+    NSString *str = @"{ \
+                        university(id:%ld) { \
+                            currentTerm { \
+                                termSportsTask { \
+                                    targetSportsTimes \
+                                } \
+                            } \
+                        } \
+                        student(id:%ld) { \
+                            currentTermQualifiedActivityCount \
+                            caloriesConsumption \
+                            currentTermActivities(pageNumber:1,pageSize:1) { \
+                                pageNum \
+                                pageSize \
+                                pagesCount \
+                                dataCount \
+                            }\
+                        } \
+                        runningProjects(universityId:%ld){ \
+                            id \
+                            name \
+                            qualifiedDistance \
+                            qualifiedCostTime \
+                        } \
+                       }";
+    NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 1, 1]};
+    [LNDProgressHUD showLoadingInView:self.view];
     [[self.vm.cmdRunningProjects execute:dic] subscribeNext:^(runningProjectsModel *x) {
         @strongify(self);
+        [LNDProgressHUD hidenForView:self.view];
+        self.netErrorView.hidden = YES;
         [self.tableView reloadData];
     } error:^(NSError * _Nullable error) {
+        [LNDProgressHUD hidenForView:self.view];
+        if (error.code == -1009) {// 无网络
+            self.netErrorView.hidden = NO;
+        }
+        
         NSLog(@"error:%@", [error localizedDescription]);
     }];
 }
@@ -87,7 +144,7 @@ CGFloat proportion = 0.84;
 
 - (void)initSubviews {
     _tableView = ({
-        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
+        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
         tv.delegate = self;
         tv.dataSource = self;
         tv.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -103,6 +160,7 @@ CGFloat proportion = 0.84;
         
         tv;
     });
+    
     [self.view addSubview: _tableView];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
     panGesture.delegate = self;
@@ -196,7 +254,10 @@ CGFloat proportion = 0.84;
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        [self initData];
+        if (indexPath.row == 0) {
+            RankingManagerController *vc = [[RankingManagerController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
         
 //        [[self.vm.cmdRuningActivitys execute:nil] subscribeNext:^(id  _Nullable x) {
 //            NSLog(@"cmdRuningActivitys:%@", x);
@@ -218,8 +279,11 @@ CGFloat proportion = 0.84;
 //    LoginController *vc = [[LoginController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
     if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            return;
+        }
         SportsDetailsController *vc = [[SportsDetailsController alloc] init];
-        vc.runningProject = self.vm.runningProjects.runningProjects[indexPath.row - 1];
+        vc.runningProject = self.vm.homePage.runningProjects[indexPath.row - 1];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -228,7 +292,7 @@ CGFloat proportion = 0.84;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             HomeTotalCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeTotalCell class]) forIndexPath:indexPath];
-            [cell setupWithData:nil];
+            [cell setupWithData:self.vm.homePage];
             return cell;
         } else {
             HomeRankCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeRankCell class]) forIndexPath:indexPath];
@@ -246,28 +310,28 @@ CGFloat proportion = 0.84;
             switch (indexPath.row) {
                 case SportsTypeJogging:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeJogging data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeRun:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeRun data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeWalk:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeWalk data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeStep:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.runningProjects.runningProjects[indexPath.row - 1];
+                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeStep data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
@@ -303,7 +367,7 @@ CGFloat proportion = 0.84;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            return 156;
+            return 224;
         } else {
             return 44;
         }

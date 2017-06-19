@@ -16,15 +16,18 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.cmdRunningProjects = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
-            return [[[Dao share] runningProjects:input]
+            return [[[[Dao share] runningProjects:input]
                     doNext:^(id  _Nullable x) {
-                        self.runningProjects = x;
+                        self.homePage = x;
+                    }]
+                    catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
+                        return [RACSignal error:error];
                     }];
         }];
         
-        self.cmdRuningActivitys = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
-            return [[Dao share] runActivity:nil];
-        }];
+//        self.cmdRuningActivitys = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
+//            return [[Dao share] runActivity:nil];
+//        }];
     }
     
     

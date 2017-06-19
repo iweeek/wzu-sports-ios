@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "runningProjectsModel.h"
+#import "HomePageModel.h"
 
 @interface HomeViewModel : NSObject
 
-@property (nonatomic, strong) runningProjectsModel *runningProjects;
+@property (nonatomic, strong) HomePageModel *homePage;
 
 @property (nonatomic, strong) RACCommand *cmdRunningProjects;
 @property (nonatomic, strong) RACCommand *cmdRuningActivitys;

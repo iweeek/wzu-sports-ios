@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface RankingController : BaseViewController
+@interface OldRankingController : BaseViewController
 
 @end

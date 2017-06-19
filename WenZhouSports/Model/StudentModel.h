@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ActivitiesPageModel.h"
 
 @interface StudentModel : NSObject
 
@@ -17,5 +18,8 @@
 @property (nonatomic, assign) NSInteger universityId;
 @property (nonatomic, assign) NSInteger classId;
 @property (nonatomic, assign) NSInteger userId;
+@property (nonatomic, assign) NSInteger caloriesConsumption;
+@property (nonatomic, assign) NSInteger currentTermQualifiedActivityCount;
+@property (nonatomic, strong) ActivitiesPageModel *currentTermActivities;
 
 @end
