@@ -7,6 +7,7 @@
 //
 
 #import "RankingItemCell.h"
+#import "StudentTimeCostedModel.h"
 
 @interface RankingItemCell ()
 
@@ -19,11 +20,15 @@
 
 @implementation RankingItemCell
 
-- (void)setupWithData:(id)data {
-    self.labNum.text = @"4";
-    [self.imgView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    self.labName.text = @"李晓燕";
-    self.labTime.text = @"500 分钟";
+- (void)setupWithData:(id)data index:(NSInteger)index {
+    StudentTimeCostedModel *model = (StudentTimeCostedModel *)data;
+    
+    self.labNum.text = [NSString stringWithFormat:@"%ld", index + 1];
+    [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.avatarUrl]
+                    placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    self.labName.text = model.studentName;
+    NSInteger time = model.timeCosted / 60 ;
+    self.labTime.text = [NSString stringWithFormat:@"%ld 分钟", (long)time];
 }
 
 - (void)createUI {
