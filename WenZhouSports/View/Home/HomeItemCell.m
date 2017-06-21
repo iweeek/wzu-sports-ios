@@ -7,7 +7,7 @@
 //
 
 #import "HomeItemCell.h"
-#import "runningProjectItemModel.h"
+#import "RunningProjectItemModel.h"
 
 @interface HomeItemCell ()
 
@@ -44,7 +44,7 @@
             break;
     }
     
-    runningProjectItemModel *item = (runningProjectItemModel *)data;
+    RunningProjectItemModel *item = (RunningProjectItemModel *)data;
     
     NSDictionary *attribute = @{NSFontAttributeName : S10,
                                  NSForegroundColorAttributeName : cFFFFFF};

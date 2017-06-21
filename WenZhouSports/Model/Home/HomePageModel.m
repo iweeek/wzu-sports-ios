@@ -11,7 +11,7 @@
 @implementation HomePageModel
 
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"runningProjects":[runningProjectItemModel class]};
+    return @{@"runningProjects":[RunningProjectItemModel class]};
 }
 
 @end

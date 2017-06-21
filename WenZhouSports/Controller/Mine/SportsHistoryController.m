@@ -9,10 +9,12 @@
 #import "SportsHistoryController.h"
 #import "SportsHistoryHeaderCell.h"
 #import "SportsHistoryItemCell.h"
+#import "SportsHistoryViewModel.h"
 
 @interface SportsHistoryController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) SportsHistoryViewModel *vm;
 
 @end
 
@@ -23,11 +25,50 @@
     self.title = @"历史运动概况";
     self.view.backgroundColor = cFFFFFF;
     [self.view addSubview:self.tableView];
+    self.vm = [[SportsHistoryViewModel alloc] init];
+    
+    [self initData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)initData {
+    @weakify(self);
+    NSString *str = @"{ \
+                        student(id:%ld) { \
+                            currentTermActivities(pageSize:%ld, pageNumber:%ld){ \
+                                pagesCount \
+                                data { \
+                                    projectId \
+                                    costTime \
+                                    caloriesConsumed \
+                                    startTime \
+                                    distance \
+                                    qualified \
+                                    runningProject{ \
+                                        name \
+                                    } \
+                                } \
+                            } \
+                        } \
+                      }";
+    NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 20, 1]};
+    [LNDProgressHUD showLoadingInView:self.view];
+    [[self.vm.cmdGetSportsHistory execute:dic] subscribeNext:^(id x) {
+        @strongify(self);
+        [LNDProgressHUD hidenForView:self.view];
+        //        self.netErrorView.hidden = YES;
+        [self.tableView reloadData];
+    } error:^(NSError * _Nullable error) {
+        [LNDProgressHUD hidenForView:self.view];
+        if (error.code == -1009) {// 无网络
+        }
+        
+        NSLog(@"error:%@", [error localizedDescription]);
+    }];
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource

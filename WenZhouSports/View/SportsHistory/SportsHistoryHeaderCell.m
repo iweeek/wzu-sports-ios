@@ -20,6 +20,8 @@
 @property (nonatomic, strong) UILabel *labTime;// 累计时长
 @property (nonatomic, strong) UIView  *spliteLine;
 
+
+
 @end
 
 @implementation SportsHistoryHeaderCell

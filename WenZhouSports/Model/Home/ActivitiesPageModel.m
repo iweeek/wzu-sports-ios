@@ -10,4 +10,9 @@
 
 @implementation ActivitiesPageModel
 
+//+ (NSDictionary *)modelContainerPropertyGenericClass {
+//    return @{@"runningProjects":[ class]};
+//}
+
+
 @end

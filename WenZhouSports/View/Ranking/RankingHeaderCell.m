@@ -37,9 +37,30 @@
     StudentTimeCostedModel *model2 = array[1];
     StudentTimeCostedModel *model3 = array[2];
     
-    [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+//    [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+//    [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+//    [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    
+    CGRect hexagnoRect = self.imgAvatarCenter.bounds;
+    //绘制一个六边形的layer，并复制一个image给他的contents
+    CALayer *hexagonLayer = [CALayer layer];
+    hexagonLayer.frame = hexagnoRect;
+    CAShapeLayer * shapLayer = [CAShapeLayer layer];
+    shapLayer.lineWidth = 1;
+    shapLayer.strokeColor = [UIColor whiteColor].CGColor;
+    shapLayer.path = [self getCGPath:hexagnoRect.size.width - 20];
+    hexagonLayer.mask = shapLayer;
+    hexagonLayer.contents = (__bridge id _Nullable)([UIImage imageNamed:@"icon_item_avatar"].CGImage);
+    
+    CALayer *completeLayer = [CALayer layer];
+    completeLayer.frame = CGRectMake(10, 10, 60, 60);
+    [completeLayer addSublayer:hexagonLayer];
+    completeLayer.shadowOpacity = 1.0f;
+    completeLayer.shadowPath = [self getCGPath:hexagnoRect.size.width];
+    completeLayer.shadowOffset = CGSizeMake(-10, -10);
+    
+    completeLayer.shadowColor = cEEEEEE.CGColor;
+    [_imgNumCenter.layer addSublayer:completeLayer];
     
     self.labNameLeft.text = model2.studentName;
     self.labNameCenter.text = model1.studentName;
@@ -49,6 +70,21 @@
     self.labDescCenter.text = @"2313 千卡";
     self.labDescRight.text = @"2313 千卡";
 }
+
+-(CGPathRef)getCGPath:(CGFloat)viewWidth{
+    UIBezierPath * path = [UIBezierPath bezierPath];
+    path.lineWidth = 2;
+    [[UIColor whiteColor] setStroke];
+    [path moveToPoint:CGPointMake((sin(M_1_PI / 180 * 60)) * (viewWidth / 2), (viewWidth / 4))];
+    [path addLineToPoint:CGPointMake((viewWidth / 2), 0)];
+    [path addLineToPoint:CGPointMake(viewWidth - ((sin(M_1_PI / 180 * 60)) * (viewWidth / 2)), (viewWidth / 4))];
+    [path addLineToPoint:CGPointMake(viewWidth - ((sin(M_1_PI / 180 * 60)) * (viewWidth / 2)), (viewWidth / 2) + (viewWidth / 4))];
+    [path addLineToPoint:CGPointMake((viewWidth / 2), viewWidth)];
+    [path addLineToPoint:CGPointMake((sin(M_1_PI / 180 * 60)) * (viewWidth / 2), (viewWidth / 2) + (viewWidth / 4))];
+    [path closePath];
+    return path.CGPath;
+}
+
 
 - (void)createUI {
     [self.contentView addSubview:self.imgAvatarLeft];
@@ -171,6 +207,9 @@
         _imgNumCenter.layer.cornerRadius = 20;
         _imgNumCenter.layer.masksToBounds = YES;
         [_imgNumCenter setImage:[UIImage imageNamed:@"icon_one"]];
+        
+        
+
     }
     return _imgNumCenter;
 }

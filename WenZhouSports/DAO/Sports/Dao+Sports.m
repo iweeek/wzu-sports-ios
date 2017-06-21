@@ -7,14 +7,14 @@
 //
 
 #import "Dao+Sports.h"
-#import "runningProjectsModel.h"
+#import "RunningProjectsModel.h"
 
 @implementation Dao (Sports)
 
 - (RACSignal *)runActivity:(NSDictionary *)dic {
     return [[self RAC_POST:@"runningActivitys" parameters:dic]
             map:^id _Nullable(id  _Nullable value) {
-                return [self jsonToMode:[runningProjectsModel class] dictionary:value key:nil];
+                return [self jsonToMode:[RunningProjectsModel class] dictionary:value key:nil];
             }];
 }
 

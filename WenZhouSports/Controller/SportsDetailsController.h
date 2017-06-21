@@ -7,10 +7,10 @@
 //
 
 #import "BaseViewController.h"
-#import "runningProjectItemModel.h"
+#import "RunningProjectItemModel.h"
 
 @interface SportsDetailsController : BaseViewController
 
-@property (nonatomic, strong) runningProjectItemModel *runningProject;
+@property (nonatomic, strong) RunningProjectItemModel *runningProject;
 
 @end

@@ -21,11 +21,12 @@
 #import "ApproveController.h"
 #import "SettingController.h"
 #import "HomeViewModel.h"
-#import "runningProjectsModel.h"
-#import "runningProjectItemModel.h"
+#import "RunningProjectsModel.h"
+#import "RunningProjectItemModel.h"
 #import "RankingManagerController.h"
 #import "ZBJRefresh.h"
 #import "NetErrorView.h"
+#import "SportsHistoryManagerController.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -123,7 +124,7 @@ CGFloat proportion = 0.84;
                        }";
     NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 1, 1]};
     [LNDProgressHUD showLoadingInView:self.view];
-    [[self.vm.cmdRunningProjects execute:dic] subscribeNext:^(runningProjectsModel *x) {
+    [[self.vm.cmdRunningProjects execute:dic] subscribeNext:^(RunningProjectsModel *x) {
         @strongify(self);
         [LNDProgressHUD hidenForView:self.view];
         self.netErrorView.hidden = YES;
@@ -255,6 +256,9 @@ CGFloat proportion = 0.84;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
+            SportsHistoryManagerController *vc = [[SportsHistoryManagerController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (indexPath.row ==1) {
             RankingManagerController *vc = [[RankingManagerController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -310,28 +314,28 @@ CGFloat proportion = 0.84;
             switch (indexPath.row) {
                 case SportsTypeJogging:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
+                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeJogging data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeRun:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
+                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeRun data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeWalk:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
+                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeWalk data:runProject];
                     [cell setupPersonCount:personCount];
                     break;
                 }
                 case SportsTypeStep:
                 {
-                    runningProjectItemModel *runProject = (runningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
+                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeStep data:runProject];
                     [cell setupPersonCount:personCount];
                     break;

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "runningProjectItemModel.h"
+#import "RunningProjectItemModel.h"
 
 typedef NS_ENUM(NSInteger, SportsStation) {
     SportsWillStart = 0,            //运动未开始
@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 @interface SportsDetailView : UIView <MAMapViewDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
-@property (nonatomic, strong) runningProjectItemModel *runningProject;
+@property (nonatomic, strong) RunningProjectItemModel *runningProject;
 // 地图方向箭头
 @property (nonatomic, strong) MAAnnotationView *userLocationAnnotationView;
 
@@ -86,6 +86,6 @@ typedef NS_ENUM(NSInteger, SportsStation) {
  */
 //- (void)addPolygonLine:(CLLocation *)location;
 
-- (void)setDelete:(id<MAMapViewDelegate>)delegate;
+- (void)setDelegate:(id<MAMapViewDelegate>)delegate;
 
 @end

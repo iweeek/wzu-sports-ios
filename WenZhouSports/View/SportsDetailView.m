@@ -707,7 +707,7 @@
     self.timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%ld分钟", time];
 }
 
-- (void)setDelete:(id<MAMapViewDelegate>)delegate {
+- (void)setDelegate:(id<MAMapViewDelegate>)delegate {
     self.mapView.delegate = delegate;
 }
 

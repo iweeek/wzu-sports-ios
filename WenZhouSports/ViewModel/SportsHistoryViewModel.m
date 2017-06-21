@@ -1,20 +1,20 @@
 //
-//  RankingViewModel.m
+//  SportsHistoryViewModel.m
 //  WenZhouSports
 //
-//  Created by 郭佳 on 2017/6/19.
+//  Created by 郭佳 on 2017/6/20.
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#import "RankingViewModel.h"
-#import "Dao+Ranking.h"
+#import "SportsHistoryViewModel.h"
+#import "Dao+SportsHistory.h"
 
-@implementation RankingViewModel
+@implementation SportsHistoryViewModel
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.cmdGetRanking = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
-            return [[[[Dao share] getRanking:input]
+        self.cmdGetSportsHistory = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSDictionary *input) {
+            return [[[[Dao share] getSportsHistory:input]
                      doNext:^(id  _Nullable x) {
                          self.homePage = x;
                      }]

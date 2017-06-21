@@ -10,4 +10,6 @@
 
 @interface SportsHistoryController : UIViewController
 
+@property (nonatomic, strong) NSString *type;
+
 @end

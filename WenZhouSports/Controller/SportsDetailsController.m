@@ -97,7 +97,7 @@
 
 - (void)initSubviews {
     self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 64, WIDTH, HEIGHT - 64)];
-    [self.detailView setDelete:self];
+    [self.detailView setDelegate:self];
     self.detailView.runningProject = self.runningProject;
     [self.detailView changeSportsStation:SportsWillStart];
     

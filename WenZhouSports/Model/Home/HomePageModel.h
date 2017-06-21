@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "UniversityModel.h"
 #import "StudentModel.h"
-#import "runningProjectItemModel.h"
+#import "RunningProjectItemModel.h"
 
 @interface HomePageModel : NSObject
 

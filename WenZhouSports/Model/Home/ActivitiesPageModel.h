@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RunningActivityModel.h"
 
 @interface ActivitiesPageModel : NSObject
 
 @property (nonatomic, assign) NSInteger pageNum;
 @property (nonatomic, assign) NSInteger pageSize;
-@property (nonatomic, assign) NSInteger pageCount;
+@property (nonatomic, assign) NSInteger pagesCount;
 @property (nonatomic, assign) NSInteger dataCount;
-
+@property (nonatomic, strong) NSArray<RunningActivityModel *> *data;
 
 @end
