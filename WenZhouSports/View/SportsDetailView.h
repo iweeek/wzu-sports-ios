@@ -88,4 +88,7 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 
 - (void)setDelegate:(id<MAMapViewDelegate>)delegate;
 
+//改变地图追踪模式
+- (void)changeUserTrackingMode:(MAUserTrackingMode)userTrackingMode;
+
 @end

@@ -12,5 +12,6 @@
 @interface SportsDetailsController : BaseViewController
 
 @property (nonatomic, strong) RunningProjectItemModel *runningProject;
+@property (nonatomic, assign) NSInteger acquisitionInterval;//采集间隔
 
 @end

@@ -50,7 +50,7 @@
 //    [surplusCountAttributedString addAttributes:attribute2 range:NSMakeRange(surplusCountAttributedString.length - 2, 2)];
     
     HomePageModel *home = (HomePageModel *)data;
-    self.labTotalCount.text = [NSString stringWithFormat:@"%ld", (long)home.student.currentTermActivities.dataCount];
+    self.labTotalCount.text = [NSString stringWithFormat:@"%ld", (long)home.university.currentTerm.termSportsTask.targetSportsTimes];
     self.labCalorie.text = [NSString stringWithFormat:@"%ld", (long)home.student.caloriesConsumption];
     self.labQualifiedCount.text = [NSString stringWithFormat:@"%ld/45", (long)home.student.currentTermQualifiedActivityCount];
     

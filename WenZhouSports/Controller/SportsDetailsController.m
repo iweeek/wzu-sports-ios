@@ -16,6 +16,7 @@
 #import "MAMutablePolylineRenderer3D.h"
 #import "UIViewController+BackButtonHandler.h"
 #import "AMapRouteRecord.h"
+#import "RunningActivityModel.h"
 
 @interface SportsDetailsController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AMapLocationManagerDelegate, MAMapViewDelegate ,AMapLocationManagerDelegate>
 
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
 
 @property (nonatomic, strong) dispatch_source_t timer;
+@property (nonatomic, strong) dispatch_source_t timerForLab;
 @property (nonatomic, strong) FMDatabase *db;
 
 @property (nonatomic, strong) SportsDetailViewModel *viewModel;
@@ -58,13 +60,20 @@
 @property (nonatomic, strong) UILabel *labLatitude;
 @property (nonatomic, strong) UILabel *lablongitude;
 
+//采集点所需数据
+@property (nonatomic, assign) double dataLatitude;
+@property (nonatomic, assign) double dataLongitude;
+@property (nonatomic, assign) float  dataDistance;
+@property (nonatomic, assign) NSTimeInterval acquisitionTime;
+
+@property (nonatomic, strong) RunningActivityModel *runningActivity;
+
 @end 
 
 @implementation SportsDetailsController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"运动详情";
     [self initSubviews];
     [self reactiveEvent];
     self.pedometer = [[CMPedometer alloc] init];
@@ -93,10 +102,15 @@
     self.tempTraceLocations = [NSMutableArray array];
     self.traceManager = [[MATraceManager alloc] init];
     self.currentRecord = [[AMapRouteRecord alloc] init];
+    
+    // 电量
+    [UIDevice currentDevice].batteryMonitoringEnabled = YES;
+    double deviceLevel = [UIDevice currentDevice].batteryLevel;
+    [LNDProgressHUD showErrorMessage:[NSString stringWithFormat:@"您的电量剩余%.0f%%",deviceLevel * 100] inView:self.view];
 }
 
 - (void)initSubviews {
-    self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 64, WIDTH, HEIGHT - 64)];
+    self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT)];
     [self.detailView setDelegate:self];
     self.detailView.runningProject = self.runningProject;
     [self.detailView changeSportsStation:SportsWillStart];
@@ -104,11 +118,21 @@
     self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
     [self.detailView.mapView addOverlay:self.line];
     [self.view addSubview:self.detailView];
+    
+    [self.navigationItem setRightBarButtonItemWithImage:[UIImage imageNamed:@"icon_sets_selected"]
+                                                 target:self
+                                                 action:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -130,71 +154,94 @@
     _sportsDataSignal = [[RACSubject alloc] init];
     __block CGFloat distance = 0;
     __block NSInteger steps = 0;
-    __block BOOL isPause = NO;
-    __block int pauseTime = 0;
     __block int cyclingCount = 0;
     __block int time = 0;
-    //暂停的时间
-    __block NSDate *pauseDate = nil;
-    //开始暂停时的距离
-    __block CGFloat startPauseDistance = 0;
-    //暂停时移动的距离
-    __block CGFloat pauseDistance = 0;
-    //暂停时总的移动距离
-    __block CGFloat allPauseDistance = 0;
     @weakify(self);
-    //运动开始点击事件
+    // 运动开始点击事件
     [self.detailView.startSignal subscribeNext:^(id x) {
-        @strongify(self)
+        @strongify(self);
         self.startTime = (long)[[NSDate date] timeIntervalSince1970];
         self.isRecording = YES;
         [self.detailView setQualifiedData];
         self.currentRecord = [[AMapRouteRecord alloc] init];
-        // 全程请求trace
-        [self.detailView.mapView removeOverlays:self.tracedPolylines];
-        [self queryTraceWithLocations:self.currentRecord.locations withSaving:YES];
-        [self.navigationController.navigationItem setHidesBackButton:YES];
+
+        // 调用运动开始接口
+        self.viewModel.projectId = self.runningProject.id;
+        self.viewModel.sutdentId = 1;
+        self.viewModel.starTime = self.startTime;
+        [[self.viewModel.cmdRunningActivitiesStart execute:nil] subscribeNext:^(id  _Nullable x) {
+            self.runningActivity = x;
+        } error:^(NSError * _Nullable error) {
+            @strongify(self);
+            [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+        }];
+        
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            @strongify(self)
+            @strongify(self);
             [[self.viewModel.compareFaceCommand execute:nil] subscribeNext:^(id  _Nullable x) {
                 
             }];
         });
-//        [self.detailView setDataWithSpeed:@"0.0" distance:0 stage:10];
+        
         [self.detailView addPauseGestureEvent];
-        NSDate *nowDate = [NSDate date];
         [self.detailView changeSportsStation:SportsDidStart];
         
-        self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-        //定时器，每秒触发
-        dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
-        dispatch_source_set_event_handler(self.timer, ^{
-            @strongify(self);
-            // 开始运动
-            self.isSporting = YES;
+        // 为界面读秒计时
+        self.timerForLab = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+        // 定时器，每秒触发
+        dispatch_source_set_timer(self.timerForLab, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+        dispatch_source_set_event_handler(self.timerForLab, ^{
             // 运动时长计数
             self.sportsTime++;
-            //点击开始后开始计时
-            time = -[nowDate timeIntervalSinceNow];
             NSLog(@"时间：%ld", (long)self.sportsTime);
-            [self.sportsDataSignal subscribeNext:^(CMPedometerData *x) {
-                distance = x.distance.floatValue;
-                steps = x.numberOfSteps.integerValue;
-                DDLogInfo(@"步数%ld", (long)steps);
-            }];
-            if (isPause) {
-                pauseTime = -[pauseDate timeIntervalSinceNow];
-                pauseDistance = distance - startPauseDistance;
-            }
-
             [self.detailView setDataWithDistance:self.distance
                                             time:self.sportsTime
                                            speed:self.speed];
         });
         
+        self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+        // 定时器，按照后台返回时间间隔触发
+        dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, self.runningProject.acquisitionInterval * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+        dispatch_source_set_event_handler(self.timer, ^{
+            @strongify(self);
+            // 开始运动
+            self.isSporting = YES;
+            [self.sportsDataSignal subscribeNext:^(CMPedometerData *x) {
+                distance = x.distance.floatValue;
+                steps = x.numberOfSteps.integerValue;
+                DDLogInfo(@"步数%ld", (long)steps);
+            }];
+            
+            // 这里也更新界面
+            [self.detailView setDataWithDistance:self.distance
+                                            time:self.sportsTime
+                                           speed:self.speed];
+            
+            // 开始的信息返回后开始记录运动数据
+            if (self.runningActivity) {
+                self.viewModel.runningActivityid = self.runningActivity.id;
+                self.viewModel.acquisitionTime = (long)[[NSDate date] timeIntervalSince1970];
+                self.viewModel.stepCount = steps;
+                self.viewModel.distance = self.dataDistance;
+                self.viewModel.longitude = self.dataLongitude;
+                self.viewModel.latitude = self.dataLatitude;
+                self.viewModel.locationType = YES;
+                // 每秒超过10米就是不正常的数据
+                self.viewModel.isNormal = YES;
+                
+                [[self.viewModel.cmdRunningActivityData execute:nil] subscribeNext:^(id  _Nullable x) {
+                    NSLog(@"data提交成功：%ld", (long)self.sportsTime);
+                } error:^(NSError * _Nullable error) {
+                    @strongify(self);
+                    [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+                }];
+            }
+        });
+        
+        dispatch_resume(self.timerForLab);
         dispatch_resume(self.timer);
        
-        //计步器
+        // 计步器
         if ([CMPedometer isStepCountingAvailable]) {
             [self.pedometer startPedometerUpdatesFromDate:[NSDate date] withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) {
                 @strongify(self)
@@ -205,7 +252,7 @@
                 log(@"距离：%ld", (long)pedometerData.distance.integerValue);
             }];
         }
-        //设备硬件状态
+        // 设备硬件状态
         self.motionManager.deviceMotionUpdateInterval = 1;
         @weakify(self);
         [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue  currentQueue] withHandler:^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error) {
@@ -221,7 +268,7 @@
 //                [self.db executeUpdate:@"insert into acceleration(x,y,z,time) values(?,?,?,?);", @(motion.userAcceleration.x), @(motion.userAcceleration.y), @(motion.userAcceleration.z), @(timeStamp)];
             }
         }];
-        //设备当前的活动状态
+        // 设备当前的活动状态
          if ([CMMotionActivityManager isActivityAvailable]) {
 //             @weakify(self);
             [self.motionActivityManager startActivityUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMMotionActivity * _Nullable activity) {
@@ -261,11 +308,11 @@
         } else {
             DDLogWarn(@"error");
         }
-        //高度
+        // 高度
         [self.altimeter startRelativeAltitudeUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAltitudeData * _Nullable altitudeData, NSError * _Nullable error) {
             
         }];
-        //设置后台持续定位
+        // 设置后台持续定位
         if ([[UIDevice currentDevice] systemVersion].floatValue >= 9) {
             self.locationManager.allowsBackgroundLocationUpdates = YES;
         } else{
@@ -278,6 +325,7 @@
     [self.detailView.pauseSignal subscribeNext:^(id  _Nullable x) {
         @strongify(self);
         // 释放计时器
+        dispatch_source_cancel(self.timerForLab);
         dispatch_source_cancel(self.timer);
         // 停止画轨迹
         self.isRecording = NO;
@@ -292,16 +340,29 @@
         [self.detailView changeSportsStation:SportsDidEnd];
         [self.locationManager stopUpdatingLocation];
         
-        NSDictionary *dic = @{@"projectId":@(self.runningProject.id),
-                              @"studentId":@(1),
-                              @"distance":@(self.distance),
-                              @"costTime":@(self.sportsTime),
-                              @"targetTime":@(self.sportsTime),
-                              @"startTime":@(self.startTime)};
-
-        [[self.viewModel.cmdRunActivity execute:dic] subscribeError:^(NSError * _Nullable error) {
-            NSLog(@"error>>>>>>>>>:%@", [error localizedDescription]);
-        }];;
+        // 运动开始
+        self.viewModel.runningActivityid = self.runningActivity.id;
+        self.viewModel.distance = self.distance;
+        // 这里是总步数
+        self.viewModel.stepCount = steps;
+        self.viewModel.costTime = self.sportsTime;
+        self.viewModel.targetFinishedTime = self.runningProject.qualifiedCostTime;
+        [[self.viewModel.cmdRunningActivitiesEnd execute:nil] subscribeNext:^(id  _Nullable x) {
+            NSLog(@"成功结束");
+        } error:^(NSError * _Nullable error) {
+            [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+        }];
+        
+//        NSDictionary *dic = @{@"projectId":@(self.runningProject.id),
+//                              @"studentId":@(1),
+//                              @"distance":@(self.distance),
+//                              @"costTime":@(self.sportsTime),
+//                              @"targetTime":@(self.sportsTime),
+//                              @"startTime":@(self.startTime)};
+//
+//        [[self.viewModel.cmdRunActivity execute:dic] subscribeError:^(NSError * _Nullable error) {
+//            NSLog(@"error>>>>>>>>>:%@", [error localizedDescription]);
+//        }];;
         
 //        // 停止运动
 //        self.isSporting = NO;
@@ -336,17 +397,14 @@
 }
 
 - (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location reGeocode:(AMapLocationReGeocode *)reGeocode {
-    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-    [locationManager startUpdatingLocation];
     
-    self.labLatitude.text = [NSString stringWithFormat:@"CLlatitude:%f \nCLlongitude:%f \n%@", locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude, reGeocode.formattedAddress];
-    self.lablongitude.text = [NSString stringWithFormat:@"latitude:%f \nlongitude:%f", location.coordinate.latitude, location.coordinate.longitude];
+    self.dataLatitude = location.coordinate.latitude;
+    self.dataLongitude = location.coordinate.longitude;
 
-    if (self.isRecording) { //是否正在绘制
+    if (self.isRecording) { // 是否正在绘制
         CLLocationDistance tempDistance = 0;
         // 移动距离小于10米属于无效的，不画
         if (self.lastLocatioin) {
-            
             if (location.speed > 0) {
                 self.speed = location.speed;
             } else {
@@ -385,98 +443,8 @@
             [self.detailView.mapView setCenterCoordinate:location.coordinate animated:YES];
             
             self.lastLocatioin = location;
-            
-            // trace
-//            [self.tempTraceLocations addObject:location];
-//            if (self.tempTraceLocations.count >= 2)
-//            {
-//                [self queryTraceWithLocations:self.tempTraceLocations withSaving:NO];
-//                [self.tempTraceLocations removeAllObjects];
-//                
-//                // 把最后一个再add一遍，否则会有缝隙
-//                [self.tempTraceLocations addObject:location];
-//            }
         }
     }
-}
-
-- (void)mapView:(MAMapView *)mapView didChangeOpenGLESDisabled:(BOOL)openGLESDisabled {
-    MAMutablePolyline *polyline = [self.render mutablePolyline];
-    
-    if (polyline.points == NULL || polyline.pointCount < 2)
-    {
-        return;
-    }
-    
-    self.render.glPoints = [self.render glPointsForMapPoints:polyline.points count:polyline.pointCount];
-    self.render.glPointCount = polyline.pointCount;
-}
-
-- (void)queryTraceWithLocations:(NSArray<CLLocation *> *)locations withSaving:(BOOL)saving
-{
-    NSMutableArray *mArr = [NSMutableArray array];
-    for(CLLocation *loc in locations)
-    {
-        MATraceLocation *tLoc = [[MATraceLocation alloc] init];
-        tLoc.loc = loc.coordinate;
-        
-        tLoc.speed = loc.speed * 3.6; //m/s  转 km/h
-        tLoc.time = [loc.timestamp timeIntervalSince1970] * 1000;
-        tLoc.angle = loc.course;
-        [mArr addObject:tLoc];
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    __unused NSOperation *op = [self.traceManager queryProcessedTraceWith:mArr type:-1 processingCallback:nil  finishCallback:^(NSArray<MATracePoint *> *points, double distance) {
-        
-        NSLog(@"trace query done!");
-        
-        [weakSelf addFullTrace:points];
-        
-    } failedCallback:^(int errorCode, NSString *errorDesc) {
-        NSLog(@"query trace point failed :%@", errorDesc);
-    }];
-}
-
-- (void)addFullTrace:(NSArray<MATracePoint*> *)tracePoints
-{
-    MAPolyline *polyline = [self makePolylineWith:tracePoints];
-    if(!polyline)
-    {
-        return;
-    }
-    
-    [self.tracedPolylines addObject:polyline];
-    [self.detailView.mapView addOverlay:polyline];
-}
-
-- (MAPolyline *)makePolylineWith:(NSArray<MATracePoint*> *)tracePoints
-{
-    if(tracePoints.count < 2)
-    {
-        return nil;
-    }
-    
-    CLLocationCoordinate2D *pCoords = malloc(sizeof(CLLocationCoordinate2D) * tracePoints.count);
-    if(!pCoords) {
-        return nil;
-    }
-    
-    for(int i = 0; i < tracePoints.count; ++i) {
-        MATracePoint *p = [tracePoints objectAtIndex:i];
-        CLLocationCoordinate2D *pCur = pCoords + i;
-        pCur->latitude = p.latitude;
-        pCur->longitude = p.longitude;
-    }
-    
-    MAPolyline *polyline = [MAPolyline polylineWithCoordinates:pCoords count:tracePoints.count];
-    
-    if(pCoords)
-    {
-        free(pCoords);
-    }
-    
-    return polyline;
 }
 
 #pragma mark - mapViewDelegate
@@ -533,7 +501,7 @@
     return nil;
 }
 
-//定位失败
+// 定位失败
 - (void)mapView:(MAMapView *)mapView didFailToLocateUserWithError:(NSError *)error {
     NSString *errorString = @"";
     switch([error code]) {
@@ -566,6 +534,7 @@
 - (void)free {
     if (_timer) {
         dispatch_source_cancel(_timer);
+        dispatch_source_cancel(self.timerForLab);
     }
     if (_pedometer) {
         [_pedometer stopPedometerUpdates];
@@ -593,6 +562,7 @@
 
 - (void)dealloc {
     if (self.timer) {
+        dispatch_source_cancel(self.timerForLab);
         dispatch_source_cancel(self.timer);
     }
     

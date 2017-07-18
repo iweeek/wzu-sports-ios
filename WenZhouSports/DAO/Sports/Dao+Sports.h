@@ -12,4 +12,24 @@
 
 - (RACSignal *)runActivity:(NSDictionary *)dic;
 
+- (RACSignal *)runningActivitysStartWithProjectId:(NSInteger)projectId
+                                        sutdentId:(NSInteger)studentId
+                                        startTime:(NSTimeInterval)startTime;
+
+- (RACSignal *)runningActivitysEndWithId:(NSInteger)pid
+                                distance:(NSInteger)distance
+                               stepCount:(NSInteger)stepCount
+                                costTime:(NSTimeInterval)costTime
+                      targetFinishedTime:(NSTimeInterval)targetFinishedTime;
+
+// 添加采集点信息
+- (RACSignal *)runningActivitysDataWithActivityId:(NSInteger)activityId
+                                  acquisitionTime:(NSTimeInterval)acquisitionTime
+                                        stepCount:(NSInteger)stepCount
+                                         distance:(NSInteger)distance
+                                        longitude:(float)longitude
+                                         latitude:(float)latitude
+                                     locationType:(NSInteger)locationType
+                                         isNormal:(BOOL)isNormal;
+
 @end

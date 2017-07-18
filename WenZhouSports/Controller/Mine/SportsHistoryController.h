@@ -11,5 +11,6 @@
 @interface SportsHistoryController : UIViewController
 
 @property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) UINavigationController *nav;
 
 @end

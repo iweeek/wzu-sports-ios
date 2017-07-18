@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const Server;
-
+extern NSString *const AMapKey;
+extern NSInteger const pageSize;
 
 

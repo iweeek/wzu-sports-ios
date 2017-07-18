@@ -15,6 +15,6 @@
 @property (nonatomic, assign) NSInteger pageSize;
 @property (nonatomic, assign) NSInteger pagesCount;
 @property (nonatomic, assign) NSInteger dataCount;
-@property (nonatomic, strong) NSArray<RunningActivityModel *> *data;
+@property (nonatomic, strong) NSMutableArray<RunningActivityModel *> *data;
 
 @end

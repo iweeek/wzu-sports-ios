@@ -11,5 +11,7 @@
 @interface Dao (SportsHistory)
 
 - (RACSignal *)getSportsHistory:(NSDictionary *)dic;
+- (RACSignal *)getSportsHistoryWithStudentId:(NSInteger)studentId
+                                 currentPage:(NSInteger)currentPage;
 
 @end

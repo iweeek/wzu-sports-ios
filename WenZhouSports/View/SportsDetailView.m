@@ -165,14 +165,17 @@
 - (void)initSubviews {
     _mapView = ({
         MAMapView *map = [[MAMapView alloc] initWithFrame:self.frame];
-        map.zoomLevel = 18;
+        map.zoomLevel = 19;
+        map.zoomEnabled = YES;
         map.showsUserLocation = YES;
-        map.showsCompass = NO;
+        map.showsCompass = YES;//指南针
+        map.compassOrigin = CGPointMake(20, HEIGHT - 100);
+        map.showsScale = NO;//比例尺
         map.scrollEnabled = YES;
-        map.userTrackingMode = MAUserTrackingModeFollow;// 追踪移动
+        map.userTrackingMode = MAUserTrackingModeFollow;//追踪移动
         MAUserLocationRepresentation *representation = [[MAUserLocationRepresentation alloc] init];
         representation.showsAccuracyRing = NO;//精度圈是否显示，默认YES
-        representation.showsHeadingIndicator = YES;///是否显示方向指示
+        representation.showsHeadingIndicator = YES;//是否显示方向指示
         
         //执行
         [self.mapView updateUserLocationRepresentation:representation];
@@ -503,7 +506,7 @@
     [_titleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(MARGIN_SCREEN);
         make.right.equalTo(self).offset(-MARGIN_SCREEN);
-        make.top.equalTo(self).offset(FIT_LENGTH(11.0));
+        make.top.equalTo(self).offset(64 + 11);
         make.height.mas_equalTo(FIT_LENGTH(47.0));
     }];
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -692,14 +695,30 @@
     [speedAttributedString addAttributes:attribute range:NSMakeRange(speedAttributedString.length - 3, 3)];
     
     self.distanceNumberLabel.attributedText = distanceAttributedString;
-    self.timeNumberLabel.attributedText = timeAttributedString;
+//    self.timeNumberLabel.attributedText = timeAttributedString;
+    self.timeNumberLabel.text = [self getMMSSFromSS:time];
     self.speedNumberLabel.attributedText = speedAttributedString;
 }
 
 - (void)setQualifiedData {
     self.bottomDistanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningProject.qualifiedDistance];
-    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningProject.qualifiedCostTime / 60];
+//    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningProject.qualifiedCostTime / 60];
+//    self.bottomTimeNumberLabel.text = [self getMMSSFromSS:time];
+
     self.bottomSpeedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime];
+}
+
+//传入 秒  得到 xx:xx:xx
+-(NSString *)getMMSSFromSS:(NSInteger)seconds {
+    NSString *strHour = [NSString stringWithFormat:@"%02ld", seconds / 3600];
+
+    NSString *strMinute = [NSString stringWithFormat:@"%02ld", (seconds % 3600) / 60];
+
+    NSString *strSecond = [NSString stringWithFormat:@"%02ld", seconds % 60];
+
+    NSString *strTime = [NSString stringWithFormat:@"%@:%@:%@", strHour, strMinute,strSecond];
+    
+    return strTime;
 }
 
 - (void)setDataWithCalorie:(int)calorie time:(NSInteger)time {
@@ -739,6 +758,10 @@
             }
         }
     }];
+}
+
+- (void)changeUserTrackingMode:(MAUserTrackingMode)userTrackingMode {
+    self.mapView.userTrackingMode = userTrackingMode;
 }
 
 @end

@@ -25,10 +25,10 @@
     [self cocoaLumberJackConfigs];
     [self dataBaseConfigs];
     [[AMapServices sharedServices] setEnableHTTPS:YES];
-    [AMapServices sharedServices].apiKey = @"b308932d17ffdfe0badb45817677b50c";
+    [AMapServices sharedServices].apiKey = AMapKey;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    
     _launchController = [[LaunchController alloc] init];
     _homeController = [[HomeController alloc] init];
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -38,6 +38,7 @@
         _navigationController = [[UINavigationController alloc] initWithRootViewController:_launchController];
     }
     self.window.rootViewController = _navigationController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 

@@ -23,6 +23,7 @@
 #import <YYModel/YYModel.h>
 #import "LNDProgressHUD.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "MJRefresh.h"
 
 //本地配置文件
 #import "UIView+Util.h"
@@ -31,6 +32,7 @@
 #import "Font.h"
 #import "Color.h"
 #import "Configs.h"
+#import "APIInterface.h"
 
 #endif /* PrefixHeader_pch */
 

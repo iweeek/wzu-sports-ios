@@ -24,11 +24,38 @@
             return [[Dao share] compareFaceWithFace1:input[@"face1"] face2:input[@"face2"]];
         }];
         
-        _cmdRunActivity = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
-            return [[[Dao share] runActivity:input]
+        _cmdRunningActivityData = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[[Dao share] runningActivitysDataWithActivityId:self.runningActivityid
+                                                    acquisitionTime:self.acquisitionTime
+                                                          stepCount:self.stepCount
+                                                           distance:self.distance
+                                                          longitude:self.longitude
+                                                           latitude:self.latitude
+                                                       locationType:self.locationType
+                                                           isNormal:self.isNormal]
                 catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
                 return [RACSignal error:error];
             }];
+        }];
+        
+        _cmdRunningActivitiesStart = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[[Dao share] runningActivitysStartWithProjectId:self.projectId
+                                                          sutdentId:self.sutdentId
+                                                          startTime:self.starTime]
+                doNext:^(id  _Nullable x) {
+                    self.runningActivity = x;
+                }];
+        }];
+        
+        _cmdRunningActivitiesEnd = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[[Dao share] runningActivitysEndWithId:self.runningActivityid
+                                                  distance:self.distance
+                                                 stepCount:self.stepCount
+                                                  costTime:self.costTime
+                                        targetFinishedTime:self.targetFinishedTime]
+                catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
+                    return [RACSignal error:error];
+                }];
         }];
     }
     return self;

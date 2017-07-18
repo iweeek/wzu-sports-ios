@@ -18,6 +18,7 @@
 
 - (RACSignal *)RAC_POST:(NSString *)path parameters:(id)parameters postParameters:(id)postParameters;
 
+- (id)jsonToMode:(Class)className dictionary:(id)value;
 - (id)jsonToMode:(Class)className dictionary:(id)value key:(NSString *)key;
 
 @end

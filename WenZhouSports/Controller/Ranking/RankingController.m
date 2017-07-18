@@ -10,7 +10,7 @@
 #import "RankingHeaderCell.h"
 #import "RankingItemCell.h"
 #import "RankingViewModel.h"
-
+#import "MJRefresh.h"
 @interface RankingController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -26,43 +26,39 @@
     [self.view addSubview:self.tableView];
     
     self.vm = [[RankingViewModel alloc] init];
-    [self initData];
+    self.vm.universityId = 1;
+
+    @weakify(self);
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        @strongify(self);
+        [[self.vm.cmdGetRanking execute:nil] subscribeNext:^(id  _Nullable x) {
+            @strongify(self);
+            [self.tableView.mj_header endRefreshing];
+            [self.tableView reloadData];
+        } error:^(NSError * _Nullable error) {
+            [self.tableView.mj_header endRefreshing];
+            NSLog(@"error:%@", [error localizedDescription]);
+        }] ;
+    }];
+    
+    self.tableView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingBlock:^{
+        @strongify(self);
+        [[self.vm.cmdLoadMoreRanking execute:nil] subscribeNext:^(id  _Nullable x) {
+            @strongify(self);
+            [self.tableView.mj_footer endRefreshing];
+            [self.tableView reloadData];
+        } error:^(NSError * _Nullable error) {
+            [self.tableView.mj_header endRefreshing];
+            NSLog(@"error:%@", [error localizedDescription]);
+        }] ;
+    }];
+    
+    [self.tableView.mj_header beginRefreshing];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-}
-
-- (void)initData {
-    @weakify(self);
-    NSString *str = @"{ \
-                        university(id:%ld) { \
-                            timeCostedRanking (pageSize:%ld pageNumber:%ld){ \
-                                pagesCount \
-                                data{ \
-                                    studentId \
-                                    studentName \
-                                    timeCosted \
-                                    avatarUrl \
-                                } \
-                            } \
-                        }\
-                    }";
-    NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 20, 1]};
-    [LNDProgressHUD showLoadingInView:self.view];
-    [[self.vm.cmdGetRanking execute:dic] subscribeNext:^(id x) {
-        @strongify(self);
-        [LNDProgressHUD hidenForView:self.view];
-//        self.netErrorView.hidden = YES;
-        [self.tableView reloadData];
-    } error:^(NSError * _Nullable error) {
-        [LNDProgressHUD hidenForView:self.view];
-        if (error.code == -1009) {// 无网络
-//            self.netErrorView.hidden = NO;
-        }
-        
-        NSLog(@"error:%@", [error localizedDescription]);
-    }];
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -130,6 +126,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+- (void)dealloc {
+    NSLog(@"dealloc ranking>>>>>>>>>>>>>>>");
+}
 
 @end

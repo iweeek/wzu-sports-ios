@@ -10,8 +10,15 @@
 #import "FlipTableView.h"
 #import "SegmentTapView.h"
 #import "RankingController.h"
+#import "FSScrollContentView.h"
+#import "UIViewController+BackButtonHandler.h"
+
 
 @interface RankingManagerController () <SegmentTapViewDelegate, FlipTableViewDelegate>
+// <FSPageContentViewDelegate,FSSegmentTitleViewDelegate>
+
+//@property (nonatomic, strong) FSPageContentView *pageContentView;
+//@property (nonatomic, strong) FSSegmentTitleView *titleView;
 
 @property (nonatomic, strong)SegmentTapView *segment;
 @property (nonatomic, strong) FlipTableView *flipView;
@@ -30,6 +37,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+}
+
+-(BOOL)navigationShouldPopOnBackButton {
+//    self.pageContentView = nil;
+    return YES; // 返回按钮有效
 }
 
 - (void)createUI {
@@ -60,6 +72,11 @@
     
     self.flipView.delegate = self;
     [self.view addSubview:self.flipView];
+}
+
+#pragma mark --
+- (void)dealloc {
+    NSLog(@"dealloc ranking");
 }
 
 #pragma mark - select Index

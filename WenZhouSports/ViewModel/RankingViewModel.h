@@ -12,7 +12,9 @@
 @interface RankingViewModel : NSObject
 
 @property (nonatomic, strong) HomePageModel *homePage;
+@property (nonatomic, assign) NSInteger universityId;
 
 @property (nonatomic, strong) RACCommand *cmdGetRanking;
+@property (nonatomic, strong) RACCommand *cmdLoadMoreRanking;
 
 @end

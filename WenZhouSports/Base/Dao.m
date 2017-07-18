@@ -48,7 +48,9 @@
             code = 1006;
             message = @"没有网络";
         }
-        [subscriber sendError:[NSError errorWithDomain:message code:code userInfo:nil]];
+        [subscriber sendError:[NSError errorWithDomain:message
+                                                  code:code
+                                              userInfo:nil]];
         return nil;
     }];
 }
@@ -157,11 +159,24 @@
     return reachabilty;
 }
 
+- (id)jsonToMode:(Class)className dictionary:(id)value {
+    return [self jsonToMode:className dictionary:value key:nil];
+}
+
 - (id)jsonToMode:(Class)className dictionary:(id)value key:(NSString *)key {
 //    NSString *jsonStr = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
 //    NSDictionary *jsonDic = [jsonStr toDictionary];
-    id responseData = value[@"data"];
+//    id responseData = jsonDic[@"data"];
+    
+    id responseData = nil;
+    
+    if (value[@"data"]) {
+        responseData = value[@"data"];
+    } else {
+        responseData = value;
+    }
     NSLog(@"========data:%@", responseData);
+    
     if (!responseData) {
         return nil;
     }

@@ -24,9 +24,10 @@
 #import "RunningProjectsModel.h"
 #import "RunningProjectItemModel.h"
 #import "RankingManagerController.h"
-#import "ZBJRefresh.h"
 #import "NetErrorView.h"
 #import "SportsHistoryManagerController.h"
+#import "RankingController.h"
+#import "MJRefresh.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -46,8 +47,11 @@ CGFloat proportion = 0.84;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"课外体育锻炼";
-//    self.automaticallyAdjustsScrollViewInsets = NO;
-//    self.edgesForExtendedLayout = UIRectEdgeNone;
+//    self.edgesForExtendedLayout=UIRectEdgeNone;
+//    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
+//    self.navigationController.navigationBar.translucent = NO;
+    
     self.view.backgroundColor = cFFFFFF;
     self.vm = [[HomeViewModel alloc] init];
     
@@ -76,17 +80,12 @@ CGFloat proportion = 0.84;
 }
 
 - (void)setupRefresh {
-    // 下拉刷新
-//    @weakify(self);
-//    self.tableView.zbjRefreshHeaderView =[ZBJRefreshHeaderView headerWithRefreshingBlock:^{
-//        @strongify(self);
-//        [self initData];
-//    }];
+    @weakify(self);
     
     // 网络故障
     self.netErrorView = [[NetErrorView alloc] initWithFrame:self.view.bounds];
     self.netErrorView.hidden = YES;
-    @weakify(self);
+//    @weakify(self);
     [self.netErrorView reloadView:^{
         @strongify(self);
         [self initData];
@@ -120,17 +119,22 @@ CGFloat proportion = 0.84;
                             name \
                             qualifiedDistance \
                             qualifiedCostTime \
+                            acquisitionInterval \
                         } \
                        }";
     NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 1, 1]};
     [LNDProgressHUD showLoadingInView:self.view];
     [[self.vm.cmdRunningProjects execute:dic] subscribeNext:^(RunningProjectsModel *x) {
         @strongify(self);
+        [self.tableView.mj_header endRefreshing];
+        self.tableView.contentInset = UIEdgeInsetsZero;
         [LNDProgressHUD hidenForView:self.view];
         self.netErrorView.hidden = YES;
         [self.tableView reloadData];
     } error:^(NSError * _Nullable error) {
+        [self.tableView.mj_header endRefreshing];
         [LNDProgressHUD hidenForView:self.view];
+        self.tableView.contentInset = UIEdgeInsetsZero;
         if (error.code == -1009) {// 无网络
             self.netErrorView.hidden = NO;
         }
@@ -144,11 +148,16 @@ CGFloat proportion = 0.84;
 }
 
 - (void)initSubviews {
+    UIView *homeView = [[UIView alloc] initWithFrame:self.view.bounds];
+//    homeView.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:homeView];
+    
     _tableView = ({
-        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
+        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 64, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
         tv.delegate = self;
         tv.dataSource = self;
         tv.separatorStyle = UITableViewCellSeparatorStyleNone;
+//        tv.backgroundColor = [UIColor yellowColor];
         
         [tv registerClass:[HomeItemCell class]
            forCellReuseIdentifier:NSStringFromClass([HomeItemCell class])];
@@ -163,6 +172,15 @@ CGFloat proportion = 0.84;
     });
     
     [self.view addSubview: _tableView];
+//    [homeView addSubview:_tableView];
+    
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(64);
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+//    }];
+    
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
     panGesture.delegate = self;
     RACSignal *signal = [panGesture rac_gestureSignal];
@@ -258,6 +276,9 @@ CGFloat proportion = 0.84;
         if (indexPath.row == 0) {
             SportsHistoryManagerController *vc = [[SportsHistoryManagerController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
+//            RankingController *vc = [[RankingController alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+
         } else if (indexPath.row ==1) {
             RankingManagerController *vc = [[RankingManagerController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -287,6 +308,7 @@ CGFloat proportion = 0.84;
             return;
         }
         SportsDetailsController *vc = [[SportsDetailsController alloc] init];
+        vc.hidesBottomBarWhenPushed = YES;
         vc.runningProject = self.vm.homePage.runningProjects[indexPath.row - 1];
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -359,13 +381,13 @@ CGFloat proportion = 0.84;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return 0.1;
+        return CGFLOAT_MIN;
     }
     return 10;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1;
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

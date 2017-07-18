@@ -11,8 +11,23 @@
 
 @implementation Dao (Ranking)
 
-- (RACSignal *)getRanking:(NSDictionary *)dic {
-    return [[self RAC_POST:@"graphql/query" parameters:dic]
+- (RACSignal *)getRankingByUniversityId:(NSInteger)universityId
+                            currentPage:(NSInteger)currentPage {
+    NSString *str = @"{ \
+                        university(id:%ld) { \
+                            timeCostedRanking (pageSize:%ld pageNumber:%ld){ \
+                                pagesCount \
+                                data{ \
+                                    studentId \
+                                    studentName \
+                                    timeCosted \
+                                    avatarUrl \
+                                } \
+                            } \
+                        }\
+                    }";
+    NSDictionary *dicParameters = @{@"query":[NSString stringWithFormat:str, universityId, pageSize, currentPage]};
+    return [[self RAC_POST:@"graphql/query" parameters:dicParameters]
             map:^id _Nullable(id _Nullable value) {
                 return [self jsonToMode:[HomePageModel class] dictionary:value key:nil];
             }];

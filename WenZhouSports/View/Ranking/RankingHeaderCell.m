@@ -37,30 +37,9 @@
     StudentTimeCostedModel *model2 = array[1];
     StudentTimeCostedModel *model3 = array[2];
     
-//    [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-//    [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-//    [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    
-    CGRect hexagnoRect = self.imgAvatarCenter.bounds;
-    //绘制一个六边形的layer，并复制一个image给他的contents
-    CALayer *hexagonLayer = [CALayer layer];
-    hexagonLayer.frame = hexagnoRect;
-    CAShapeLayer * shapLayer = [CAShapeLayer layer];
-    shapLayer.lineWidth = 1;
-    shapLayer.strokeColor = [UIColor whiteColor].CGColor;
-    shapLayer.path = [self getCGPath:hexagnoRect.size.width - 20];
-    hexagonLayer.mask = shapLayer;
-    hexagonLayer.contents = (__bridge id _Nullable)([UIImage imageNamed:@"icon_item_avatar"].CGImage);
-    
-    CALayer *completeLayer = [CALayer layer];
-    completeLayer.frame = CGRectMake(10, 10, 60, 60);
-    [completeLayer addSublayer:hexagonLayer];
-    completeLayer.shadowOpacity = 1.0f;
-    completeLayer.shadowPath = [self getCGPath:hexagnoRect.size.width];
-    completeLayer.shadowOffset = CGSizeMake(-10, -10);
-    
-    completeLayer.shadowColor = cEEEEEE.CGColor;
-    [_imgNumCenter.layer addSublayer:completeLayer];
+    [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
     
     self.labNameLeft.text = model2.studentName;
     self.labNameCenter.text = model1.studentName;

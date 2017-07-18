@@ -10,6 +10,8 @@
 #import "SportsHistoryHeaderCell.h"
 #import "SportsHistoryItemCell.h"
 #import "SportsHistoryViewModel.h"
+#import "MJRefresh.h"
+#import "SportsResultController.h"
 
 @interface SportsHistoryController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -26,49 +28,41 @@
     self.view.backgroundColor = cFFFFFF;
     [self.view addSubview:self.tableView];
     self.vm = [[SportsHistoryViewModel alloc] init];
+    self.vm.studentId = 1;
+//    [self initData];
     
-    [self initData];
+    @weakify(self);
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        @strongify(self);
+        [[self.vm.cmdRefreshSportsHistory execute:nil] subscribeNext:^(id  _Nullable x) {
+            @strongify(self);
+            [self.tableView.mj_header endRefreshing];
+            [self.tableView reloadData];
+        } error:^(NSError * _Nullable error) {
+            [self.tableView.mj_header endRefreshing];
+            NSLog(@"error:%@", [error localizedDescription]);
+        }] ;
+    }];
+    
+    self.tableView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingBlock:^{
+        @strongify(self);
+        [[self.vm.cmdLoadMoreSportsHistory execute:nil] subscribeNext:^(id  _Nullable x) {
+            @strongify(self);
+            [self.tableView.mj_footer endRefreshing];
+            [self.tableView reloadData];
+        } error:^(NSError * _Nullable error) {
+            [self.tableView.mj_header endRefreshing];
+            NSLog(@"error:%@", [error localizedDescription]);
+        }] ;
+    }];
+    
+    [self.tableView.mj_header beginRefreshing];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-- (void)initData {
-    @weakify(self);
-    NSString *str = @"{ \
-                        student(id:%ld) { \
-                            currentTermActivities(pageSize:%ld, pageNumber:%ld){ \
-                                pagesCount \
-                                data { \
-                                    projectId \
-                                    costTime \
-                                    caloriesConsumed \
-                                    startTime \
-                                    distance \
-                                    qualified \
-                                    runningProject{ \
-                                        name \
-                                    } \
-                                } \
-                            } \
-                        } \
-                      }";
-    NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 20, 1]};
-    [LNDProgressHUD showLoadingInView:self.view];
-    [[self.vm.cmdGetSportsHistory execute:dic] subscribeNext:^(id x) {
-        @strongify(self);
-        [LNDProgressHUD hidenForView:self.view];
-        //        self.netErrorView.hidden = YES;
-        [self.tableView reloadData];
-    } error:^(NSError * _Nullable error) {
-        [LNDProgressHUD hidenForView:self.view];
-        if (error.code == -1009) {// 无网络
-        }
-        
-        NSLog(@"error:%@", [error localizedDescription]);
-    }];
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -88,7 +82,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 6;
+    return self.vm.homePage.student.currentTermActivities.data.count + 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -134,7 +128,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section > 0) {
+        SportsResultController *vc = [[SportsResultController alloc] init];
+        RunningActivityModel *runningActivity = self.vm.homePage.student.currentTermActivities.data[indexPath.section - 1];
+        vc.RunningActivity = runningActivity;
+        
+        [self.nav pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - getter && setter

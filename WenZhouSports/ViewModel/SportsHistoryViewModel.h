@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "HomePageModel.h"
+#import "StudentModel.h"
 
 @interface SportsHistoryViewModel : NSObject
 
 @property (nonatomic, strong) HomePageModel *homePage;
+@property (nonatomic, assign) NSInteger studentId;
 
-@property (nonatomic, strong) RACCommand *cmdGetSportsHistory;
+@property (nonatomic, strong) RACCommand *cmdRefreshSportsHistory;
+@property (nonatomic, strong) RACCommand *cmdLoadMoreSportsHistory;
 
 @end

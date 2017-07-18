@@ -10,6 +10,7 @@
 
 @interface Dao (Ranking)
 
-- (RACSignal *)getRanking:(NSDictionary *)dic;
+- (RACSignal *)getRankingByUniversityId:(NSInteger)universityId
+                            currentPage:(NSInteger)currentPage;
 
 @end

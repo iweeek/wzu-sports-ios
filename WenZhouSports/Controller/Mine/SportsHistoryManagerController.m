@@ -50,6 +50,7 @@
     for (NSString *type in arrType) {
         SportsHistoryController *vc = [[SportsHistoryController alloc] init];
         vc.type = type;
+        vc.nav = self.navigationController;
         [self.controllsArray addObject:vc];
     }
     

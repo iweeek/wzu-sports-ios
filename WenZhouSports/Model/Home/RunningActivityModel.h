@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RunningProjectItemModel.h"
+#import "RunningActivityDataModel.h"
 
 @interface RunningActivityModel : NSObject
 
@@ -21,7 +22,6 @@
 @property (nonatomic, assign) NSInteger caloriesConsumed;//本次活动的卡路里消耗量
 @property (nonatomic, assign) BOOL qualified;//本次活动是否达标
 @property (nonatomic, strong) RunningProjectItemModel *runningProject;//该活动所属的运动项目
-
-
+@property (nonatomic, strong) NSArray<RunningActivityDataModel *> *data;//该活动记录的采集数据
 
 @end

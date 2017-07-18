@@ -18,5 +18,36 @@
             }];
 }
 
+- (RACSignal *)getSportsHistoryWithStudentId:(NSInteger)studentId
+                                 currentPage:(NSInteger)currentPage {
+    NSString *str = @"{ \
+                        student(id:%ld) { \
+                            currentTermActivities(pageSize:%ld, pageNumber:%ld){ \
+                                pagesCount \
+                                data { \
+                                    projectId \
+                                    costTime \
+                                    kcalConsumed \
+                                    startTime \
+                                    distance \
+                                    qualified \
+                                    data { \
+                                        longitude \
+                                        latitude \
+                                    } \
+                                    runningProject{ \
+                                        name \
+                                    } \
+                                } \
+                            } \
+                        } \
+                    }";
+    NSDictionary *dicParameters = @{@"query":[NSString stringWithFormat:str, studentId, pageSize, currentPage]};
+    return [[self RAC_POST:@"graphql/query" parameters:dicParameters]
+            map:^id _Nullable(id _Nullable value) {
+                return [self jsonToMode:[HomePageModel class] dictionary:value key:nil];
+            }];}
+
+
 
 @end

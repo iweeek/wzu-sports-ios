@@ -14,6 +14,6 @@
 @property (nonatomic, assign) NSInteger pageSize;
 @property (nonatomic, assign) NSInteger pagesCount;
 @property (nonatomic, assign) NSInteger dataCount;
-@property (nonatomic, strong) NSArray *data;
+@property (nonatomic, strong) NSMutableArray *data;
 
 @end
