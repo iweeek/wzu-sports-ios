@@ -65,7 +65,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         RankingHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RankingHeaderCell class]) forIndexPath:indexPath];
-        [cell setupWithData:self.vm.homePage.university.timeCostedRanking.data];
+        if (self.type == RankingTypeTimeCost) {
+            [cell setupWithData:self.vm.homePage.university.timeCostedRanking.data];
+        } else {
+            [cell setupWithData:self.vm.homePage.university.kcalConsumptionRanking.data];
+        }
+        
         return cell;
     }
     

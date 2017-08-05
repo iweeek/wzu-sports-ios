@@ -12,9 +12,9 @@
 
 - (RACSignal *)runActivity:(NSDictionary *)dic;
 
-- (RACSignal *)runningActivitysStartWithProjectId:(NSInteger)projectId
-                                        sutdentId:(NSInteger)studentId
-                                        startTime:(NSTimeInterval)startTime;
+- (RACSignal *)runningActivitysStartWithRunningSportId:(NSInteger)runningSportId
+                                             studentId:(NSInteger)studentId
+                                             startTime:(NSTimeInterval)startTime;
 
 - (RACSignal *)runningActivitysEndWithId:(NSInteger)pid
                                 distance:(NSInteger)distance
@@ -31,5 +31,17 @@
                                          latitude:(float)latitude
                                      locationType:(NSInteger)locationType
                                          isNormal:(BOOL)isNormal;
+
+- (RACSignal *)getAreaSportsList;
+
+- (RACSignal *)areaActivitysStartWithAreaSportId:(NSInteger)areaSportId
+                                       studentId:(NSInteger)studentId;
+
+- (RACSignal *)areaActivitysDataWithActivityId:(NSInteger)activityId
+                                     longitude:(float)longitude
+                                      latitude:(float)latitude
+                                  locationType:(NSInteger)locationType;
+
+- (RACSignal *)areaActivitysEndWithActivityId:(NSInteger)activityId;
 
 @end

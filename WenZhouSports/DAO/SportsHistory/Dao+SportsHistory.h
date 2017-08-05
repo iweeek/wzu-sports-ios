@@ -13,5 +13,12 @@
 - (RACSignal *)getSportsHistory:(NSDictionary *)dic;
 - (RACSignal *)getSportsHistoryWithStudentId:(NSInteger)studentId
                                  currentPage:(NSInteger)currentPage;
+- (RACSignal *)getRunningActivityWithId:(NSInteger)activityId;
+- (RACSignal *)getAreaActivityWithId:(NSInteger)activityId;
+
+- (RACSignal *)getSportsHistoryWithStudentId:(NSInteger)studentId
+                                   startDate:(NSString *)startDate
+                                     endDate:(NSString *)endDate
+                           sportsHistoryType:(NSString *)sportsHistoryType;
 
 @end

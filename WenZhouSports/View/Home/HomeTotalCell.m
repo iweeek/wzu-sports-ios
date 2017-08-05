@@ -31,30 +31,27 @@
 @implementation HomeTotalCell
 
 - (void)setupWithData:(id)data {
-//    NSDictionary *attribute1 = @{NSFontAttributeName : S10,
-//                                 NSForegroundColorAttributeName : c7E848C};
-//    NSDictionary *attribute2 = @{NSFontAttributeName : S10,
-//                                 NSForegroundColorAttributeName : c474A4F};
-//    
-//    NSString *surplusCountStr = @"3 次";
-//    NSString *calorieStr = @"1200 千卡";
-//    NSString *countStr = @"剩余1次";
-//    
-//    NSMutableAttributedString *surplusCountAttributedString = [[NSMutableAttributedString alloc] initWithString:surplusCountStr];
-//    NSMutableAttributedString *calorieAttributedString = [[NSMutableAttributedString alloc] initWithString:calorieStr];
-//    NSMutableAttributedString *countAttributedString = [[NSMutableAttributedString alloc] initWithString:countStr];
-//    
-//    [countAttributedString addAttributes:attribute1 range:NSMakeRange(countAttributedString.length - 1, 1)];
-//    [countAttributedString addAttributes:attribute1 range:NSMakeRange(0, 2)];
-//    [calorieAttributedString addAttributes:attribute2 range:NSMakeRange(calorieAttributedString.length - 2, 2)];
-//    [surplusCountAttributedString addAttributes:attribute2 range:NSMakeRange(surplusCountAttributedString.length - 2, 2)];
-    
     HomePageModel *home = (HomePageModel *)data;
-    self.labTotalCount.text = [NSString stringWithFormat:@"%ld", (long)home.university.currentTerm.termSportsTask.targetSportsTimes];
-    self.labCalorie.text = [NSString stringWithFormat:@"%ld", (long)home.student.caloriesConsumption];
-    self.labQualifiedCount.text = [NSString stringWithFormat:@"%ld/45", (long)home.student.currentTermQualifiedActivityCount];
     
-    [self.proViewCount setProgress:home.student.currentTermQualifiedActivityCount * 1.0 / 45 animated:YES];
+    // 总次数
+    NSInteger totalCount = home.student.currentTermRunningActivityCount + home.student.currentTermAreaActivityCount;
+    self.labTotalCount.text = [NSString stringWithFormat:@"%ld", (long)totalCount];
+    
+    // 卡路里
+    NSInteger KcalConsumption = home.student.runningActivityKcalConsumption + home.student.areaActivityKcalConsumption;
+    self.labCalorie.text = [NSString stringWithFormat:@"%ld", (long)KcalConsumption];
+    
+    // 耗时
+    NSInteger costTime = home.student.runningActivityTimeCosted + home.student.areaActivityTimeCosted;
+    self.labTime.text = [NSString stringWithFormat:@"%ld", (long)costTime / 60];;
+    
+    // 达标次数
+    NSInteger qualifiedCount = home.student.currentTermQualifiedRunningActivityCount +
+    home.student.currentTermQualifiedAreaActivityCount;
+    NSInteger targetCount = home.university.currentTerm.termSportsTask.targetSportsTimes;
+    self.labQualifiedCount.text = [NSString stringWithFormat:@"%ld/%ld", (long)qualifiedCount, targetCount];
+    
+    [self.proViewCount setProgress:qualifiedCount * 1.0 / targetCount animated:YES];
 }
 
 - (void)createUI {
@@ -152,7 +149,7 @@
         _labTitleTotalCount.numberOfLines = 0;
         _labTitleTotalCount.textAlignment = NSTextAlignmentLeft;
         _labTitleTotalCount.textColor = c7E848C;
-        _labTitleTotalCount.text = @"本学期累计运动（次）";
+        _labTitleTotalCount.text = @"本学期累计运动(次)";
     }
     return _labTitleTotalCount;
 }
@@ -164,7 +161,7 @@
         _labTotalCount.numberOfLines = 0;
         _labTotalCount.textAlignment = NSTextAlignmentLeft  ;
         _labTotalCount.textColor = c474A4F;
-        _labTotalCount.text = @"10";
+        _labTotalCount.text = @"0";
     }
     return _labTotalCount;
 }
@@ -176,7 +173,7 @@
         _labTitleCalorie.numberOfLines = 0;
         _labTitleCalorie.textAlignment = NSTextAlignmentRight;
         _labTitleCalorie.textColor = c7E848C;
-        _labTitleCalorie.text = @"消耗(卡)";
+        _labTitleCalorie.text = @"消耗(大卡)";
     }
     return _labTitleCalorie;
 }
@@ -188,7 +185,7 @@
         _labCalorie.numberOfLines = 0;
         _labCalorie.textAlignment = NSTextAlignmentRight;
         _labCalorie.textColor = c474A4F;
-        _labCalorie.text = @"1200";
+        _labCalorie.text = @"0";
     }
     return _labCalorie;
 }
@@ -211,7 +208,7 @@
         _labTime.numberOfLines = 0;
         _labTime.textAlignment = NSTextAlignmentRight;
         _labTime.textColor = c474A4F;
-        _labTime.text = @"120";
+        _labTime.text = @"0";
     }
     return _labTime;
 }
@@ -234,7 +231,7 @@
         _labQualifiedCount.numberOfLines = 0;
         _labQualifiedCount.textAlignment = NSTextAlignmentRight;
         _labQualifiedCount.textColor = c474A4F;
-        _labQualifiedCount.text = @"35/45";
+        _labQualifiedCount.text = @"0/0";
     }
     return _labQualifiedCount;
 }
@@ -246,6 +243,7 @@
         _labTitleAdditional.numberOfLines = 0;
         _labTitleAdditional.textColor = c7E848C;
         _labTitleAdditional.text = @"课外成绩（分）";
+        _labTitleAdditional.hidden = YES;
     }
     return _labTitleAdditional;
 }
@@ -257,7 +255,8 @@
         _labAdditional.numberOfLines = 0;
         _labAdditional.textAlignment = NSTextAlignmentRight;
         _labAdditional.textColor = c474A4F;
-        _labAdditional.text = @"10/20";
+        _labAdditional.text = @"0/0";
+        _labAdditional.hidden = YES;
     }
     return _labAdditional;
 }
@@ -271,7 +270,7 @@
         //设置进度条颜色
         _proViewCount.trackTintColor= cEEEEEE;
         //设置进度默认值，这个相当于百分比，范围在0~1之间，不可以设置最大最小值
-        _proViewCount.progress=0.7;
+        _proViewCount.progress = 0.1;
         //设置进度条上进度的颜色
         _proViewCount.progressTintColor=c66A7FE;
 //        //设置进度条的背景图片
@@ -279,7 +278,7 @@
 //        //设置进度条上进度的背景图片
 //        _proViewCount.progressImage=[UIImage imageNamed:@"1.png"];
         //设置进度值并动画显示
-        [_proViewCount setProgress:0.7 animated:YES];
+//        [_proViewCount setProgress:0.7 animated:YES];
     }
     return _proViewCount;
 }
@@ -296,6 +295,7 @@
         _proViewAdditional.progress=0.7;
         //设置进度条上进度的颜色
         _proViewAdditional.progressTintColor=c66A7FE;
+        _proViewAdditional.hidden = YES;
         //        //设置进度条的背景图片
         //        _proViewCount.trackImage=[UIImage imageNamed:@"logo.png"];
         //        //设置进度条上进度的背景图片

@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "UniversityModel.h"
 #import "StudentModel.h"
-#import "RunningProjectItemModel.h"
+#import "RunningSportsModel.h"
+#import "AreaSportModel.h"
 
 @interface HomePageModel : NSObject
 
 @property (nonatomic, strong) UniversityModel *university;
 @property (nonatomic, strong) StudentModel *student;
-@property (nonatomic, strong) NSArray *runningProjects;
+@property (nonatomic, strong) NSArray *runningSports;
+@property (nonatomic, strong) NSArray *areaSports;
 
 @end

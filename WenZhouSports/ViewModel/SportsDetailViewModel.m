@@ -12,8 +12,6 @@
 
 @interface SportsDetailViewModel ()
 
-@property (nonatomic, strong) RACCommand *compareFaceCommand;
-
 @end
 
 @implementation SportsDetailViewModel
@@ -39,9 +37,9 @@
         }];
         
         _cmdRunningActivitiesStart = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
-            return [[[Dao share] runningActivitysStartWithProjectId:self.projectId
-                                                          sutdentId:self.sutdentId
-                                                          startTime:self.starTime]
+            return [[[Dao share] runningActivitysStartWithRunningSportId:self.runningSportId
+                                                               studentId:self.studentId
+                                                               startTime:self.starTime]
                 doNext:^(id  _Nullable x) {
                     self.runningActivity = x;
                 }];
@@ -56,6 +54,39 @@
                 catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
                     return [RACSignal error:error];
                 }];
+        }];
+        
+        // 定点运动相关
+        _cmdGetAreaSportsList = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[[[Dao share] getAreaSportsList]
+            doNext:^(id  _Nullable x) {
+                self.areaSportsOutdoorPoints = x;
+            }]
+            catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
+                return [RACSignal error:error];
+            }];
+        }];
+        
+        _cmdAreaActivityStart = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[[[Dao share] areaActivitysStartWithAreaSportId:self.areaSport.id
+                                                        studentId:self.studentId]
+            doNext:^(id  _Nullable x) {
+                self.areaActivity = x;
+            }]
+            catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
+                return [RACSignal error:error];
+            }];
+        }];
+        
+        _cmdAreaActivityData = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[Dao share] areaActivitysDataWithActivityId:0
+                                                      longitude:self.longitude
+                                                       latitude:self.latitude
+                                                   locationType:self.locationType];
+        }];
+        
+        _cmdAreaActivityEnd = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
+            return [[Dao share] areaActivitysEndWithActivityId:self.areaActivityId];
         }];
     }
     return self;

@@ -7,19 +7,24 @@
 //
 
 #import "SportsHistoryItemCell.h"
+#import "RunningActivityModel.h"
+#import "AreaActivityModel.h"
+#import "NSString+Date.h"
 
 @interface SportsHistoryItemCell ()
 
+@property (nonatomic, strong) UIImageView *imgIconView;
 @property (nonatomic, strong) UILabel *labTitle;
+@property (nonatomic, strong) UILabel *labQualified; // 是否达标
 @property (nonatomic, strong) UILabel *labDate;
-@property (nonatomic, strong) UILabel *labTitleSpeed;
-@property (nonatomic, strong) UILabel *labTitleStage;
-@property (nonatomic, strong) UILabel *labTitleMinDistance;
-@property (nonatomic, strong) UILabel *labSpeed;
-@property (nonatomic, strong) UILabel *labStage;// 段
-@property (nonatomic, strong) UILabel *labMinDistance;
+@property (nonatomic, strong) UILabel *labTitleDistance;
+@property (nonatomic, strong) UILabel *labTitleTime;
+@property (nonatomic, strong) UILabel *labTitleCalorie;
+@property (nonatomic, strong) UILabel *labDistance;
+@property (nonatomic, strong) UILabel *labTime;
 @property (nonatomic, strong) UILabel *labCalorie;
-@property (nonatomic, strong) UILabel *labTime;// 累计时长
+@property (nonatomic, strong) UILabel *labCalorieOld;
+@property (nonatomic, strong) UILabel *labTotalTime;// 累计时长
 @property (nonatomic, strong) UIView  *spliteLine1;
 @property (nonatomic, strong) UIView  *spliteLine2;
 
@@ -28,46 +33,137 @@
 @implementation SportsHistoryItemCell
 
 - (void)setupWithData:(id)data {
-    NSDictionary *attribute1 = @{NSFontAttributeName : S10,
-                                 NSForegroundColorAttributeName : c7E848C};
-    
-    NSString *speedStr = @"1.0 米/秒";
-    NSString *stageStr = @"4 段";
-    NSString *minDistanceDisStr = @"1000 米";
-    
-    NSMutableAttributedString *speedAttributedString = [[NSMutableAttributedString alloc] initWithString:speedStr];
-    NSMutableAttributedString *stageAttributedString = [[NSMutableAttributedString alloc] initWithString:stageStr];
-    NSMutableAttributedString *minDistanceDisString = [[NSMutableAttributedString alloc] initWithString:minDistanceDisStr];
-    
-    [speedAttributedString addAttributes:attribute1 range:NSMakeRange(speedAttributedString.length - 3, 3)];
-    [stageAttributedString addAttributes:attribute1 range:NSMakeRange(stageAttributedString.length - 1, 1)];
-    [minDistanceDisString addAttributes:attribute1 range:NSMakeRange(minDistanceDisString.length - 1, 1)];
-    
-    self.labSpeed.attributedText = speedAttributedString;
-    self.labStage.attributedText = stageAttributedString;
-    self.labMinDistance.attributedText = minDistanceDisString;
+    if ([data isMemberOfClass:[RunningActivityModel class]]) {
+        RunningActivityModel *activity = (RunningActivityModel *)data;
+        
+        NSDictionary *attribute1 = @{NSFontAttributeName : S10,
+                                     NSForegroundColorAttributeName : c7E848C};
+        
+        NSString *distanceStr = [NSString stringWithFormat:@"%ld 米", activity.distance];
+        NSString *timeStr = [self getMMSSFromSS:activity.costTime];
+        NSString *calorieStr = [NSString stringWithFormat:@"%ld大卡", activity.kcalConsumed];
+        //    NSString *speedStr = nil;
+        //    if (activity.costTime > 0) {
+        //        speedStr = [NSString stringWithFormat:@"%.1f 米/秒",
+        //                  activity.distance / activity.costTime * 0.1 * 10];
+        //    } else {
+        //        speedStr = @"0.0 米/秒";
+        //    }
+        
+        NSMutableAttributedString *distanceAttributedString = [[NSMutableAttributedString alloc] initWithString:distanceStr];
+        NSMutableAttributedString *calorieAttributedString = [[NSMutableAttributedString alloc] initWithString:calorieStr];
+        
+        [distanceAttributedString addAttributes:attribute1 range:NSMakeRange(distanceAttributedString.length - 1, 1)];
+        [calorieAttributedString addAttributes:attribute1 range:NSMakeRange(calorieAttributedString.length - 2, 2)];
+        
+        self.labTitle.text = activity.runningSport.name;
+        self.labDate.text = [NSString timestampSwitchTime:activity.startTime / 1000
+                                             andFormatter:@"HH:mm"];
+        
+        self.labTitleDistance.hidden = NO;
+        self.labDistance.hidden = NO;
+        self.labDistance.attributedText = distanceAttributedString;
+        self.labTime.text = timeStr;
+        self.labCalorie.attributedText = calorieAttributedString;
+        
+        // 非正常结束
+        if (activity.endedAt == 0) {
+            self.labQualified.text = @"非正常结束";
+            self.labQualified.backgroundColor = C_FF0000;
+        } else {
+            if (activity.qualified) {
+                self.labQualified.text = @"达标！";
+                self.labQualified.backgroundColor = C_42CC42;
+            } else {
+                self.labQualified.text = @"未达标！";
+                self.labQualified.backgroundColor = C_FF0000;
+            }
+        }
+    } else {
+        AreaActivityModel *activity = (AreaActivityModel *)data;
+        
+        NSDictionary *attribute1 = @{NSFontAttributeName : S10,
+                                     NSForegroundColorAttributeName : c7E848C};
+        
+        NSString *timeStr = [self getMMSSFromSS:activity.costTime];
+        NSString *calorieStr = [NSString stringWithFormat:@"%ld大卡", activity.kcalConsumed];
 
+        
+        NSMutableAttributedString *calorieAttributedString = [[NSMutableAttributedString alloc] initWithString:calorieStr];
+        
+        [calorieAttributedString addAttributes:attribute1 range:NSMakeRange(calorieAttributedString.length - 2, 2)];
+        
+        self.labTitleDistance.hidden = YES;
+        self.labDistance.hidden = YES;
+        self.labTitle.text = activity.areaSport.name;
+        self.labDate.text = [NSString timestampSwitchTime:activity.startTime / 1000
+                                             andFormatter:@"HH:mm"];
+        
+        self.labTime.text = timeStr;
+        self.labCalorie.attributedText = calorieAttributedString;
+        
+        // 非正常结束
+        if (activity.endedAt == 0) {
+            self.labQualified.text = @"非正常结束";
+            self.labQualified.backgroundColor = C_FF0000;
+        } else {
+            if (activity.qualified) {
+                self.labQualified.text = @"达标！";
+                self.labQualified.backgroundColor = C_42CC42;
+            } else {
+                self.labQualified.text = @"未达标！";
+                self.labQualified.backgroundColor = C_FF0000;
+            }
+        }
+    }
+    
 }
 
+//传入 秒  得到 xx:xx:xx
+-(NSString *)getMMSSFromSS:(NSInteger)seconds {
+    NSString *strHour = [NSString stringWithFormat:@"%02ld", seconds / 3600];
+    
+    NSString *strMinute = [NSString stringWithFormat:@"%02ld", (seconds % 3600) / 60];
+    
+    NSString *strSecond = [NSString stringWithFormat:@"%02ld", seconds % 60];
+    
+    NSString *strTime = [NSString stringWithFormat:@"%@:%@:%@", strHour, strMinute,strSecond];
+    
+    return strTime;
+}
+
+
 - (void)createUI {
+    [self.contentView addSubview:self.imgIconView];
     [self.contentView addSubview:self.labTitle];
+    [self.contentView addSubview:self.labQualified];
     [self.contentView addSubview:self.labDate];
-    [self.contentView addSubview:self.labTitleSpeed];
-    [self.contentView addSubview:self.labTitleStage];
-    [self.contentView addSubview:self.labTitleMinDistance];
-    [self.contentView addSubview:self.labSpeed];
-    [self.contentView addSubview:self.labStage];
-    [self.contentView addSubview:self.labMinDistance];
-    [self.contentView addSubview:self.labCalorie];
+    [self.contentView addSubview:self.labTitleDistance];
+    [self.contentView addSubview:self.labTitleTime];
+    [self.contentView addSubview:self.labTitleCalorie];
+    [self.contentView addSubview:self.labDistance];
     [self.contentView addSubview:self.labTime];
+    [self.contentView addSubview:self.labCalorie];
+    [self.contentView addSubview:self.labCalorieOld];
+    [self.contentView addSubview:self.labTotalTime];
     [self.contentView addSubview:self.spliteLine1];
     [self.contentView addSubview:self.spliteLine2];
 }
 
 - (void)layout {
+    [self.imgIconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(8);
+        make.left.mas_equalTo(18);
+        make.size.mas_equalTo(CGSizeMake(21, 21));
+    }];
     [self.labTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(12);
-        make.left.mas_equalTo(20);
+//        make.top.mas_equalTo(12);
+        make.centerY.mas_equalTo(self.imgIconView);
+        make.left.mas_equalTo(self.imgIconView.mas_right).offset(5);
+    }];
+    [self.labQualified mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.labTitle.mas_right).offset(2);
+        make.centerY.mas_equalTo(self.labTitle);
     }];
     [self.labDate mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(12);
@@ -79,50 +175,58 @@
         make.right.mas_equalTo(-18);
         make.height.mas_equalTo(1);
     }];
-    [self.labTitleSpeed mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.spliteLine1.mas_bottom).offset(12);
+    [self.labTitleDistance mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.spliteLine1.mas_bottom).offset(8);
         make.left.mas_equalTo(20);
     }];
-    [self.labTitleStage mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.labTitleTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.spliteLine1.mas_bottom).offset(12);
         make.centerX.mas_equalTo(0);
     }];
-    [self.labTitleMinDistance mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.labTitleCalorie mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.spliteLine1.mas_bottom).offset(12);
         make.right.mas_equalTo(-20);
     }];
-    [self.labSpeed mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.labTitleMinDistance.mas_bottom).offset(10);
-        make.left.mas_equalTo(self.labTitleSpeed);
+    [self.labDistance mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.labTitleCalorie.mas_bottom).offset(5);
+        make.left.mas_equalTo(self.labTitleDistance);
     }];
-    [self.labStage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.labTitleMinDistance.mas_bottom).offset(10);
+    [self.labTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.labTitleCalorie.mas_bottom).offset(5);
         make.centerX.mas_equalTo(0);
     }];
-    [self.labMinDistance mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.labTitleMinDistance.mas_bottom).offset(10);
+    [self.labCalorie mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.labTitleCalorie.mas_bottom).offset(5);
         make.right.mas_equalTo(-20);
     }];
     [self.spliteLine2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.labSpeed.mas_bottom).offset(12);
+        make.bottom.mas_equalTo(0);
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(-20);
         make.height.mas_equalTo(1);
     }];
-    [self.labCalorie mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.labCalorieOld mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.spliteLine2.mas_bottom).offset(12);
         make.left.mas_equalTo(20);
     }];
-    [self.labTime mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.labTotalTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.spliteLine2.mas_bottom).offset(12);
         make.right.mas_equalTo(-20);
     }];
 }
 
+- (UIImageView *)imgIconView {
+    if (!_imgIconView) {
+        _imgIconView = [[UIImageView alloc] init];
+        _imgIconView.image = [UIImage imageNamed:@"icon_runningSports"];
+    }
+    return _imgIconView;
+}
+
 - (UILabel *)labTitle {
     if (!_labTitle) {
         _labTitle = [[UILabel alloc] init];
-        _labTitle.font = S12;
+        _labTitle.font = S15;
         _labTitle.numberOfLines = 0;
         _labTitle.textAlignment = NSTextAlignmentLeft;
         _labTitle.textColor = c66A7FE;
@@ -131,6 +235,20 @@
     return _labTitle;
 }
 
+- (UILabel *)labQualified {
+    if (!_labQualified) {
+        _labQualified = [[UILabel alloc] init];
+        _labQualified.font = S12;
+        _labQualified.numberOfLines = 0;
+        _labQualified.textColor = cFFFFFF;
+        _labQualified.text = @"";
+        _labQualified.layer.cornerRadius = 4;
+        _labQualified.layer.masksToBounds = YES;
+    }
+    return _labQualified;
+}
+
+
 - (UILabel *)labDate {
     if (!_labDate) {
         _labDate = [[UILabel alloc] init];
@@ -138,111 +256,114 @@
         _labDate.numberOfLines = 0;
         _labDate.textAlignment = NSTextAlignmentLeft;
         _labDate.textColor = c7E848C;
-        _labDate.text = @"2017-05-08 09:00";
+        _labDate.text = @"";
     }
     return _labDate;
 }
 
-- (UILabel *)labTitleSpeed {
-    if (!_labTitleSpeed) {
-        _labTitleSpeed = [[UILabel alloc] init];
-        _labTitleSpeed.font = S12;
-        _labTitleSpeed.numberOfLines = 0;
-        _labTitleSpeed.textAlignment = NSTextAlignmentLeft;
-        _labTitleSpeed.textColor = c7E848C;
-        _labTitleSpeed.text = @"本次速度";
+- (UILabel *)labTitleDistance {
+    if (!_labTitleDistance) {
+        _labTitleDistance = [[UILabel alloc] init];
+        _labTitleDistance.font = S12;
+        _labTitleDistance.numberOfLines = 0;
+        _labTitleDistance.textAlignment = NSTextAlignmentLeft;
+        _labTitleDistance.textColor = c7E848C;
+        _labTitleDistance.text = @"距离";
     }
-    return _labTitleSpeed;
+    return _labTitleDistance;
 }
 
-- (UILabel *)labTitleStage {
-    if (!_labTitleStage) {
-        _labTitleStage = [[UILabel alloc] init];
-        _labTitleStage.font = S12;
-        _labTitleStage.numberOfLines = 0;
-        _labTitleStage.textAlignment = NSTextAlignmentCenter;
-        _labTitleStage.textColor = c7E848C;
-        _labTitleStage.text = @"完成段数";
+- (UILabel *)labTitleTime {
+    if (!_labTitleTime) {
+        _labTitleTime = [[UILabel alloc] init];
+        _labTitleTime.font = S12;
+        _labTitleTime.numberOfLines = 0;
+        _labTitleTime.textAlignment = NSTextAlignmentCenter;
+        _labTitleTime.textColor = c7E848C;
+        _labTitleTime.text = @"耗时";
     }
-    return _labTitleStage;
+    return _labTitleTime;
 }
 
-- (UILabel *)labTitleMinDistance {
-    if (!_labTitleMinDistance) {
-        _labTitleMinDistance = [[UILabel alloc] init];
-        _labTitleMinDistance.font = S12;
-        _labTitleMinDistance.numberOfLines = 0;
-        _labTitleMinDistance.textAlignment = NSTextAlignmentRight;
-        _labTitleMinDistance.textColor = c7E848C;
-        _labTitleMinDistance.text = @"本次最短距离";
+- (UILabel *)labTitleCalorie {
+    if (!_labTitleCalorie) {
+        _labTitleCalorie = [[UILabel alloc] init];
+        _labTitleCalorie.font = S12;
+        _labTitleCalorie.numberOfLines = 0;
+        _labTitleCalorie.textAlignment = NSTextAlignmentRight;
+        _labTitleCalorie.textColor = c7E848C;
+        _labTitleCalorie.text = @"消耗热量";
     }
-    return _labTitleMinDistance;
+    return _labTitleCalorie;
 }
 
-- (UILabel *)labSpeed {
-    if (!_labSpeed) {
-        _labSpeed = [[UILabel alloc] init];
-        _labSpeed.font = S17;
-        _labSpeed.numberOfLines = 0;
-        _labSpeed.textAlignment = NSTextAlignmentLeft;
-        _labSpeed.textColor = c474A4F;
-        _labSpeed.text = @"1.0 米/秒";
+- (UILabel *)labDistance {
+    if (!_labDistance) {
+        _labDistance = [[UILabel alloc] init];
+        _labDistance.font = S17;
+        _labDistance.numberOfLines = 0;
+        _labDistance.textAlignment = NSTextAlignmentLeft;
+        _labDistance.textColor = c474A4F;
+        _labDistance.text = @"";
     }
-    return _labSpeed;
-}
-
-- (UILabel *)labStage {
-    if (!_labStage) {
-        _labStage = [[UILabel alloc] init];
-        _labStage.font = S17;
-        _labStage.numberOfLines = 0;
-        _labStage.textAlignment = NSTextAlignmentCenter;
-        _labStage.textColor = c474A4F;
-        _labStage.text = @"3 段";
-    }
-    return _labStage;
-}
-
-- (UILabel *)labMinDistance {
-    if (!_labMinDistance) {
-        _labMinDistance = [[UILabel alloc] init];
-        _labMinDistance.font = S17;
-        _labMinDistance.numberOfLines = 0;
-        _labMinDistance.textAlignment = NSTextAlignmentRight;
-        _labMinDistance.textColor = c474A4F;
-        _labMinDistance.text = @"1000 米";
-    }
-    return _labMinDistance;
-}
-
-- (UILabel *)labCalorie {
-    if (!_labCalorie) {
-        _labCalorie = [[UILabel alloc] init];
-        _labCalorie.font = S12;
-        _labCalorie.numberOfLines = 0;
-        _labCalorie.textAlignment = NSTextAlignmentLeft;
-        _labCalorie.textColor = c7E848C;
-        _labCalorie.text = @"本次消耗热量:1000千卡";
-    }
-    return _labCalorie;
+    return _labDistance;
 }
 
 - (UILabel *)labTime {
     if (!_labTime) {
         _labTime = [[UILabel alloc] init];
-        _labTime.font = S12;
+        _labTime.font = S17;
         _labTime.numberOfLines = 0;
-        _labTime.textAlignment = NSTextAlignmentRight;
-        _labTime.textColor = c7E848C;
-        _labTime.text = @"本次运动时长：300分钟";
+        _labTime.textAlignment = NSTextAlignmentCenter;
+        _labTime.textColor = c474A4F;
+        _labTime.text = @"";
     }
     return _labTime;
+}
+
+- (UILabel *)labCalorie {
+    if (!_labCalorie) {
+        _labCalorie = [[UILabel alloc] init];
+        _labCalorie.font = S17;
+        _labCalorie.numberOfLines = 0;
+        _labCalorie.textAlignment = NSTextAlignmentRight;
+        _labCalorie.textColor = c474A4F;
+        _labCalorie.text = @"";
+    }
+    return _labCalorie;
+}
+
+- (UILabel *)labCalorieOld {
+    if (!_labCalorieOld) {
+        _labCalorieOld = [[UILabel alloc] init];
+        _labCalorieOld.font = S12;
+        _labCalorieOld.numberOfLines = 0;
+        _labCalorieOld.textAlignment = NSTextAlignmentLeft;
+        _labCalorieOld.textColor = c7E848C;
+        _labCalorieOld.text = @"本次消耗热量:1000大卡";
+        _labCalorieOld.hidden = YES;
+    }
+    return _labCalorieOld;
+}
+
+- (UILabel *)labTotalTime {
+    if (!_labTotalTime) {
+        _labTotalTime = [[UILabel alloc] init];
+        _labTotalTime.font = S12;
+        _labTotalTime.numberOfLines = 0;
+        _labTotalTime.textAlignment = NSTextAlignmentRight;
+        _labTotalTime.textColor = c7E848C;
+        _labTotalTime.text = @"本次运动时长：300分钟";
+        _labTotalTime.hidden = YES;
+    }
+    return _labTotalTime;
 }
 
 - (UIView *)spliteLine1 {
     if (!_spliteLine1) {
         _spliteLine1 = [[UIView alloc] init];
         _spliteLine1.backgroundColor = cSpliteLine;
+        _spliteLine1.hidden = YES;
     }
     return _spliteLine1;
 }

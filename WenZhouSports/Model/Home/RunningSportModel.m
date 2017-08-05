@@ -6,8 +6,8 @@
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#import "RunningProjectItemModel.h"
+#import "RunningSportModel.h"
 
-@implementation RunningProjectItemModel
+@implementation RunningSportModel
 
 @end

@@ -57,21 +57,23 @@
 
 - (RACSignal *)checkData:(id)json {
     return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
-        NSArray *errorsArray = [json objectForKey:@"errors"];
-        if (errorsArray.count == 0) {
-            [subscriber sendNext:json];
-            [subscriber sendCompleted];
-        } else {
-            NSString *message = [json objectForKey:@"message"];
-            NSInteger code = 1004;
-            if (![self isReachable]) {
-                code = 1006;
-                message = @"没有网络";
-            }
-            [subscriber sendError:[NSError errorWithDomain:@""
-                                                      code:code
-                                                  userInfo:@{@"msg":@""}]];
-        }
+        [subscriber sendNext:json];
+        [subscriber sendCompleted];
+        //NSArray *errorsArray = [json objectForKey:@"errors"];
+        //if (errorsArray.count == 0) {
+        //    [subscriber sendNext:json];
+        //    [subscriber sendCompleted];
+        //} else {
+        //    NSString *message = [json objectForKey:@"message"];
+        //   NSInteger code = 1004;
+        //    if (![self isReachable]) {
+        //        code = 1006;
+        //        message = @"没有网络";
+        //    }
+        //    [subscriber sendError:[NSError errorWithDomain:@""
+        //                                              code:code
+        //                                          userInfo:@{@"msg":@""}]];
+        //}
         return nil;
     }];
 }
@@ -91,6 +93,7 @@
     @weakify(self);
     return [[[[self.manager RAC_GET:requestPath parameters:parameters] flattenMap:^__kindof RACSignal * _Nullable(id  _Nullable value) {
         @strongify(self);
+        
         return [self checkData:value];
     }] catch:^RACSignal * _Nonnull(NSError * _Nonnull error) {
         @strongify(self);
@@ -151,7 +154,6 @@
             case 0:
                 reachabilty = false;
                 break;
-                
             default:
                 break;
         }
@@ -184,4 +186,20 @@
     id obj = [className yy_modelWithDictionary:responseData];
     return obj;
 }
+
+- (id)jsonToModeForREST:(Class)className dictionary:(id)value key:(NSString *)key {
+    id responseData = nil;
+    if (!key) {
+        responseData = value;
+    } else {
+        responseData = value[key];
+    }
+    
+    NSLog(@"========data:%@", responseData);
+    
+    id obj = [className yy_modelWithDictionary:responseData];
+    return obj;
+
+}
+
 @end

@@ -46,7 +46,8 @@
 
 - (void)createUI {
     self.view.backgroundColor = [UIColor whiteColor];
-    self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, 64, WIDTH, 50) withDataArray:[NSArray arrayWithObjects:@"累计消耗热量", @"累计锻炼时长", nil] withFont:15];
+    NSArray *arrType = [NSArray arrayWithObjects:@"累计消耗热量", @"累计锻炼时长", nil];
+    self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, 64, WIDTH, 50) withDataArray:arrType withFont:15];
     self.segment.textNomalColor = c7E848C;
     self.segment.textSelectedColor = c66A7FE;
     self.segment.lineColor = c66A7FE;
@@ -58,15 +59,23 @@
         self.controllsArray = [[NSMutableArray alloc] init];
     }
     
-    RankingController *calorieVC = [[RankingController alloc] init];
-    calorieVC.nav = self.navigationController;
-    calorieVC.view.backgroundColor = cFFFFFF;
+    for (int i = 0; i < arrType.count; i++) {
+        RankingController *vc = [[RankingController alloc] init];
+        vc.type = i;
+        vc.nav = self.navigationController;
+        [self.controllsArray addObject:vc];
+    }
     
-    RankingController *TimeVC = [[RankingController alloc] init];
-    TimeVC.nav = self.navigationController;
-    TimeVC.view.backgroundColor = c7E848C;
-    [self.controllsArray addObject:calorieVC];
-    [self.controllsArray addObject:TimeVC];
+//    RankingController *calorieVC = [[RankingController alloc] init];
+//    calorieVC.nav = self.navigationController;
+//    calorieVC.view.backgroundColor = cFFFFFF;
+//    
+//    RankingController *TimeVC = [[RankingController alloc] init];
+//    TimeVC.nav = self.navigationController;
+//    TimeVC.view.backgroundColor = c7E848C;
+    
+//    [self.controllsArray addObject:calorieVC];
+//    [self.controllsArray addObject:TimeVC];
     
     self.flipView = [[FlipTableView alloc] initWithFrame:CGRectMake(0, 64 + 50, WIDTH, HEIGHT - 50) withArray:_controllsArray];
     

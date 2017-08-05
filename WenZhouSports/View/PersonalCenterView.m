@@ -28,9 +28,19 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _titleArray = @[@"历史运动记录", @"体测数据", @"体育成绩", @"审批", @"客服", @"设置"];
-        _imageArray = @[@"icon_survey", @"icon_fitness_test", @"icon_sports_achievement", @"icon_approval", @"icon_customer_service", @"icon_sets"];
-        _selectImageArray = @[@"icon_survey_selected", @"icon_fitness_test_selected", @"icon_sports_achievement_selected", @"icon_approval_selected", @"icon_customer_service_selected", @"icon_sets_selected"];
+        _titleArray = @[@"历史运动记录",
+//                        @"体测数据",
+//                        @"体育成绩",
+//                        @"审批",
+//                        @"客服",
+                        @"设置"];
+        _imageArray = @[@"icon_survey",
+//                        @"icon_fitness_test",
+//                        @"icon_sports_achievement",
+//                        @"icon_approval",
+//                        @"icon_customer_service",
+                        @"icon_sets"];
+//        _selectImageArray = @[@"icon_survey_selected", @"icon_fitness_test_selected", @"icon_sports_achievement_selected", @"icon_approval_selected", @"icon_customer_service_selected", @"icon_sets_selected"];
         [self initSubviews];
         [self makeConstraints];
     }
@@ -58,7 +68,7 @@
         });
         _nameLabel = ({
             UILabel *lab = [[UILabel alloc] init];
-            lab.text = @"text";
+            lab.text = @"昵称";
             lab.textColor = [UIColor whiteColor];
             lab.font = S14;
             
@@ -97,8 +107,8 @@
         [btn setImage:[UIImage imageNamed:@"icon_logout"] forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:@"icon_logout_selected"] forState:UIControlStateHighlighted];
         btn.titleLabel.font = S14;
-        [btn setTitleColor:C_GRAY_TEXT forState:UIControlStateNormal];
-        [btn setTitleColor:C_66A7FE forState:UIControlStateHighlighted];
+        [btn setTitleColor:c474A4F forState:UIControlStateNormal];
+        [btn setTitleColor:c474A4F forState:UIControlStateHighlighted];
         btn.backgroundColor = [UIColor clearColor];
         [btn sizeToFit];
         
@@ -121,13 +131,13 @@
     }
     cell.imageView.image = [UIImage imageNamed:_imageArray[indexPath.row]];
     cell.textLabel.text = _titleArray[indexPath.row];
-    cell.textLabel.textColor = [UIColor lightGrayColor];
+    cell.textLabel.textColor = c474A4F;
     cell.textLabel.font = S14;
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 6;
+    return self.titleArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -136,12 +146,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.textColor = C_66A7FE;
-    cell.imageView.image = [UIImage imageNamed:_selectImageArray[indexPath.row]];
+//    cell.textLabel.textColor = C_66A7FE;
+//    cell.imageView.image = [UIImage imageNamed:_selectImageArray[indexPath.row]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     RACSubject *subject = [RACSubject subject];
     [[subject delay:0.3] subscribeCompleted:^{
-        cell.textLabel.textColor = C_GRAY_TEXT;
+//        cell.textLabel.textColor = C_GRAY_TEXT;
         cell.imageView.image = [UIImage imageNamed:_imageArray[indexPath.row]];
     }];
     [subject sendCompleted];

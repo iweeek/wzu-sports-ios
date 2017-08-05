@@ -7,10 +7,10 @@
 //
 
 #import "SportsDetailView.h"
-
+#import "RunningActivityModel.h"
+#import "AreaActivityModel.h"
 
 @interface SportsDetailView ()
-
 @property (nonatomic, strong) UIView *titleView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *standardLabel;
@@ -46,6 +46,19 @@
 @property (nonatomic, strong) UIImageView *pauseImageView;
 @property (nonatomic, strong) UILabel *pauseLabel;
 
+// 室外运动相关view
+@property (nonatomic, strong) UIView *sportsOutdoorBGView;
+@property (nonatomic, strong) UILabel *labSportsOutdoorTitle;
+@property (nonatomic, strong) UILabel *labSportsOutdoorStandard;
+@property (nonatomic, strong) UIButton *btnSportsOutdoorChangeArae;
+@property (nonatomic, strong) UIView *spliteLineViewOutdoor1;
+@property (nonatomic, strong) UILabel *labSportsOutdoorDesc;
+@property (nonatomic, strong) UILabel *labSportsOutdoorTitleTime;
+@property (nonatomic, strong) UILabel *labSportsOutdoorTime;
+@property (nonatomic, strong) UIView *spliteLineViewOutdoor2;
+@property (nonatomic, strong) UILabel *labSportsOutdoorStandardTime;
+@property (nonatomic, strong) UILabel *labSportsOutdoorPeopleCount;
+
 @property (nonatomic, strong) UIButton *startButton;
 @property (nonatomic, strong) UIButton *continueButton;
 @property (nonatomic, strong) UIButton *endButton;
@@ -72,6 +85,8 @@
 @property (nonatomic, strong) RACSignal *endSignal;
 @property (nonatomic, strong) RACSignal *shareSignal;
 
+@property (nonatomic, assign) BOOL hiddenSportsInfo;
+
 @end
 
 @implementation SportsDetailView
@@ -91,14 +106,14 @@
     switch (station) {
         case SportsWillStart:
         {
-            _sportsAmountLabel.text = self.runningProject.name;
+            _sportsAmountLabel.text = self.runningSport.name;
             _distanceLabel.text = @"达标距离";
             _timeLabel.text = @"达标时间";
             _speedLabel.text = @"达标速度";
             
-            [self setDataWithDistance:self.runningProject.qualifiedDistance
-                                 time:self.runningProject.qualifiedCostTime
-                                speed:self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime];
+            [self setDataWithDistance:self.runningSport.qualifiedDistance
+                                 time:self.runningSport.qualifiedCostTime
+                                speed:self.runningSport.qualifiedDistance * 1.0 / self.runningSport.qualifiedCostTime];
             break;
         }
         case SportsDidStart:
@@ -110,9 +125,9 @@
             _pauseView.hidden = NO;
             _bottomView.hidden = NO;
             
-            _distanceLabel.text = @"本次距离";
+            _distanceLabel.text = @"当前距离";
             _timeLabel.text = @"耗时";
-            _speedLabel.text = @"即时速度";
+            _speedLabel.text = @"平均速度";
             
             break;
         }
@@ -138,7 +153,7 @@
             
             _distanceLabel.text = @"本次距离";
             _timeLabel.text = @"本次耗时";
-            _speedLabel.text = @"本次速度";
+            _speedLabel.text = @"平均速度";
             
             [self.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.right.equalTo(_middleView);
@@ -146,9 +161,10 @@
                 make.top.equalTo(_resultView.mas_bottom);
             }];
             [self.shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_titleView);
-                make.left.right.equalTo(_middleView);
-                make.bottom.equalTo(_resultView);
+                make.top.mas_equalTo(0);
+                make.left.mas_equalTo(0);
+                make.right.mas_equalTo(0);
+                make.bottom.mas_equalTo(-450);
             }];
             if (self.pauseSignal) {
                 [self.pauseSignal sendCompleted];
@@ -157,6 +173,85 @@
         }
         case SportsShare:
             break;
+        case SportsResult:{
+            _pauseView.hidden = YES;
+            _sportsAmountLabel.hidden = YES;
+            _numberOfPeopleLable.hidden = YES;
+            _titleLabel.hidden = NO;
+            _standardLabel.hidden = NO;
+            _startButton.hidden = YES;
+            _continueButton.hidden = YES;
+            _endButton.hidden = YES;
+            _shareButton.hidden = NO;
+            _resultView.hidden = NO;
+            
+            _distanceLabel.text = @"本次距离";
+            _timeLabel.text = @"本次耗时";
+            _speedLabel.text = @"平均速度";
+            
+            [self.bottomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.equalTo(_middleView);
+                make.height.mas_equalTo(FIT_LENGTH(53.0));
+                make.top.equalTo(_resultView.mas_bottom);
+            }];
+            [self.shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(0);
+                make.left.mas_equalTo(0);
+                make.right.mas_equalTo(0);
+                make.bottom.mas_equalTo(-450);
+            }];
+            break;
+        }
+        case SportsAreaOutdoorWillStart:
+        {
+            self.shadowView.hidden = YES;
+            self.sportsOutdoorBGView.hidden = NO;
+            self.labSportsOutdoorStandard.hidden = YES;
+            self.labSportsOutdoorTitleTime.hidden = YES;
+            self.labSportsOutdoorTime.hidden = YES;
+            self.labSportsOutdoorDesc.hidden = NO;
+            
+            _endButton.hidden = YES;
+            _shareButton.hidden = YES;
+            _pauseView.hidden = YES;
+            _startButton.hidden = NO;
+            break;
+        }
+        case SportsAreaOutdoorDidStart:
+        {
+            self.shadowView.hidden = YES;
+            self.sportsOutdoorBGView.hidden = NO;
+            self.labSportsOutdoorStandard.hidden = YES;
+            self.labSportsOutdoorTitleTime.hidden = NO;
+            self.labSportsOutdoorTime.hidden = NO;
+            self.labSportsOutdoorDesc.hidden = YES;
+            
+            _endButton.hidden = YES;
+            _shareButton.hidden = YES;
+            _pauseView.hidden = NO;
+            _startButton.hidden = YES;
+            break;
+        }
+        case SportsAreaOutdoorDidEnd:
+        {
+            self.shadowView.hidden = YES;
+            self.sportsOutdoorBGView.hidden = NO;
+            self.btnSportsOutdoorChangeArae.hidden = YES;
+            self.labSportsOutdoorStandard.hidden = NO;
+            self.labSportsOutdoorTitleTime.hidden = NO;
+            self.labSportsOutdoorTime.hidden = NO;
+            self.labSportsOutdoorDesc.hidden = YES;
+            
+            _endButton.hidden = YES;
+            _shareButton.hidden = NO;
+            _pauseView.hidden = YES;
+            _startButton.hidden = YES;
+
+            if (self.pauseSignal) {
+                [self.pauseSignal sendCompleted];
+            }
+            break;
+        }
         default:
             break;
     }
@@ -202,7 +297,7 @@
     _standardLabel = ({
         UILabel *lab = [[UILabel alloc] init];
         lab.textColor = C_42CC42;
-        lab.text = @"达标！";
+        lab.text = @"";
         lab.font = S10;
         lab.hidden = YES;
         
@@ -224,7 +319,7 @@
     });
     _numberOfPeopleLable = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"37人正在参加";
+        lab.text = @"0人正在参加";
         lab.font = S10;
         lab.textColor = C_GRAY_TEXT;
         
@@ -241,7 +336,7 @@
     });
     _speedLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"本次速度";
+        lab.text = @"平均速度";
         lab.textColor = C_GRAY_TEXT;
         lab.font = S12;
         
@@ -303,7 +398,7 @@
     });
     _calorieResultLabel = ({
         UILabel *lab = [[UILabel alloc] init];
-        lab.text = @"本次消耗热量：？千卡";
+        lab.text = @"本次消耗热量：？大卡";
         lab.font = S12;
         lab.textColor = C_GRAY_TEXT;
         
@@ -426,7 +521,7 @@
     
     _shadowView = ({
         UIView *view = [[UIView alloc] init];
-        view.backgroundColor = [UIColor whiteColor];
+        view.backgroundColor = [UIColor clearColor];
         view.layer.shadowOpacity = 0.2;
         view.layer.shadowOffset = CGSizeMake(0.0, 0.0);
         view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -492,8 +587,143 @@
         view;
     });
     
-    [self addSubviews:@[_mapView ,_shadowView, _middleView, _titleView, _resultView, _bottomView,
-                        _pauseView, _startButton, _continueButton, _endButton, _shareButton]] ;
+    [_shadowView addSubviews:@[ _middleView, _titleView, _resultView, _bottomView]];
+    
+    [self addSubviews:@[_mapView , _shadowView, _bottomView,_pauseView, _startButton, _continueButton, _endButton, _shareButton]];
+    
+    [self addSubview:self.sportsOutdoorBGView];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorTitle];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorStandard];
+    [self.sportsOutdoorBGView addSubview:self.btnSportsOutdoorChangeArae];
+    [self.sportsOutdoorBGView addSubview:self.spliteLineViewOutdoor1];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorDesc];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorTitleTime];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorTime];
+    [self.sportsOutdoorBGView addSubview:self.spliteLineViewOutdoor2];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorStandardTime];
+    [self.sportsOutdoorBGView addSubview:self.labSportsOutdoorPeopleCount];
+}
+
+- (UIView *)sportsOutdoorBGView {
+    if (!_sportsOutdoorBGView) {
+        _sportsOutdoorBGView = [[UIView alloc] init];
+        _sportsOutdoorBGView.backgroundColor = cFFFFFF;
+        _sportsOutdoorBGView.hidden = YES;
+    }
+    return _sportsOutdoorBGView;
+}
+
+- (UILabel *)labSportsOutdoorTitle {
+    if (!_labSportsOutdoorTitle) {
+        _labSportsOutdoorTitle = [[UILabel alloc] init];
+        _labSportsOutdoorTitle.font = SS(17);
+        _labSportsOutdoorTitle.numberOfLines = 0;
+        _labSportsOutdoorTitle.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorTitle.textColor = c474A4F;
+        _labSportsOutdoorTitle.text = @"";
+    }
+    return _labSportsOutdoorTitle;
+}
+
+- (UILabel *)labSportsOutdoorStandard {
+    if (!_labSportsOutdoorStandard) {
+        _labSportsOutdoorStandard = [[UILabel alloc] init];
+        _labSportsOutdoorStandard.font = S(14);
+        _labSportsOutdoorStandard.numberOfLines = 0;
+        _labSportsOutdoorStandard.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorStandard.textColor = c474A4F;
+        _labSportsOutdoorStandard.text = @"";
+    }
+    return _labSportsOutdoorStandard;
+}
+
+- (UIView *)spliteLineViewOutdoor1 {
+    if (!_spliteLineViewOutdoor1) {
+        _spliteLineViewOutdoor1 = [[UIView alloc] init];
+        _spliteLineViewOutdoor1.backgroundColor = cSpliteLine;
+    }
+    return _spliteLineViewOutdoor1;
+}
+
+- (UILabel *)labSportsOutdoorDesc {
+    if (!_labSportsOutdoorDesc) {
+        _labSportsOutdoorDesc = [[UILabel alloc] init];
+        _labSportsOutdoorDesc.font = S(14);
+        _labSportsOutdoorDesc.numberOfLines = 2;
+        _labSportsOutdoorDesc.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorDesc.textColor = c474A4F;
+        _labSportsOutdoorDesc.text = @"";
+    }
+    return _labSportsOutdoorDesc;
+}
+
+- (UILabel *)labSportsOutdoorTitleTime {
+    if (!_labSportsOutdoorTitleTime) {
+        _labSportsOutdoorTitleTime = [[UILabel alloc] init];
+        _labSportsOutdoorTitleTime.font = S(14);
+        _labSportsOutdoorTitleTime.numberOfLines = 2;
+        _labSportsOutdoorTitleTime.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorTitleTime.textColor = c474A4F;
+        _labSportsOutdoorTitleTime.text = @"耗时";
+    }
+    return _labSportsOutdoorTitleTime;
+}
+
+- (UILabel *)labSportsOutdoorTime {
+    if (!_labSportsOutdoorTime) {
+        _labSportsOutdoorTime = [[UILabel alloc] init];
+        _labSportsOutdoorTime.font = S(17);
+        _labSportsOutdoorTime.numberOfLines = 2;
+        _labSportsOutdoorTime.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorTime.textColor = c474A4F;
+        _labSportsOutdoorTime.text = @"0:00:00";
+    }
+    return _labSportsOutdoorTime;
+}
+
+- (UIView *)spliteLineViewOutdoor2 {
+    if (!_spliteLineViewOutdoor2) {
+        _spliteLineViewOutdoor2 = [[UIView alloc] init];
+        _spliteLineViewOutdoor2.backgroundColor = cSpliteLine;
+    }
+    return _spliteLineViewOutdoor2;
+}
+
+- (UILabel *)labSportsOutdoorStandardTime {
+    if (!_labSportsOutdoorStandardTime) {
+        _labSportsOutdoorStandardTime = [[UILabel alloc] init];
+        _labSportsOutdoorStandardTime.font = S(14);
+        _labSportsOutdoorStandardTime.numberOfLines = 2;
+        _labSportsOutdoorStandardTime.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorStandardTime.textColor = c474A4F;
+        _labSportsOutdoorStandardTime.text = @"达标时间：0分钟";
+    }
+    return _labSportsOutdoorStandardTime;
+}
+
+- (UILabel *)labSportsOutdoorPeopleCount {
+    if (!_labSportsOutdoorPeopleCount) {
+        _labSportsOutdoorPeopleCount = [[UILabel alloc] init];
+        _labSportsOutdoorPeopleCount.font = S(14);
+        _labSportsOutdoorPeopleCount.numberOfLines = 2;
+        _labSportsOutdoorPeopleCount.textAlignment = NSTextAlignmentLeft;
+        _labSportsOutdoorPeopleCount.textColor = c474A4F;
+        _labSportsOutdoorPeopleCount.text = @"20人正在参加";
+    }
+    return _labSportsOutdoorPeopleCount;
+}
+
+- (UIButton *)btnSportsOutdoorChangeArae {
+    if (!_btnSportsOutdoorChangeArae) {
+        _btnSportsOutdoorChangeArae = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_btnSportsOutdoorChangeArae setTitle:@"地点调整>" forState:UIControlStateNormal];
+        _btnSportsOutdoorChangeArae.titleLabel.font = S(14);
+        _btnSportsOutdoorChangeArae.backgroundColor = [UIColor clearColor];
+        [_btnSportsOutdoorChangeArae setTitleColor:c66A7FE forState:UIControlStateNormal];
+        
+        self.signalChangeArea = [_btnSportsOutdoorChangeArae rac_signalForControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnSportsOutdoorChangeArae;
 }
 
 - (void)makeConstraints {
@@ -503,10 +733,11 @@
         make.bottom.mas_equalTo(0);
         make.right.mas_equalTo(0);
     }];
+    
     [_titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(MARGIN_SCREEN);
-        make.right.equalTo(self).offset(-MARGIN_SCREEN);
-        make.top.equalTo(self).offset(64 + 11);
+        make.left.equalTo(self.shadowView).offset(MARGIN_SCREEN);
+        make.right.equalTo(self.shadowView).offset(-MARGIN_SCREEN);
+        make.top.equalTo(self.shadowView).offset(64 + 11);
         make.height.mas_equalTo(FIT_LENGTH(47.0));
     }];
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -530,15 +761,71 @@
     }];
     [_middleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_titleView.mas_bottom);
-        make.left.equalTo(self).offset(MARGIN_SCREEN);
-        make.right.equalTo(self).offset(-MARGIN_SCREEN);
+        make.left.equalTo(self.shadowView).offset(MARGIN_SCREEN);
+        make.right.equalTo(self.shadowView).offset(-MARGIN_SCREEN);
         make.height.mas_equalTo(FIT_LENGTH(77.0));
     }];
     [_shadowView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_titleView);
-        make.left.right.equalTo(_middleView);
-        make.bottom.equalTo(_middleView);
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(-450);
     }];
+    
+    //户外运动相关
+    [self.sportsOutdoorBGView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.shadowView).offset(MARGIN_SCREEN);
+        make.right.equalTo(self.shadowView).offset(-MARGIN_SCREEN);
+        make.top.mas_equalTo(64);
+        make.height.mas_equalTo(129);
+    }];
+    [self.labSportsOutdoorTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(10);
+        make.left.mas_equalTo(18);
+        make.right.mas_equalTo(-18);
+    }];
+    [self.labSportsOutdoorStandard mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.labSportsOutdoorTitle);
+        make.right.mas_equalTo(-MARGIN_SCREEN);
+    }];
+    [self.btnSportsOutdoorChangeArae mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.labSportsOutdoorTitle);
+        make.right.mas_equalTo(-MARGIN_SCREEN);
+    }];
+    [self.spliteLineViewOutdoor1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.labSportsOutdoorTitle.mas_bottom).offset(10);
+        make.left.mas_equalTo(MARGIN_SCREEN);
+        make.right.mas_equalTo(-MARGIN_SCREEN);
+        make.height.mas_equalTo(1);
+    }];
+    [self.labSportsOutdoorDesc mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.spliteLineViewOutdoor1).offset(10);
+        make.left.mas_equalTo(self.spliteLineViewOutdoor1);
+        make.right.mas_equalTo(self.spliteLineViewOutdoor1.mas_right);
+    }];
+    [self.labSportsOutdoorTitleTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.spliteLineViewOutdoor1).offset(5);
+        make.centerX.mas_equalTo(0);
+    }];
+    [self.labSportsOutdoorTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.labSportsOutdoorTitleTime.mas_bottom).offset(5);
+        make.centerX.mas_equalTo(0);
+    }];
+    [self.spliteLineViewOutdoor2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.spliteLineViewOutdoor1).offset(50);
+        make.left.mas_equalTo(self.spliteLineViewOutdoor1);
+        make.right.mas_equalTo(self.spliteLineViewOutdoor1.mas_right);
+        make.height.mas_equalTo(1);
+    }];
+    [self.labSportsOutdoorStandardTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.spliteLineViewOutdoor2).offset(10);
+        make.left.mas_equalTo(self.spliteLineViewOutdoor2);
+    }];
+    [self.labSportsOutdoorPeopleCount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.labSportsOutdoorStandardTime);
+        make.right.mas_equalTo(self.spliteLineViewOutdoor2.mas_right);
+    }];
+
     [_distanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_middleView).offset(FIT_LENGTH(17.0));
         make.left.equalTo(_middleView).offset(FIT_LENGTH(20.0));
@@ -571,8 +858,8 @@
     }];
     [_resultView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_middleView.mas_bottom);
-        make.left.equalTo(self).offset(MARGIN_SCREEN);
-        make.right.equalTo(self).offset(-MARGIN_SCREEN);
+        make.left.equalTo(self.shadowView).offset(MARGIN_SCREEN);
+        make.right.equalTo(self.shadowView).offset(-MARGIN_SCREEN);
         make.height.mas_equalTo(FIT_LENGTH(47.0));
     }];
     [_calorieResultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -653,35 +940,19 @@
     }];
 }
 
-- (void)setDataWithSpeed:(NSString *)speed distance:(NSInteger)distance stage:(NSInteger)stage {
-    NSString *speedString = [NSString stringWithFormat:@"%@米/秒", speed];
-    NSString *stageString = [NSString stringWithFormat:@"%ld段", distance / stage];
-    NSString *distanceString = [NSString stringWithFormat:@"%ld米", distance];
-    NSDictionary *attribute1 = @{NSFontAttributeName : SS26,
-                                 NSForegroundColorAttributeName : C_66A7FE};
-    NSDictionary *attribute2 = @{NSFontAttributeName : S10,
-                                 NSForegroundColorAttributeName : C_GRAY_TEXT};
-    NSMutableAttributedString *speedAttributedString = [[NSMutableAttributedString alloc] initWithString:speedString];
-    NSMutableAttributedString *stageAttributedString = [[NSMutableAttributedString alloc] initWithString:stageString];
-    NSMutableAttributedString *distanceAttributedString = [[NSMutableAttributedString alloc] initWithString:distanceString];
-    [speedAttributedString addAttributes:attribute1 range:NSMakeRange(0, speedString.length - 3)];
-    [speedAttributedString addAttributes:attribute2 range:NSMakeRange(speedString.length - 3, 3)];
-    [stageAttributedString addAttributes:attribute1 range:NSMakeRange(0, stageString.length - 1)];
-    [stageAttributedString addAttributes:attribute2 range:NSMakeRange(stageString.length - 1, 1)];
-    [distanceAttributedString addAttributes:attribute1 range:NSMakeRange(0, distanceString.length - 1)];
-    [distanceAttributedString addAttributes:attribute2 range:NSMakeRange(distanceString.length - 1, 1)];
-    self.speedNumberLabel.attributedText = speedAttributedString;
-    self.timeNumberLabel.attributedText = stageAttributedString;
-    self.distanceNumberLabel.attributedText = distanceAttributedString;
-}
-
 - (void)setDataWithDistance:(double)distance
                        time:(NSInteger)time
                       speed:(float)speed {
     
     NSString *distanceStr = [NSString stringWithFormat:@"%d 米", (int)distance];
     NSString *timeStr = [NSString stringWithFormat:@"%ld 分钟", time / 60];
-    NSString *speedStr = [NSString stringWithFormat:@"%.1f 米/秒", speed];
+    // 取消了“即时速度”,取而代之的是“平均速度”,所有不再使用传过来的速度
+    NSString *speedStr = nil;
+    if (time == 0) {
+        speedStr = @"0 米/秒";
+    } else {
+        speedStr = [NSString stringWithFormat:@"%.1f 米/秒", distance / time];
+    }
     
     NSDictionary *attribute = @{NSFontAttributeName : S10,
                                  NSForegroundColorAttributeName : C_GRAY_TEXT};
@@ -698,14 +969,74 @@
 //    self.timeNumberLabel.attributedText = timeAttributedString;
     self.timeNumberLabel.text = [self getMMSSFromSS:time];
     self.speedNumberLabel.attributedText = speedAttributedString;
+    self.numberOfPeopleLable.text = [NSString stringWithFormat:@"%ld人正在参加", (long)self.runningSport.participantNum];
 }
 
-- (void)setQualifiedData {
-    self.bottomDistanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningProject.qualifiedDistance];
-//    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningProject.qualifiedCostTime / 60];
-//    self.bottomTimeNumberLabel.text = [self getMMSSFromSS:time];
 
-    self.bottomSpeedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", self.runningProject.qualifiedDistance * 1.0 / self.runningProject.qualifiedCostTime];
+- (void)setQualifiedData {
+    self.bottomDistanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningSport.qualifiedDistance];
+    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningSport.qualifiedCostTime / 60];
+
+    self.bottomSpeedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", self.runningSport.qualifiedDistance * 1.0 / self.runningSport.qualifiedCostTime];\
+    
+}
+
+- (void)setDataWithActivity:(id)activity {
+    if ([activity isMemberOfClass:[RunningActivityModel class]]) {
+        RunningActivityModel *runningActivity = (RunningActivityModel *)activity;
+        // 隐藏“本次运动时长”
+        self.timeResultLabel.hidden = YES;
+        
+        NSString *distanceStr = [NSString stringWithFormat:@"%d 米", (int)runningActivity.distance];
+        // 取消了“即时速度”,取而代之的是“平均速度”,所有不再使用传过来的速度
+        NSString *speedStr = nil;
+        if (runningActivity.costTime == 0) {
+            speedStr = @"0 米/秒";
+        } else {
+            speedStr = [NSString stringWithFormat:@"%.1f 米/秒", runningActivity.distance * 0.1 / runningActivity.costTime];
+        }
+        
+        NSDictionary *attribute = @{NSFontAttributeName : S10,
+                                    NSForegroundColorAttributeName : C_GRAY_TEXT};
+        
+        NSMutableAttributedString *distanceAttributedString = [[NSMutableAttributedString alloc] initWithString:distanceStr];
+        NSMutableAttributedString *speedAttributedString = [[NSMutableAttributedString alloc] initWithString:speedStr];
+        
+        [distanceAttributedString addAttributes:attribute range:NSMakeRange(distanceAttributedString.length - 1, 1)];
+        [speedAttributedString addAttributes:attribute range:NSMakeRange(speedAttributedString.length - 3, 3)];
+        
+        self.distanceNumberLabel.attributedText = distanceAttributedString;
+        self.timeNumberLabel.text = [self getMMSSFromSS:runningActivity.costTime];
+        self.speedNumberLabel.attributedText = speedAttributedString;
+        self.numberOfPeopleLable.text = [NSString stringWithFormat:@"%ld人正在参加", (long)self.runningSport.participantNum];
+        self.calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%ld大卡", runningActivity.kcalConsumed];
+    } else {
+        AreaActivityModel *areaActivity = (AreaActivityModel *)activity;
+        self.labSportsOutdoorTitle.text = areaActivity.areaSport.name;
+        if (areaActivity.qualified) {
+            self.labSportsOutdoorStandard.text = @"达标";
+        } else {
+            self.labSportsOutdoorStandard.text = @"未达标";
+        }
+        self.labSportsOutdoorTime.text = [self getMMSSFromSS:areaActivity.costTime];
+        self.labSportsOutdoorStandardTime.text = [NSString stringWithFormat:@"达标时间：%ld分钟", areaActivity.qualifiedCostTime / 60];
+        self.labSportsOutdoorPeopleCount.hidden = YES;
+    }
+    
+}
+
+
+- (void)setDataWithAreaSportsOutdoorPoint:(AreaSportsOutdoorPointModel *)outdoorPoint {
+    self.labSportsOutdoorTitle.text = outdoorPoint.name;
+    self.labSportsOutdoorDesc.text = outdoorPoint.desc;
+}
+
+- (void)setSportsOutdoorTime:(NSInteger)time {
+    self.labSportsOutdoorTime.text = [self getMMSSFromSS:time];
+}
+
+- (void)setRegion:(MACoordinateRegion)region {
+    [self.mapView setRegion:region animated:YES];
 }
 
 //传入 秒  得到 xx:xx:xx
@@ -721,9 +1052,16 @@
     return strTime;
 }
 
-- (void)setDataWithCalorie:(int)calorie time:(NSInteger)time {
-    self.calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%d千卡", calorie];
+- (void)setDataWithCalorie:(NSInteger)calorie time:(NSInteger)time qualified:(BOOL)qualified {
+    self.calorieResultLabel.text = [NSString stringWithFormat:@"本次消耗热量:%ld大卡", calorie];
     self.timeResultLabel.text = [NSString stringWithFormat:@"本次运动时长:%ld分钟", time];
+    if (qualified) {
+        self.standardLabel.text = @"达标";
+        self.standardLabel.textColor = C_42CC42;
+    } else {
+        self.standardLabel.text = @"未达标";
+        self.standardLabel.textColor = [UIColor redColor];
+    }
 }
 
 - (void)setDelegate:(id<MAMapViewDelegate>)delegate {
@@ -762,6 +1100,32 @@
 
 - (void)changeUserTrackingMode:(MAUserTrackingMode)userTrackingMode {
     self.mapView.userTrackingMode = userTrackingMode;
+}
+
+- (void)triggerSportsInfo {
+    if (self.hiddenSportsInfo) {
+        [self.shadowView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(0);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(-450);
+        }];
+    } else {
+        [self.shadowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(0);
+            make.left.mas_equalTo(self.mas_right);
+            make.width.mas_equalTo(WIDTH);
+            make.bottom.mas_equalTo(-450);
+        }];
+    }
+    
+    @weakify(self);
+    [UIView animateWithDuration:0.4 animations:^{
+        @strongify(self);
+        [self layoutIfNeeded];
+    }];
+    
+    self.hiddenSportsInfo = !self.hiddenSportsInfo;
 }
 
 @end

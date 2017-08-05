@@ -8,9 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, SportsHistoryType) {
+    SportsHistoryTypeWeek = 0,
+    SportsHistoryTypeMonth,
+    SportsHistoryTypeTerm,
+    SportsHistoryTypeAll
+};
+
 @interface SportsHistoryController : UIViewController
 
-@property (nonatomic, strong) NSString *type;
+@property (nonatomic, assign) SportsHistoryType type;
 @property (nonatomic, strong) UINavigationController *nav;
 
 @end

@@ -6,13 +6,13 @@
 //  Copyright © 2017年 何聪. All rights reserved.
 //
 
-#import "RunningProjectsModel.h"
-#import "RunningProjectItemModel.h"
+#import "RunningSportsModel.h"
+#import "RunningSportModel.h"
 
-@implementation RunningProjectsModel
+@implementation RunningSportsModel
 
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"runningProjects":[RunningProjectItemModel class]};
+    return @{@"runningSports":[RunningSportModel class]};
 }
 
 @end

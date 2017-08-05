@@ -10,7 +10,9 @@
 
 @interface Dao (Home)
 
-- (RACSignal *)runningProjects:(NSDictionary *)dic;
+- (RACSignal *)runningSportsWith:(NSInteger)universityId
+                         studentId:(NSInteger)studentId
+                        pageNumber:(NSInteger)pageNumber;
 - (RACSignal *)sportTotal:(NSDictionary *)dic;
 
 @end

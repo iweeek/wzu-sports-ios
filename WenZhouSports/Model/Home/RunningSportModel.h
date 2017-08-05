@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RunningProjectItemModel : NSObject
+@interface RunningSportModel : NSObject
 
 @property (nonatomic, assign) NSInteger id;
 @property (nonatomic, assign) NSInteger universityId;
@@ -18,5 +18,6 @@
 @property (nonatomic, assign) NSInteger qualifiedCostTime;//该项目的合格耗时(单位:秒)
 @property (nonatomic, assign) NSInteger minCostTime;//该项目的最少耗时(单位:秒)
 @property (nonatomic, assign) NSInteger acquisitionInterval;//采集运动数据的时间间隔(单位:秒)
+@property (nonatomic, assign) NSInteger participantNum; //参加运动人数
 
 @end

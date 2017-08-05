@@ -34,7 +34,7 @@
 
 - (void)createUI {
     self.view.backgroundColor = [UIColor whiteColor];
-    NSArray *arrType = [NSArray arrayWithObjects:@"本周", @"本月", @"本学期", @"历史", nil];
+    NSArray *arrType = [NSArray arrayWithObjects:@"本周", @"本月", @"本学期", nil];
     self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, 64, WIDTH, 50) withDataArray:arrType withFont:15];
     self.segment.textNomalColor = c7E848C;
     self.segment.textSelectedColor = c66A7FE;
@@ -47,9 +47,9 @@
         self.controllsArray = [[NSMutableArray alloc] init];
     }
     
-    for (NSString *type in arrType) {
+    for (int i = 0; i < arrType.count; i++) {
         SportsHistoryController *vc = [[SportsHistoryController alloc] init];
-        vc.type = type;
+        vc.type = i;
         vc.nav = self.navigationController;
         [self.controllsArray addObject:vc];
     }

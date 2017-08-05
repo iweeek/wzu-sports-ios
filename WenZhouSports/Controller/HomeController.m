@@ -9,9 +9,11 @@
 #import "HomeController.h"
 #import "PersonalCenterView.h"
 #import "OldRankingController.h"
+#import "UINavigationItem+Addition.h"
 #import "SportsDetailsController.h"
 #import "SportsDetailViewModel.h"
-#import "SportsHistoryController.h"
+#import "SportsAreaOutdoorListController.h"
+#import "SportsHistoryManagerController.h"
 #import "HomeItemCell.h"
 #import "HomeTotalCell.h"
 #import "HomeRankCell.h"
@@ -21,8 +23,8 @@
 #import "ApproveController.h"
 #import "SettingController.h"
 #import "HomeViewModel.h"
-#import "RunningProjectsModel.h"
-#import "RunningProjectItemModel.h"
+#import "RunningSportsModel.h"
+#import "RunningSportModel.h"
 #import "RankingManagerController.h"
 #import "NetErrorView.h"
 #import "SportsHistoryManagerController.h"
@@ -49,7 +51,7 @@ CGFloat proportion = 0.84;
     self.title = @"课外体育锻炼";
 //    self.edgesForExtendedLayout=UIRectEdgeNone;
 //    self.extendedLayoutIncludesOpaqueBars=NO;
-    self.automaticallyAdjustsScrollViewInsets=NO;
+//    self.automaticallyAdjustsScrollViewInsets=NO;
 //    self.navigationController.navigationBar.translucent = NO;
     
     self.view.backgroundColor = cFFFFFF;
@@ -57,7 +59,7 @@ CGFloat proportion = 0.84;
     
     [self initSubviews];
     [self setupRefresh];
-    [self initData];
+//    [self initData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,10 +68,13 @@ CGFloat proportion = 0.84;
     // 隐藏返回按钮文字
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault]; 
 
+    [self.navigationItem setLeftBarButtonItemWithImage:[UIImage imageNamed:@"btn_menu"]
+                                                target:self
+                                                action:@selector(showPersonalCenter)];
     // 导航栏背景蓝色
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController.navigationBar lt_setBackgroundColor:c66A7FE];
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     
     // 标题白色
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:cFFFFFF,NSFontAttributeName:S(19)}];
@@ -85,59 +90,49 @@ CGFloat proportion = 0.84;
     // 网络故障
     self.netErrorView = [[NetErrorView alloc] initWithFrame:self.view.bounds];
     self.netErrorView.hidden = YES;
-//    @weakify(self);
     [self.netErrorView reloadView:^{
         @strongify(self);
         [self initData];
-//        [self.tableView.zbjRefreshHeaderView refresh];
     }];
     [self.view addSubview:self.netErrorView];
+    
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        @strongify(self);
+        self.vm.universityId = 1;
+        self.vm.studentId = 3;
+        self.vm.pageNumber = 1;
+        [[self.vm.cmdRunningSports execute:nil] subscribeNext:^(RunningSportsModel *x) {
+            @strongify(self);
+            [LNDProgressHUD hidenForView:self.view];
+            [self.tableView.mj_header endRefreshing];
+            self.netErrorView.hidden = YES;
+            [self.tableView reloadData];
+        } error:^(NSError * _Nullable error) {
+            [LNDProgressHUD hidenForView:self.view];
+            [self.tableView.mj_header endRefreshing];
+            self.netErrorView.hidden = NO;
+            
+            NSLog(@"error:%@", [error localizedDescription]);
+        }];
+    }];
+
 }
 
 - (void)initData {
     @weakify(self);
-    NSString *str = @"{ \
-                        university(id:%ld) { \
-                            currentTerm { \
-                                termSportsTask { \
-                                    targetSportsTimes \
-                                } \
-                            } \
-                        } \
-                        student(id:%ld) { \
-                            currentTermQualifiedActivityCount \
-                            caloriesConsumption \
-                            currentTermActivities(pageNumber:1,pageSize:1) { \
-                                pageNum \
-                                pageSize \
-                                pagesCount \
-                                dataCount \
-                            }\
-                        } \
-                        runningProjects(universityId:%ld){ \
-                            id \
-                            name \
-                            qualifiedDistance \
-                            qualifiedCostTime \
-                            acquisitionInterval \
-                        } \
-                       }";
-    NSDictionary *dic = @{@"query":[NSString stringWithFormat:str, 1, 1, 1]};
     [LNDProgressHUD showLoadingInView:self.view];
-    [[self.vm.cmdRunningProjects execute:dic] subscribeNext:^(RunningProjectsModel *x) {
+    self.vm.universityId = 1;
+    self.vm.studentId = 3;
+    self.vm.pageNumber = 1;
+    [[self.vm.cmdRunningSports execute:nil] subscribeNext:^(RunningSportsModel *x) {
         @strongify(self);
-        [self.tableView.mj_header endRefreshing];
-        self.tableView.contentInset = UIEdgeInsetsZero;
         [LNDProgressHUD hidenForView:self.view];
         self.netErrorView.hidden = YES;
         [self.tableView reloadData];
     } error:^(NSError * _Nullable error) {
-        [self.tableView.mj_header endRefreshing];
         [LNDProgressHUD hidenForView:self.view];
-        self.tableView.contentInset = UIEdgeInsetsZero;
-        if (error.code == -1009) {// 无网络
-            self.netErrorView.hidden = NO;
-        }
+        
+        self.netErrorView.hidden = NO;
         
         NSLog(@"error:%@", [error localizedDescription]);
     }];
@@ -148,16 +143,11 @@ CGFloat proportion = 0.84;
 }
 
 - (void)initSubviews {
-    UIView *homeView = [[UIView alloc] initWithFrame:self.view.bounds];
-//    homeView.backgroundColor = [UIColor blueColor];
-    [self.view addSubview:homeView];
-    
     _tableView = ({
-        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 64, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
+        UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT) style:UITableViewStyleGrouped];
         tv.delegate = self;
         tv.dataSource = self;
         tv.separatorStyle = UITableViewCellSeparatorStyleNone;
-//        tv.backgroundColor = [UIColor yellowColor];
         
         [tv registerClass:[HomeItemCell class]
            forCellReuseIdentifier:NSStringFromClass([HomeItemCell class])];
@@ -172,14 +162,6 @@ CGFloat proportion = 0.84;
     });
     
     [self.view addSubview: _tableView];
-//    [homeView addSubview:_tableView];
-    
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(64);
-//        make.left.mas_equalTo(0);
-//        make.right.mas_equalTo(0);
-//        make.bottom.mas_equalTo(0);
-//    }];
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
     panGesture.delegate = self;
@@ -218,15 +200,19 @@ CGFloat proportion = 0.84;
         switch (self.personalCenterView.selectedIndex) {
             case 0:// 运动历史
             {
-                SportsHistoryController *vc = [[SportsHistoryController alloc] init];
+                SportsHistoryManagerController *vc = [[SportsHistoryManagerController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 1:// 体侧数据
+            case 1:// 设置(原本应该是体侧数据)
             {
-                PersonInfoController *vc = [[PersonInfoController alloc] init];
+                SettingController *vc = [[SettingController alloc] init];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
+                
+//                PersonInfoController *vc = [[PersonInfoController alloc] init];
+//                [self.navigationController pushViewController:vc animated:YES];
+//                break;
             }
             case 2:// 体育成绩
             {
@@ -307,9 +293,16 @@ CGFloat proportion = 0.84;
         if (indexPath.row == 0) {
             return;
         }
+        
+        if (indexPath.row == SportsTypeOutdoor) {
+            SportsAreaOutdoorListController *vc = [[SportsAreaOutdoorListController alloc] init];
+            vc.areaSport = self.vm.homePage.areaSports.firstObject;
+            [self.navigationController pushViewController:vc animated:YES];
+            return;
+        }
         SportsDetailsController *vc = [[SportsDetailsController alloc] init];
         vc.hidesBottomBarWhenPushed = YES;
-        vc.runningProject = self.vm.homePage.runningProjects[indexPath.row - 1];
+        vc.runningSport = self.vm.homePage.runningSports[indexPath.row - 1];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -331,36 +324,33 @@ CGFloat proportion = 0.84;
         } else {
             HomeItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([HomeItemCell class]) forIndexPath:indexPath];
             
-            int personCount = [self getRandomNumber:0 to:100];
+//            int personCount = [self getRandomNumber:0 to:100];
             
             switch (indexPath.row) {
                 case SportsTypeJogging:
                 {
-                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
-                    [cell initWithSportsType:SportsTypeJogging data:runProject];
-                    [cell setupPersonCount:personCount];
-                    break;
+                    RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeJogging data:runSport];                    break;
                 }
                 case SportsTypeRun:
                 {
-                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
-                    [cell initWithSportsType:SportsTypeRun data:runProject];
-                    [cell setupPersonCount:personCount];
+                    RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeRun data:runSport];
                     break;
                 }
                 case SportsTypeWalk:
                 {
-                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
-                    [cell initWithSportsType:SportsTypeWalk data:runProject];
-                    [cell setupPersonCount:personCount];
-                    break;
+                    RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeWalk data:runSport];                    break;
                 }
                 case SportsTypeStep:
                 {
-                    RunningProjectItemModel *runProject = (RunningProjectItemModel *)self.vm.homePage.runningProjects[indexPath.row - 1];
-                    [cell initWithSportsType:SportsTypeStep data:runProject];
-                    [cell setupPersonCount:personCount];
-                    break;
+                    RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
+                    [cell initWithSportsType:SportsTypeStep data:runSport];                    break;
+                }
+                case SportsTypeOutdoor:
+                {
+                    [cell initWithSportsType:SportsTypeOutdoor data:nil];                    break;
                 }
             }
             return cell;
@@ -376,7 +366,7 @@ CGFloat proportion = 0.84;
     if (section == 0) {
         return 2;
     }
-    return 5;
+    return 6;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

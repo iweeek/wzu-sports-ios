@@ -17,6 +17,7 @@
                         university(id:%ld) { \
                             timeCostedRanking (pageSize:%ld pageNumber:%ld){ \
                                 pagesCount \
+                                pageNum \
                                 data{ \
                                     studentId \
                                     studentName \
@@ -24,9 +25,19 @@
                                     avatarUrl \
                                 } \
                             } \
+                            kcalConsumptionRanking(pageSize:%ld,pageNumber:%ld){ \
+                                pagesCount \
+                                pageNum \
+                                data{ \
+                                    studentId \
+                                    studentName \
+                                    kcalConsumption \
+                                    avatarUrl \
+                                } \
+                            } \
                         }\
                     }";
-    NSDictionary *dicParameters = @{@"query":[NSString stringWithFormat:str, universityId, pageSize, currentPage]};
+    NSDictionary *dicParameters = @{@"query":[NSString stringWithFormat:str, universityId, pageSize, currentPage, pageSize, currentPage]};
     return [[self RAC_POST:@"graphql/query" parameters:dicParameters]
             map:^id _Nullable(id _Nullable value) {
                 return [self jsonToMode:[HomePageModel class] dictionary:value key:nil];

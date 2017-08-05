@@ -7,22 +7,24 @@
 //
 
 #import "Dao+Sports.h"
-#import "RunningProjectsModel.h"
+#import "RunningSportsModel.h"
 #import "RunningActivityModel.h"
+#import "AreaSportsOutdoorPointsModel.h"
+#import "AreaActivityModel.h"
 
 @implementation Dao (Sports)
 
 - (RACSignal *)runActivity:(NSDictionary *)dic {
     return [[self RAC_POST:@"runningActivitys" parameters:dic]
             map:^id _Nullable(id  _Nullable value) {
-                return [self jsonToMode:[RunningProjectsModel class] dictionary:value key:nil];
+                return [self jsonToMode:[RunningSportsModel class] dictionary:value key:nil];
             }];
 }
 
-- (RACSignal *)runningActivitysStartWithProjectId:(NSInteger)projectId
-                                        sutdentId:(NSInteger)studentId
-                                         startTime:(NSTimeInterval)startTime {
-    NSDictionary *dicParameters = @{@"projectId":@(projectId),
+- (RACSignal *)runningActivitysStartWithRunningSportId:(NSInteger)runningSportId
+                                             studentId:(NSInteger)studentId
+                                             startTime:(NSTimeInterval)startTime {
+    NSDictionary *dicParameters = @{@"runningSportId":@(runningSportId),
                                     @"studentId":@(studentId),
                                     @"startTime":@(startTime)};
     return [[self RAC_POST:@"runningActivities/start" parameters:dicParameters]
@@ -43,9 +45,8 @@
                                     @"targetFinishedTime":@(targetFinishedTime)};
     return [[self RAC_POST:@"runningActivities/end" parameters:dicParameters]
             map:^id _Nullable(id  _Nullable value) {
-                return [self jsonToMode:[RunningProjectsModel class] dictionary:value key:nil];
+                return [self jsonToMode:[RunningActivityModel class] dictionary:value key:nil];
             }];
-            
 }
 
 - (RACSignal *)runningActivitysDataWithActivityId:(NSInteger)activityId
@@ -66,11 +67,45 @@
                                     @"isNormal":@(isNormal)};
     return [[self RAC_POST:@"runningActivityData" parameters:dicParameters]
             map:^id _Nullable(id  _Nullable value) {
-                return [self jsonToMode:[RunningProjectsModel class] dictionary:value key:nil];
+                return [self jsonToMode:[RunningSportsModel class] dictionary:value key:nil];
             }];
-    
 }
 
+- (RACSignal *)getAreaSportsList {
+    return [[self RAC_GET:@"fixLocationOutdoorSportPoints" parameters:nil]
+            map:^id _Nullable(id  _Nullable value) {
+                return [self jsonToModeForREST:[AreaSportsOutdoorPointsModel class] dictionary:value key:nil];
+            }];
+}
 
+- (RACSignal *)areaActivitysStartWithAreaSportId:(NSInteger)areaSportId
+                                        studentId:(NSInteger)studentId {
+    NSDictionary *dicParameters = @{@"areaSportId":@(areaSportId),
+                                    @"studentId":@(studentId)};
+    return [[self RAC_POST:@"areaActivities" parameters:dicParameters]
+            map:^id _Nullable(id  _Nullable value) {
+                return [self jsonToModeForREST:[AreaActivityModel class] dictionary:value key:@"obj"];
+            }];
+}
+
+- (RACSignal *)areaActivitysDataWithActivityId:(NSInteger)activityId
+                                     longitude:(float)longitude
+                                      latitude:(float)latitude
+                                  locationType:(NSInteger)locationType {
+    NSDictionary *dicParameters = @{@"activityId":@(activityId),
+                                    @"longitude":@(longitude),
+                                    @"latitude":@(latitude),
+                                    @"locationType":@(locationType)};
+    return [self RAC_POST:@"areaActivityData" parameters:dicParameters];
+}
+
+- (RACSignal *)areaActivitysEndWithActivityId:(NSInteger)activityId {
+//    NSDictionary *dicParameters = @{@"id":@(activityId)};
+    NSString *API = [NSString stringWithFormat:@"areaActivities/%ld", activityId];
+    return [[self RAC_POST:API parameters:nil]
+            map:^id _Nullable(id  _Nullable value) {
+                return [self jsonToModeForREST:[AreaActivityModel class] dictionary:value key:@"obj"];
+            }];
+}
 
 @end

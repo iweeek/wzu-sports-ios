@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RunningProjectsModel : NSObject
+@interface RunningSportsModel : NSObject
 
-@property (nonatomic, strong) NSArray *runningProjects;
+@property (nonatomic, strong) NSArray *runningSports;
 
 @end

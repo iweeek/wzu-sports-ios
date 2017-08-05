@@ -8,16 +8,17 @@
 
 #import "BaseCell.h"
 
-typedef NS_ENUM(NSInteger, SportsType) {
+typedef NS_ENUM(NSInteger, RunningSportsType) {
     SportsTypeJogging = 1,    // 慢跑
     SportsTypeRun,            // 快炮
     SportsTypeWalk,           // 走路
-    SportsTypeStep            // 累计步数
+    SportsTypeStep,           // 累计步数
+    SportsTypeOutdoor         // 室外运动
 };
 
 @interface HomeItemCell : BaseCell
 
-- (void)initWithSportsType:(SportsType)type
+- (void)initWithSportsType:(RunningSportsType)type
                       data:(id)data;
 - (void)setupPersonCount:(int)count;
 

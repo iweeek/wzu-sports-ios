@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "RunningActivityModel.h"
+#import "AreaActivityModel.h"
 
 @interface SportsResultController : UIViewController
 
+@property (nonatomic, strong) AreaSportModel *areaActivity;
 @property (nonatomic, strong) RunningActivityModel *RunningActivity;
 
 @end

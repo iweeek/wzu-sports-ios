@@ -20,5 +20,6 @@
 
 - (id)jsonToMode:(Class)className dictionary:(id)value;
 - (id)jsonToMode:(Class)className dictionary:(id)value key:(NSString *)key;
+- (id)jsonToModeForREST:(Class)className dictionary:(id)value key:(NSString *)key;
 
 @end

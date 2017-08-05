@@ -7,8 +7,8 @@
 //
 
 #import "SportsDetailsController.h"
-#import "SportsDetailView.h"
 #import "NSNumber+SetScale.h"
+#import "SportsDetailView.h"
 #import "SportsDetailViewModel.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMotion/CoreMotion.h>
@@ -51,6 +51,7 @@
 @property (nonatomic, assign) NSTimeInterval startTime;
 @property (nonatomic, assign) double distance;
 @property (nonatomic, assign) float speed;
+@property (nonatomic, assign) NSInteger steps;
 
 @property (nonatomic, strong) NSMutableArray *tracedPolylines;
 @property (nonatomic, strong) NSMutableArray *tempTraceLocations;
@@ -85,7 +86,6 @@
     [self.db open];
     
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-        
     }];
     self.locationManager = [[AMapLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -112,8 +112,14 @@
 - (void)initSubviews {
     self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT)];
     [self.detailView setDelegate:self];
-    self.detailView.runningProject = self.runningProject;
-    [self.detailView changeSportsStation:SportsWillStart];
+    
+    if (self.sportsType == SportsRunning) {
+        self.detailView.runningSport = self.runningSport;
+        [self.detailView changeSportsStation:SportsWillStart];
+    } else if (self.sportsType == SportsOutdoor) {
+        [self.detailView changeSportsStation:SportsAreaOutdoorWillStart];
+        [self.detailView setDataWithAreaSportsOutdoorPoint:self.areaAportsOutdoorPoint];
+    }
     
     self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
     [self.detailView.mapView addOverlay:self.line];
@@ -121,7 +127,7 @@
     
     [self.navigationItem setRightBarButtonItemWithImage:[UIImage imageNamed:@"icon_sets_selected"]
                                                  target:self
-                                                 action:nil];
+                                                 action:@selector(triggerSportsInfo)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -150,27 +156,49 @@
     return YES; // 返回按钮有效
 }
 
+- (void)triggerSportsInfo {
+    [self.detailView triggerSportsInfo];
+}
+
 - (void)reactiveEvent {
     _sportsDataSignal = [[RACSubject alloc] init];
-    __block CGFloat distance = 0;
-    __block NSInteger steps = 0;
-    __block int cyclingCount = 0;
-    __block int time = 0;
     @weakify(self);
     // 运动开始点击事件
     [self.detailView.startSignal subscribeNext:^(id x) {
         @strongify(self);
         self.startTime = (long)[[NSDate date] timeIntervalSince1970];
         self.isRecording = YES;
+        // 滑动结束手势
+        [self.detailView addPauseGestureEvent];
+        
+        // 设置后台持续定位
+        if ([[UIDevice currentDevice] systemVersion].floatValue >= 9) {
+            self.locationManager.allowsBackgroundLocationUpdates = YES;
+        } else{
+            [self.locationManager setPausesLocationUpdatesAutomatically:NO];
+        }
+        [self.locationManager startUpdatingLocation];
+        
+        // 定点运动开始
+        if (self.sportsType == SportsOutdoor) {
+            [self.detailView changeSportsStation:SportsAreaOutdoorDidStart];
+            // 开始
+            [self sportsAreaOutdoorPointStart];
+            return ;
+        }
+        
         [self.detailView setQualifiedData];
         self.currentRecord = [[AMapRouteRecord alloc] init];
 
         // 调用运动开始接口
-        self.viewModel.projectId = self.runningProject.id;
-        self.viewModel.sutdentId = 1;
+        self.viewModel.runningSportId = self.runningSport.id;
+        self.viewModel.studentId = 3;
         self.viewModel.starTime = self.startTime;
         [[self.viewModel.cmdRunningActivitiesStart execute:nil] subscribeNext:^(id  _Nullable x) {
             self.runningActivity = x;
+            
+            dispatch_resume(self.timerForLab);
+            dispatch_resume(self.timer);
         } error:^(NSError * _Nullable error) {
             @strongify(self);
             [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
@@ -183,7 +211,7 @@
             }];
         });
         
-        [self.detailView addPauseGestureEvent];
+        
         [self.detailView changeSportsStation:SportsDidStart];
         
         // 为界面读秒计时
@@ -201,15 +229,13 @@
         
         self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
         // 定时器，按照后台返回时间间隔触发
-        dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, self.runningProject.acquisitionInterval * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+        dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, self.runningSport.acquisitionInterval * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
         dispatch_source_set_event_handler(self.timer, ^{
             @strongify(self);
             // 开始运动
             self.isSporting = YES;
             [self.sportsDataSignal subscribeNext:^(CMPedometerData *x) {
-                distance = x.distance.floatValue;
-                steps = x.numberOfSteps.integerValue;
-                DDLogInfo(@"步数%ld", (long)steps);
+                self.steps = x.numberOfSteps.integerValue;
             }];
             
             // 这里也更新界面
@@ -218,28 +244,25 @@
                                            speed:self.speed];
             
             // 开始的信息返回后开始记录运动数据
-            if (self.runningActivity) {
-                self.viewModel.runningActivityid = self.runningActivity.id;
-                self.viewModel.acquisitionTime = (long)[[NSDate date] timeIntervalSince1970];
-                self.viewModel.stepCount = steps;
-                self.viewModel.distance = self.dataDistance;
-                self.viewModel.longitude = self.dataLongitude;
-                self.viewModel.latitude = self.dataLatitude;
-                self.viewModel.locationType = YES;
-                // 每秒超过10米就是不正常的数据
-                self.viewModel.isNormal = YES;
-                
-                [[self.viewModel.cmdRunningActivityData execute:nil] subscribeNext:^(id  _Nullable x) {
-                    NSLog(@"data提交成功：%ld", (long)self.sportsTime);
-                } error:^(NSError * _Nullable error) {
-                    @strongify(self);
-                    [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
-                }];
-            }
+            self.viewModel.runningActivityid = self.runningActivity.id;
+            self.viewModel.acquisitionTime = (long)[[NSDate date] timeIntervalSince1970];
+            self.viewModel.stepCount = self.steps;
+            self.viewModel.distance = self.dataDistance;
+            self.viewModel.longitude = self.dataLongitude;
+            self.viewModel.latitude = self.dataLatitude;
+            self.viewModel.locationType = YES;
+            // 每秒超过10米就是不正常的数据
+            self.viewModel.isNormal = YES;
+            
+            [[self.viewModel.cmdRunningActivityData execute:nil] subscribeNext:^(id  _Nullable x) {
+                NSLog(@"data提交成功：%ld", (long)self.sportsTime);
+                [LNDProgressHUD showMessage:[NSString stringWithFormat:@"Longitude:%f, Latitude:%f", self.dataLongitude, self.dataLatitude] inView:self.view];
+            } error:^(NSError * _Nullable error) {
+                @strongify(self);                  [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+            }];
         });
         
-        dispatch_resume(self.timerForLab);
-        dispatch_resume(self.timer);
+        
        
         // 计步器
         if ([CMPedometer isStepCountingAvailable]) {
@@ -257,15 +280,6 @@
         @weakify(self);
         [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue  currentQueue] withHandler:^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error) {
             @autoreleasepool {
-            @strongify(self)
-//                NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
-//                DDLogInfo(@"\ngravity:x:%f\ty:%f\tz:%f", motion.gravity.x, motion.gravity.y, motion.gravity.z);
-//                DDLogInfo(@"\nattitude:pitch:%f\troll:%f\tyaw:%f", motion.attitude.pitch, motion.attitude.roll, motion.attitude.yaw);
-//                DDLogInfo(@"\nrotationMatrix:\n%f\t%f\t%f\n%f\t%f\t%f\n%f\t%f\t%f", motion.attitude.rotationMatrix.m11, motion.attitude.rotationMatrix.m12, motion.attitude.rotationMatrix.m13, motion.attitude.rotationMatrix.m21, motion.attitude.rotationMatrix.m22, motion.attitude.rotationMatrix.m23, motion.attitude.rotationMatrix.m31, motion.attitude.rotationMatrix.m32, motion.attitude.rotationMatrix.m33);
-//                DDLogInfo(@"\nquaternion:x:%f\ty:%f\tz:%f", motion.attitude.quaternion.x, motion.attitude.quaternion.y, motion.attitude.quaternion.z);
-//                DDLogInfo(@"\nrotationRate:x:%f\ty:%f\tz:%f", motion.rotationRate.x, motion.rotationRate.y, motion.rotationRate.z);
-//                DDLogInfo(@"\nAcceleration:x:%f\ty:%f\tz:%f", motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z);
-//                [self.db executeUpdate:@"insert into acceleration(x,y,z,time) values(?,?,?,?);", @(motion.userAcceleration.x), @(motion.userAcceleration.y), @(motion.userAcceleration.z), @(timeStamp)];
             }
         }];
         // 设备当前的活动状态
@@ -312,13 +326,6 @@
         [self.altimeter startRelativeAltitudeUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAltitudeData * _Nullable altitudeData, NSError * _Nullable error) {
             
         }];
-        // 设置后台持续定位
-        if ([[UIDevice currentDevice] systemVersion].floatValue >= 9) {
-            self.locationManager.allowsBackgroundLocationUpdates = YES;
-        } else{
-            [self.locationManager setPausesLocationUpdatesAutomatically:NO];
-        }
-        [self.locationManager startUpdatingLocation];
     }];
     
     // 停止（原来是暂停，注释掉暂停逻辑）
@@ -331,71 +338,109 @@
         self.isRecording = NO;
         // 停止运动
         self.isSporting = NO;
-        
-        int timeStamp = [[NSDate date] timeIntervalSince1970];
-        [self.db executeUpdate:@"insert into sportsInfo(steps, stepDistance, mapDistance, totalTime, time) values(?,?,?,?,?);", @(steps), @((int)distance), @((int)self.mapDistance), @(time), @(timeStamp)];
-        
-        [self free];
-        [self.detailView setDataWithCalorie:cyclingCount time:self.sportsTime / 60];
-        [self.detailView changeSportsStation:SportsDidEnd];
+        // 停止定位
         [self.locationManager stopUpdatingLocation];
         
-        // 运动开始
+//        int timeStamp = [[NSDate date] timeIntervalSince1970];
+//        [self.db executeUpdate:@"insert into sportsInfo(steps, stepDistance, mapDistance, totalTime, time) values(?,?,?,?,?);", @(steps), @((int)distance), @((int)self.mapDistance), @(time), @(timeStamp)];
+        
+        [self free];
+        
+        // 如果是定点运动
+        if (self.sportsType == SportsOutdoor) {
+            [self.detailView changeSportsStation:SportsAreaOutdoorDidEnd];
+            
+            // 调用接口
+            self.viewModel.areaActivityId = self.viewModel.areaActivity.id;
+            [[self.viewModel.cmdAreaActivityEnd execute:nil] subscribeNext:^(id  _Nullable x) {
+                DDLogInfo(@"定点运动结束成功");
+            } error:^(NSError * _Nullable error) {
+                [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+            }];
+            return ;
+        }
+        
+        [self.detailView changeSportsStation:SportsDidEnd];
+
         self.viewModel.runningActivityid = self.runningActivity.id;
         self.viewModel.distance = self.distance;
         // 这里是总步数
-        self.viewModel.stepCount = steps;
+        self.viewModel.stepCount = self.steps;
         self.viewModel.costTime = self.sportsTime;
-        self.viewModel.targetFinishedTime = self.runningProject.qualifiedCostTime;
+        self.viewModel.targetFinishedTime = self.runningSport.qualifiedCostTime;
         [[self.viewModel.cmdRunningActivitiesEnd execute:nil] subscribeNext:^(id  _Nullable x) {
-            NSLog(@"成功结束");
+            NSLog(@"成功结束%@", x);
+            RunningActivityModel *runningActivity = x;
+            [self.detailView setDataWithCalorie:runningActivity.kcalConsumed
+                                           time:self.sportsTime / 60
+                                      qualified:runningActivity.qualified];
         } error:^(NSError * _Nullable error) {
             [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
         }];
-        
-//        NSDictionary *dic = @{@"projectId":@(self.runningProject.id),
-//                              @"studentId":@(1),
-//                              @"distance":@(self.distance),
-//                              @"costTime":@(self.sportsTime),
-//                              @"targetTime":@(self.sportsTime),
-//                              @"startTime":@(self.startTime)};
-//
-//        [[self.viewModel.cmdRunActivity execute:dic] subscribeError:^(NSError * _Nullable error) {
-//            NSLog(@"error>>>>>>>>>:%@", [error localizedDescription]);
-//        }];;
-        
-//        // 停止运动
-//        self.isSporting = NO;
-//        dispatch_suspend(self.timer);
-//        [self.detailView changeSportsStation:SportsDidPause];
-//        isPause = YES;
-//        pauseDate = [NSDate date];
-//        startPauseDistance = distance;
-//        
-//        self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
-//        [self.detailView.mapView addOverlay:self.line];
     }];
-//    // 继续
-//    [self.detailView.continueSignal subscribeNext:^(id  _Nullable x) {
-//       @strongify(self)
-//        // 开始运动
-//        self.isSporting = YES;
-//        dispatch_resume(self.timer);
-//        isPause = NO;
-//        allPauseDistance += pauseDistance;
-//        pauseDistance = 0;
-//        [self.detailView changeSportsStation:SportsDidStart];
-//    }];
+    
     [self.detailView.endSignal subscribeNext:^(id  _Nullable x) {
 //        @strongify(self)
-        
     }];
     [self.detailView.shareSignal subscribeNext:^(id  _Nullable x) {
         @strongify(self)
         [self.detailView changeSportsStation:SportsShare];
     }];
+    [self.detailView.signalChangeArea subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        if (self.isRecording) {
+            [LNDProgressHUD showErrorMessage:@"请先结束运动" inView:self.view];
+            return;
+        }
+
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
+#pragma mark - About sportsArea
+- (void)sportsAreaOutdoorPointStart {
+    @weakify(self);
+    
+    // 创建一个areaActivity
+    self.viewModel.areaSport = self.areaSport;
+    self.viewModel.studentId = 3;
+    [[self.viewModel.cmdAreaActivityStart execute:nil] subscribeNext:^(id  _Nullable x) {
+        DDLogInfo(@"定点运动创建成功");
+        
+        dispatch_resume(self.timerForLab);
+        dispatch_resume(self.timer);
+    }];
+    
+    // 为界面读秒计时
+    self.timerForLab = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    // 定时器，每秒触发
+    dispatch_source_set_timer(self.timerForLab, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(self.timerForLab, ^{
+        // 运动时长计数
+        self.sportsTime++;
+        NSLog(@"时间：%ld", (long)self.sportsTime);
+        [self.detailView setSportsOutdoorTime:self.sportsTime];
+    });
+    
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    // 定时器，按照后台返回时间间隔触发
+    dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, self.areaSport.acquisitionInterval * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(self.timer, ^{
+        @strongify(self);
+        // 开始运动
+        self.isSporting = YES;
+        
+        self.viewModel.areaActivityId = self.viewModel.areaActivity.id;
+        self.viewModel.longitude = self.dataLongitude;
+        self.viewModel.latitude = self.dataLatitude;
+        self.viewModel.locationType = 0;
+        [[self.viewModel.cmdAreaActivityData execute:nil] subscribeNext:^(id  _Nullable x) {
+            DDLogInfo(@"定点运动添加成功");
+        }];
+    });
+}
+
+#pragma mark - Location
 - (void)amapLocationManager:(AMapLocationManager *)manager didUpdateLocation:(CLLocation *)location reGeocode:(AMapLocationReGeocode *)reGeocode {
     
     self.dataLatitude = location.coordinate.latitude;
@@ -406,7 +451,11 @@
         // 移动距离小于10米属于无效的，不画
         if (self.lastLocatioin) {
             if (location.speed > 0) {
-                self.speed = location.speed;
+//                self.speed = location.speed;
+                // 速度大于10米每秒，属于无效数据
+                if (location.speed > 10) {
+                    return;
+                }
             } else {
                 // location.speed为无效速度
                 self.speed = 0;
@@ -517,7 +566,7 @@
     }
 }
 
-#pragma mark - faceCompare
+#pragma mark - FaceCompare
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     NSString *medieType = [info objectForKey:UIImagePickerControllerMediaType];
     if ([medieType isEqualToString:(NSString *)kUTTypeImage]) {

@@ -11,6 +11,7 @@
 #ifdef DEBUG
 
 NSString *const Server = @"http://120.77.72.16:8080/api/%@";
+//NSString *const Server = @"http://192.168.1.102:8080/api/%@";
 NSString *const AMapKey = @"b308932d17ffdfe0badb45817677b50c";
 
 #else

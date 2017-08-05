@@ -7,7 +7,7 @@
 //
 
 #import "HomeItemCell.h"
-#import "RunningProjectItemModel.h"
+#import "RunningSportModel.h"
 
 @interface HomeItemCell ()
 
@@ -25,7 +25,7 @@
 
 @implementation HomeItemCell
 
-- (void)initWithSportsType:(SportsType)type
+- (void)initWithSportsType:(RunningSportsType)type
                       data:(id)data {
     switch (type) {
         case SportsTypeJogging:
@@ -40,12 +40,28 @@
         case SportsTypeStep:
             [self.img setImage:[UIImage imageNamed:@"bg_step"]];
             break;
+        case SportsTypeOutdoor:
+            [self.img setImage:[UIImage imageNamed:@"bg_outdoor"]];
+            break;
         default:
             break;
     }
     
-    RunningProjectItemModel *item = (RunningProjectItemModel *)data;
+    RunningSportModel *item = (RunningSportModel *)data;
     
+    // 室外运动，隐藏除了名字的其他lab
+    if (type == SportsTypeOutdoor) {
+        self.labSportsType.text = @"区域锻炼";
+        self.labDistance.hidden = YES;
+        self.labTime.hidden = YES;
+        self.labSpeed.hidden = YES;
+        self.labPersonCount.hidden = YES;
+        self.labTitleSpeed.hidden = YES;
+        self.labTitleTime.hidden = YES;
+        self.labTitleDistance.hidden = YES;
+        return;
+    }
+
     NSDictionary *attribute = @{NSFontAttributeName : S10,
                                  NSForegroundColorAttributeName : cFFFFFF};
     
@@ -69,10 +85,11 @@
     self.labDistance.attributedText = qualifiedDistanceAttributedString;
     self.labTime.attributedText = qualifiedCostTimeAttributedString;
     self.labSpeed.attributedText = speedAttributedString;
+    self.labPersonCount.text = [NSString stringWithFormat:@"%ld人正在参加", (long)item.participantNum];
 }
 
 - (void)setupPersonCount:(int)count {
-    self.labPersonCount.text = [NSString stringWithFormat:@"%d人正在参加", count];
+//    self.labPersonCount.text = [NSString stringWithFormat:@"%d人正在参加", count];
 }
 
 - (void)createUI {

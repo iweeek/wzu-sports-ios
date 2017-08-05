@@ -55,7 +55,7 @@
         _labDesc.numberOfLines = 0;
         _labDesc.textAlignment = NSTextAlignmentLeft;
         _labDesc.textColor = c474A4F;
-        _labDesc.text = @"关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们";
+        _labDesc.text = @"";
     }
     return _labDesc;
 }

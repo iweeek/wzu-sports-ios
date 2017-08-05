@@ -78,6 +78,7 @@
     }
     return _labNum;
 }
+
 - (UILabel *)labName {
     if (!_labName) {
         _labName = [[UILabel alloc] init];

@@ -12,8 +12,11 @@
 @interface HomeViewModel : NSObject
 
 @property (nonatomic, strong) HomePageModel *homePage;
+@property (nonatomic, assign) NSInteger universityId;
+@property (nonatomic, assign) NSInteger studentId;
+@property (nonatomic, assign) NSInteger pageNumber;
 
-@property (nonatomic, strong) RACCommand *cmdRunningProjects;
+@property (nonatomic, strong) RACCommand *cmdRunningSports;
 @property (nonatomic, strong) RACCommand *cmdRuningActivitys;
 
 @end

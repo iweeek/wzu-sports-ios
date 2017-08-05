@@ -8,8 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, RankingType) {
+    RankingTypeKcalConsumption = 0,
+    RankingTypeTimeCost
+};
+
 @interface RankingController : UIViewController
 
 @property (nonatomic, strong) UINavigationController *nav;
+@property (nonatomic, assign) RankingType type;
 
 @end

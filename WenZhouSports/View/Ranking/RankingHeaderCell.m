@@ -8,6 +8,7 @@
 
 #import "RankingHeaderCell.h"
 #import "StudentTimeCostedModel.h"
+#import "StudentKcalConsumptionModel.h"
 
 @interface RankingHeaderCell ()
 
@@ -32,22 +33,48 @@
 @implementation RankingHeaderCell
 
 - (void)setupWithData:(id)data {
-    NSArray<StudentTimeCostedModel *> *array = data;
-    StudentTimeCostedModel *model1 = array[0];
-    StudentTimeCostedModel *model2 = array[1];
-    StudentTimeCostedModel *model3 = array[2];
+    NSArray *array = data;
+    if (array.count < 2) {
+        return;
+    }
     
-    [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-    [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+    id ranking = array[0];
+    // 时间排名
+    if ([ranking isMemberOfClass:[StudentTimeCostedModel class]]) {
+        StudentTimeCostedModel *model1 = array[0];
+        StudentTimeCostedModel *model2 = array[1];
+        StudentTimeCostedModel *model3 = array[2];
+        
+        [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+        [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+        [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+        
+        self.labNameLeft.text = model2.studentName;
+        self.labNameCenter.text = model1.studentName;
+        self.labNameRight.text = model3.studentName;
+        
+        self.labDescLeft.text = [NSString stringWithFormat:@"%ld 分钟", model2.timeCosted / 60];
+        self.labDescCenter.text = [NSString stringWithFormat:@"%ld 分钟", model1.timeCosted / 60];
+        self.labDescRight.text = [NSString stringWithFormat:@"%ld 分钟", model3.timeCosted / 60];
+    } else {// 卡路里排名
+        StudentKcalConsumptionModel *model1 = array[0];
+        StudentKcalConsumptionModel *model2 = array[1];
+//        StudentKcalConsumptionModel *model3 = array[2];
+        
+        [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+//        [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+        [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+        
+        self.labNameLeft.text = model2.studentName;
+        self.labNameCenter.text = model1.studentName;
+//        self.labNameRight.text = model3.studentName;
+
+        self.labDescLeft.text = [NSString stringWithFormat:@"%ld 大卡", model2.kcalConsumption];
+        self.labDescCenter.text = [NSString stringWithFormat:@"%ld 大卡", model1.kcalConsumption];
+//        self.labDescRight.text = [NSString stringWithFormat:@"%ld 大卡", model3.kcalConsumption];
+    }
     
-    self.labNameLeft.text = model2.studentName;
-    self.labNameCenter.text = model1.studentName;
-    self.labNameRight.text = model3.studentName;
     
-    self.labDescLeft.text = @"2313 千卡";
-    self.labDescCenter.text = @"2313 千卡";
-    self.labDescRight.text = @"2313 千卡";
 }
 
 -(CGPathRef)getCGPath:(CGFloat)viewWidth{
@@ -186,9 +213,6 @@
         _imgNumCenter.layer.cornerRadius = 20;
         _imgNumCenter.layer.masksToBounds = YES;
         [_imgNumCenter setImage:[UIImage imageNamed:@"icon_one"]];
-        
-        
-
     }
     return _imgNumCenter;
 }
@@ -222,7 +246,7 @@
         _labNameCenter.numberOfLines = 0;
         _labNameCenter.textAlignment = NSTextAlignmentCenter;
         _labNameCenter.textColor = c474A4F;
-        _labNameCenter.text = @"12";
+        _labNameCenter.text = @"";
     }
     return _labNameCenter;
 }
