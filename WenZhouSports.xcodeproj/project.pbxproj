@@ -58,6 +58,11 @@
 		B81D753F1F2B3D8400808271 /* AreaSportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B81D753E1F2B3D8400808271 /* AreaSportModel.m */; };
 		B81E817B1F1650A90069EDB8 /* SportsResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E817A1F1650A90069EDB8 /* SportsResultController.m */; };
 		B81E817E1F1675710069EDB8 /* RunningActivityDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E817D1F1675710069EDB8 /* RunningActivityDataModel.m */; };
+		B81E8AAE1F386A7B00821886 /* Dao+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E8AAD1F386A7B00821886 /* Dao+Login.m */; };
+		B81E8AB11F38848000821886 /* LoginViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E8AB01F38848000821886 /* LoginViewModel.m */; };
+		B81E8AB41F38869000821886 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E8AB31F38869000821886 /* NSString+MD5.m */; };
+		B81E8AB71F39561800821886 /* ChooseUniversityView.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E8AB61F39561800821886 /* ChooseUniversityView.m */; };
+		B81E8ABA1F3963E600821886 /* UniversitiesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B81E8AB91F3963E600821886 /* UniversitiesModel.m */; };
 		B82202E71EF577A700B7626B /* UniversityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B82202E61EF577A700B7626B /* UniversityModel.m */; };
 		B82202EA1EF60FAF00B7626B /* TermSportsTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B82202E91EF60FAF00B7626B /* TermSportsTaskModel.m */; };
 		B82202ED1EF6100A00B7626B /* TermModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B82202EC1EF6100A00B7626B /* TermModel.m */; };
@@ -76,6 +81,8 @@
 		B82203351EF8B45500B7626B /* SportsHistoryManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203341EF8B45500B7626B /* SportsHistoryManagerController.m */; };
 		B82203551EF8D07500B7626B /* Dao+SportsHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203541EF8D07500B7626B /* Dao+SportsHistory.m */; };
 		B82203581EF8D07F00B7626B /* SportsHistoryViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B82203571EF8D07F00B7626B /* SportsHistoryViewModel.m */; };
+		B84D473C1F3CB52500829B82 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D473B1F3CB52500829B82 /* UserModel.m */; };
+		B84D473F1F3CBD6300829B82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D473E1F3CBD6300829B82 /* UserDefaultsManager.m */; };
 		B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */; };
 		B8604A311EE98B5D00ACBC8D /* APIInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A301EE98B5D00ACBC8D /* APIInterface.m */; };
 		B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B8604A371EEA8BE300ACBC8D /* NSString+JsonToDictionary.m */; };
@@ -237,6 +244,16 @@
 		B81E817A1F1650A90069EDB8 /* SportsResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsResultController.m; sourceTree = "<group>"; };
 		B81E817C1F1675710069EDB8 /* RunningActivityDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunningActivityDataModel.h; sourceTree = "<group>"; };
 		B81E817D1F1675710069EDB8 /* RunningActivityDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunningActivityDataModel.m; sourceTree = "<group>"; };
+		B81E8AAC1F386A7B00821886 /* Dao+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Dao+Login.h"; sourceTree = "<group>"; };
+		B81E8AAD1F386A7B00821886 /* Dao+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Dao+Login.m"; sourceTree = "<group>"; };
+		B81E8AAF1F38848000821886 /* LoginViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewModel.h; sourceTree = "<group>"; };
+		B81E8AB01F38848000821886 /* LoginViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewModel.m; sourceTree = "<group>"; };
+		B81E8AB21F38869000821886 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		B81E8AB31F38869000821886 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		B81E8AB51F39561800821886 /* ChooseUniversityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseUniversityView.h; sourceTree = "<group>"; };
+		B81E8AB61F39561800821886 /* ChooseUniversityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseUniversityView.m; sourceTree = "<group>"; };
+		B81E8AB81F3963E600821886 /* UniversitiesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversitiesModel.h; sourceTree = "<group>"; };
+		B81E8AB91F3963E600821886 /* UniversitiesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversitiesModel.m; sourceTree = "<group>"; };
 		B82202E51EF577A700B7626B /* UniversityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversityModel.h; sourceTree = "<group>"; };
 		B82202E61EF577A700B7626B /* UniversityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversityModel.m; sourceTree = "<group>"; };
 		B82202E81EF60FAF00B7626B /* TermSportsTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermSportsTaskModel.h; sourceTree = "<group>"; };
@@ -273,6 +290,10 @@
 		B82203541EF8D07500B7626B /* Dao+SportsHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Dao+SportsHistory.m"; sourceTree = "<group>"; };
 		B82203561EF8D07F00B7626B /* SportsHistoryViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportsHistoryViewModel.h; sourceTree = "<group>"; };
 		B82203571EF8D07F00B7626B /* SportsHistoryViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportsHistoryViewModel.m; sourceTree = "<group>"; };
+		B84D473A1F3CB52500829B82 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		B84D473B1F3CB52500829B82 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		B84D473D1F3CBD6300829B82 /* UserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultsManager.h; sourceTree = "<group>"; };
+		B84D473E1F3CBD6300829B82 /* UserDefaultsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaultsManager.m; sourceTree = "<group>"; };
 		B8604A2C1EE8243900ACBC8D /* HomeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewModel.h; sourceTree = "<group>"; };
 		B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewModel.m; sourceTree = "<group>"; };
 		B8604A2F1EE98B5D00ACBC8D /* APIInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIInterface.h; sourceTree = "<group>"; };
@@ -446,6 +467,8 @@
 		5470645E1EB822990069BFE6 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B84D473D1F3CBD6300829B82 /* UserDefaultsManager.h */,
+				B84D473E1F3CBD6300829B82 /* UserDefaultsManager.m */,
 				542D6DE11EC7028700E26F62 /* MAMutablePolylineRenderer2D.h */,
 				542D6DE21EC7028700E26F62 /* MAMutablePolylineRenderer2D.m */,
 				B8F5C2721EEADD41008305C2 /* MAMutablePolylineRenderer3D.h */,
@@ -495,6 +518,8 @@
 				542D6DEE1EC9AA2500E26F62 /* BaseDao+Category.m */,
 				B893FA231F224E0C00F4CF02 /* NSString+Date.h */,
 				B893FA241F224E0C00F4CF02 /* NSString+Date.m */,
+				B81E8AB21F38869000821886 /* NSString+MD5.h */,
+				B81E8AB31F38869000821886 /* NSString+MD5.m */,
 			);
 			path = Categoris;
 			sourceTree = "<group>";
@@ -562,6 +587,8 @@
 				B8604A2D1EE8243900ACBC8D /* HomeViewModel.m */,
 				B82203221EF7C80000B7626B /* RankingViewModel.h */,
 				B82203231EF7C80000B7626B /* RankingViewModel.m */,
+				B81E8AAF1F38848000821886 /* LoginViewModel.h */,
+				B81E8AB01F38848000821886 /* LoginViewModel.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -576,6 +603,8 @@
 				B8136D5A1EED88AB0000D062 /* Location */,
 				B8136D5B1EED88AB0000D062 /* StudentModel.h */,
 				B8136D5C1EED88AB0000D062 /* StudentModel.m */,
+				B84D473A1F3CB52500829B82 /* UserModel.h */,
+				B84D473B1F3CB52500829B82 /* UserModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -594,6 +623,8 @@
 				B8136D601EED88DF0000D062 /* RunningSportsModel.m */,
 				B8136D621EED910C0000D062 /* RunningSportModel.h */,
 				B8136D631EED910C0000D062 /* RunningSportModel.m */,
+				B81E8AB81F3963E600821886 /* UniversitiesModel.h */,
+				B81E8AB91F3963E600821886 /* UniversitiesModel.m */,
 				B82202E51EF577A700B7626B /* UniversityModel.h */,
 				B82202E61EF577A700B7626B /* UniversityModel.m */,
 				B82202E81EF60FAF00B7626B /* TermSportsTaskModel.h */,
@@ -687,6 +718,15 @@
 			path = SegementTap;
 			sourceTree = "<group>";
 		};
+		B81E8AAB1F386A6B00821886 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B81E8AAC1F386A7B00821886 /* Dao+Login.h */,
+				B81E8AAD1F386A7B00821886 /* Dao+Login.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		B82202F71EF6545400B7626B /* LNDProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -741,6 +781,7 @@
 		B8604A351EEA31E400ACBC8D /* DAO */ = {
 			isa = PBXGroup;
 			children = (
+				B81E8AAB1F386A6B00821886 /* Login */,
 				B82203391EF8C85C00B7626B /* SportsHistory */,
 				B822032C1EF7CFE200B7626B /* Ranking */,
 				B8136D771EF170370000D062 /* Sports */,
@@ -891,6 +932,8 @@
 				B8A05F6C1EE1A50A003AEC95 /* ForgetPasswordView.m */,
 				B8A05F711EE1A90D003AEC95 /* VerificationCodeView.h */,
 				B8A05F721EE1A90D003AEC95 /* VerificationCodeView.m */,
+				B81E8AB51F39561800821886 /* ChooseUniversityView.h */,
+				B81E8AB61F39561800821886 /* ChooseUniversityView.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1087,6 +1130,7 @@
 			files = (
 				B8DF48BF1EE15F930088377D /* LoginView.m in Sources */,
 				B8A05F841EE1CC38003AEC95 /* ApproveController.m in Sources */,
+				B81E8AB11F38848000821886 /* LoginViewModel.m in Sources */,
 				B8B922B71F298D00006BFE7C /* SportsAreaOutdoorCell.m in Sources */,
 				B82203351EF8B45500B7626B /* SportsHistoryManagerController.m in Sources */,
 				B8DF48B91EE155C30088377D /* LoginTextView.m in Sources */,
@@ -1110,6 +1154,7 @@
 				B8A05F701EE1A879003AEC95 /* VerificationCodeController.m in Sources */,
 				B8DF48C51EE16AA90088377D /* UINavigationItem+Addition.m in Sources */,
 				B81E817E1F1675710069EDB8 /* RunningActivityDataModel.m in Sources */,
+				B84D473C1F3CB52500829B82 /* UserModel.m in Sources */,
 				B8A05F731EE1A90D003AEC95 /* VerificationCodeView.m in Sources */,
 				B8A05F6A1EE1A4B6003AEC95 /* ForgetPasswordController.m in Sources */,
 				B8F5C27A1EEBE193008305C2 /* AMapRouteRecord.m in Sources */,
@@ -1124,11 +1169,13 @@
 				B8136D611EED88DF0000D062 /* RunningSportsModel.m in Sources */,
 				542D6DD11EC2AB7500E26F62 /* SportsDetailsController.m in Sources */,
 				B8DF48C81EE16E270088377D /* UINavigationBar+Awesome.m in Sources */,
+				B81E8AB41F38869000821886 /* NSString+MD5.m in Sources */,
 				542D6DDD1EC315FA00E26F62 /* NSNumber+SetScale.m in Sources */,
 				5401BB871EB98C8D00003C51 /* LaunchView.m in Sources */,
 				B822032F1EF7D02500B7626B /* Dao+Ranking.m in Sources */,
 				5401BB741EB823F000003C51 /* Dao.m in Sources */,
 				547064651EB822D30069BFE6 /* UIView+Util.m in Sources */,
+				B81E8AAE1F386A7B00821886 /* Dao+Login.m in Sources */,
 				B8A05F7A1EE1C6AD003AEC95 /* PersonInfoCell.m in Sources */,
 				B82202F01EF6159B00B7626B /* ActivitiesPageModel.m in Sources */,
 				B8DF48C21EE161890088377D /* LoginController.m in Sources */,
@@ -1164,6 +1211,8 @@
 				B8A05F761EE1C5B6003AEC95 /* PersonInfoController.m in Sources */,
 				5401BB8B1EB9B2AB00003C51 /* LaunchController.m in Sources */,
 				B81E817B1F1650A90069EDB8 /* SportsResultController.m in Sources */,
+				B84D473F1F3CBD6300829B82 /* UserDefaultsManager.m in Sources */,
+				B81E8AB71F39561800821886 /* ChooseUniversityView.m in Sources */,
 				54E92F601EBDA9B00073BABF /* OldRankingController.m in Sources */,
 				B82202FD1EF6545400B7626B /* MBProgressHUD.m in Sources */,
 				B8136D6A1EEE85090000D062 /* ApproveAddItemCell.m in Sources */,
@@ -1176,6 +1225,7 @@
 				B8604A2E1EE8243A00ACBC8D /* HomeViewModel.m in Sources */,
 				542DCC3C1EB1F26A00EDAD91 /* main.m in Sources */,
 				B82203201EF6C86A00B7626B /* RankingItemCell.m in Sources */,
+				B81E8ABA1F3963E600821886 /* UniversitiesModel.m in Sources */,
 				B8604A381EEA8BE300ACBC8D /* NSString+JsonToDictionary.m in Sources */,
 				B80DB2651F30689D004DDD40 /* AreaActiviesPageModel.m in Sources */,
 				B8B522861EE106210038A83C /* HomeTotalCell.m in Sources */,

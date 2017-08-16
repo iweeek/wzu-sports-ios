@@ -11,5 +11,6 @@
 @interface PersonalCenterView : UIView
 
 @property (nonatomic, assign) NSInteger selectedIndex;
+@property (nonatomic, strong) RACSignal *signalLogout;
 
 @end

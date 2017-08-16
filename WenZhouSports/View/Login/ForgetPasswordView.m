@@ -36,7 +36,7 @@
                                hint:@""
                        showClearBtn:YES];
     [self.txtPhone setSecureTextEntry:NO showEyeBtn:NO];
-    [self.txtPhone setHint:@"" isShowHint:NO];
+    [self.txtPhone setHint:@"" showHint:NO];
     
     [self addSubview:self.txtPhone];
     [self addSubview:self.btnSubmit];

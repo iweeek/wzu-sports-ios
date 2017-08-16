@@ -113,10 +113,19 @@
     self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT)];
     [self.detailView setDelegate:self];
     
+    // 跑步运动
     if (self.sportsType == SportsRunning) {
         self.detailView.runningSport = self.runningSport;
         [self.detailView changeSportsStation:SportsWillStart];
-    } else if (self.sportsType == SportsOutdoor) {
+    }
+    // 区域运动
+    else if (self.sportsType == SportsOutdoor) {
+        // 画圆
+        MACircle *circle = [MACircle circleWithCenterCoordinate:CLLocationCoordinate2DMake(self.areaAportsOutdoorPoint.latitude, self.areaAportsOutdoorPoint.longitude) radius:self.areaAportsOutdoorPoint.radius];
+        [self.detailView.mapView addOverlay:circle];
+        
+        self.detailView.areaSport = self.areaSport;
+        [self.detailView setAreaSportQualifiedData];
         [self.detailView changeSportsStation:SportsAreaOutdoorWillStart];
         [self.detailView setDataWithAreaSportsOutdoorPoint:self.areaAportsOutdoorPoint];
     }
@@ -166,6 +175,20 @@
     // 运动开始点击事件
     [self.detailView.startSignal subscribeNext:^(id x) {
         @strongify(self);
+        if (self.sportsType == SportsOutdoor) {
+            // 判断是否在圈里
+            BOOL isContains = MACircleContainsCoordinate(CLLocationCoordinate2DMake(self.dataLatitude,
+                                                                                    self.dataLongitude),
+                                                         CLLocationCoordinate2DMake(self.areaAportsOutdoorPoint.latitude,
+                                                                                    self.areaAportsOutdoorPoint.longitude),
+                                                         15000);//self.areaAportsOutdoorPoint.radius
+            if (!isContains) {
+                [LNDProgressHUD showErrorMessage:@"不在运动范围内" inView:self.view];
+                return;
+            }
+
+        }
+
         self.startTime = (long)[[NSDate date] timeIntervalSince1970];
         self.isRecording = YES;
         // 滑动结束手势
@@ -187,12 +210,13 @@
             return ;
         }
         
-        [self.detailView setQualifiedData];
+        // 设置跑步运动标准时间
+        [self.detailView setRunningSportQualifiedData];
         self.currentRecord = [[AMapRouteRecord alloc] init];
 
         // 调用运动开始接口
         self.viewModel.runningSportId = self.runningSport.id;
-        self.viewModel.studentId = 3;
+        self.viewModel.studentId = [UserDefaultsManager sharedUserDefaults].studentId;
         self.viewModel.starTime = self.startTime;
         [[self.viewModel.cmdRunningActivitiesStart execute:nil] subscribeNext:^(id  _Nullable x) {
             self.runningActivity = x;
@@ -256,9 +280,11 @@
             
             [[self.viewModel.cmdRunningActivityData execute:nil] subscribeNext:^(id  _Nullable x) {
                 NSLog(@"data提交成功：%ld", (long)self.sportsTime);
-                [LNDProgressHUD showMessage:[NSString stringWithFormat:@"Longitude:%f, Latitude:%f", self.dataLongitude, self.dataLatitude] inView:self.view];
+//                [LNDProgressHUD showMessage:[NSString stringWithFormat:@"Longitude:%f, Latitude:%f", self.dataLongitude, self.dataLatitude] inView:self.view];
+                NSLog(@"%@",[NSString stringWithFormat:@"Longitude:%f, Latitude:%f", self.dataLongitude, self.dataLatitude]);
             } error:^(NSError * _Nullable error) {
-                @strongify(self);                  [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+                @strongify(self);
+                [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
             }];
         });
         
@@ -349,7 +375,7 @@
         // 如果是定点运动
         if (self.sportsType == SportsOutdoor) {
             [self.detailView changeSportsStation:SportsAreaOutdoorDidEnd];
-            
+//            [self.detailView setSportsOutdoorTime:<#(NSInteger)#>];
             // 调用接口
             self.viewModel.areaActivityId = self.viewModel.areaActivity.id;
             [[self.viewModel.cmdAreaActivityEnd execute:nil] subscribeNext:^(id  _Nullable x) {
@@ -400,10 +426,9 @@
 #pragma mark - About sportsArea
 - (void)sportsAreaOutdoorPointStart {
     @weakify(self);
-    
     // 创建一个areaActivity
     self.viewModel.areaSport = self.areaSport;
-    self.viewModel.studentId = 3;
+    self.viewModel.studentId = [UserDefaultsManager sharedUserDefaults].studentId;
     [[self.viewModel.cmdAreaActivityStart execute:nil] subscribeNext:^(id  _Nullable x) {
         DDLogInfo(@"定点运动创建成功");
         
@@ -435,6 +460,7 @@
         self.viewModel.latitude = self.dataLatitude;
         self.viewModel.locationType = 0;
         [[self.viewModel.cmdAreaActivityData execute:nil] subscribeNext:^(id  _Nullable x) {
+            NSLog(@"%@",[NSString stringWithFormat:@"Longitude:%f, Latitude:%f", self.dataLongitude, self.dataLatitude]);
             DDLogInfo(@"定点运动添加成功");
         }];
     });
@@ -498,6 +524,7 @@
 
 #pragma mark - mapViewDelegate
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation {
+    
     if (!updatingLocation) {
         return;
     }
@@ -527,6 +554,12 @@
         _render = renderer;
         
         return renderer;
+    }
+    if ([overlay isKindOfClass:[MACircle class]]) {
+        MACircleRenderer *circleRenderer = [[MACircleRenderer alloc] initWithCircle:(MACircle *)overlay];
+
+        circleRenderer.fillColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.5];
+        return circleRenderer;
     }
     return nil;
 }

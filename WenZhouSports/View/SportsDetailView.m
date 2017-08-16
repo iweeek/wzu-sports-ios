@@ -114,6 +114,8 @@
             [self setDataWithDistance:self.runningSport.qualifiedDistance
                                  time:self.runningSport.qualifiedCostTime
                                 speed:self.runningSport.qualifiedDistance * 1.0 / self.runningSport.qualifiedCostTime];
+            
+            
             break;
         }
         case SportsDidStart:
@@ -260,7 +262,7 @@
 - (void)initSubviews {
     _mapView = ({
         MAMapView *map = [[MAMapView alloc] initWithFrame:self.frame];
-        map.zoomLevel = 19;
+        map.zoomLevel = 17;
         map.zoomEnabled = YES;
         map.showsUserLocation = YES;
         map.showsCompass = YES;//指南针
@@ -696,7 +698,7 @@
         _labSportsOutdoorStandardTime.numberOfLines = 2;
         _labSportsOutdoorStandardTime.textAlignment = NSTextAlignmentLeft;
         _labSportsOutdoorStandardTime.textColor = c474A4F;
-        _labSportsOutdoorStandardTime.text = @"达标时间：0分钟";
+        _labSportsOutdoorStandardTime.text = @"";
     }
     return _labSportsOutdoorStandardTime;
 }
@@ -708,7 +710,7 @@
         _labSportsOutdoorPeopleCount.numberOfLines = 2;
         _labSportsOutdoorPeopleCount.textAlignment = NSTextAlignmentLeft;
         _labSportsOutdoorPeopleCount.textColor = c474A4F;
-        _labSportsOutdoorPeopleCount.text = @"20人正在参加";
+        _labSportsOutdoorPeopleCount.text = @"";
     }
     return _labSportsOutdoorPeopleCount;
 }
@@ -949,9 +951,9 @@
     // 取消了“即时速度”,取而代之的是“平均速度”,所有不再使用传过来的速度
     NSString *speedStr = nil;
     if (time == 0) {
-        speedStr = @"0 米/秒";
+        speedStr = @"0.0 米/秒";
     } else {
-        speedStr = [NSString stringWithFormat:@"%.1f 米/秒", distance / time];
+        speedStr = [NSString stringWithFormat:@"%.1f 米/秒", distance * 1.0 / time];
     }
     
     NSDictionary *attribute = @{NSFontAttributeName : S10,
@@ -970,17 +972,21 @@
     self.timeNumberLabel.text = [self getMMSSFromSS:time];
     self.speedNumberLabel.attributedText = speedAttributedString;
     self.numberOfPeopleLable.text = [NSString stringWithFormat:@"%ld人正在参加", (long)self.runningSport.participantNum];
-}
-
-
-- (void)setQualifiedData {
-    self.bottomDistanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningSport.qualifiedDistance];
-    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningSport.qualifiedCostTime / 60];
-
-    self.bottomSpeedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", self.runningSport.qualifiedDistance * 1.0 / self.runningSport.qualifiedCostTime];\
     
 }
 
+#pragma mark - 设置标准数据
+- (void)setRunningSportQualifiedData {
+    self.bottomDistanceNumberLabel.text = [NSString stringWithFormat:@"%ld 米", self.runningSport.qualifiedDistance];
+    self.bottomTimeNumberLabel.text = [NSString stringWithFormat:@"%ld 分钟", self.runningSport.qualifiedCostTime / 60];
+    self.bottomSpeedNumberLabel.text = [NSString stringWithFormat:@"%.1f 米/秒", self.runningSport.qualifiedDistance * 1.0 / self.runningSport.qualifiedCostTime];\
+}
+
+- (void)setAreaSportQualifiedData {
+    self.labSportsOutdoorStandardTime.text = [NSString stringWithFormat:@"达标时间：%ld分钟", self.areaSport.qualifiedCostTime / 60];
+}
+
+#pragma mark - 运动结果页展示
 - (void)setDataWithActivity:(id)activity {
     if ([activity isMemberOfClass:[RunningActivityModel class]]) {
         RunningActivityModel *runningActivity = (RunningActivityModel *)activity;
@@ -991,9 +997,9 @@
         // 取消了“即时速度”,取而代之的是“平均速度”,所有不再使用传过来的速度
         NSString *speedStr = nil;
         if (runningActivity.costTime == 0) {
-            speedStr = @"0 米/秒";
+            speedStr = @"0.0 米/秒";
         } else {
-            speedStr = [NSString stringWithFormat:@"%.1f 米/秒", runningActivity.distance * 0.1 / runningActivity.costTime];
+            speedStr = [NSString stringWithFormat:@"%.1f 米/秒", runningActivity.distance * 1.0 / runningActivity.costTime];
         }
         
         NSDictionary *attribute = @{NSFontAttributeName : S10,
@@ -1029,6 +1035,7 @@
 - (void)setDataWithAreaSportsOutdoorPoint:(AreaSportsOutdoorPointModel *)outdoorPoint {
     self.labSportsOutdoorTitle.text = outdoorPoint.name;
     self.labSportsOutdoorDesc.text = outdoorPoint.desc;
+    self.labSportsOutdoorPeopleCount.text = [NSString stringWithFormat:@"%ld人正在参加", (long)self.areaSport.participantNum];
 }
 
 - (void)setSportsOutdoorTime:(NSInteger)time {

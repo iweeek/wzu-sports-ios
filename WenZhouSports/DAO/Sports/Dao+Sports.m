@@ -71,8 +71,9 @@
             }];
 }
 
-- (RACSignal *)getAreaSportsList {
-    return [[self RAC_GET:@"fixLocationOutdoorSportPoints" parameters:nil]
+- (RACSignal *)getAreaSportsList:(NSInteger)universityId {
+    NSString *str = [NSString stringWithFormat:@"universities/%ld/FixLocationOutdoorSportPoints", universityId];
+    return [[self RAC_GET:str parameters:nil]
             map:^id _Nullable(id  _Nullable value) {
                 return [self jsonToModeForREST:[AreaSportsOutdoorPointsModel class] dictionary:value key:nil];
             }];

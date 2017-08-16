@@ -37,7 +37,7 @@
 
 - (void)initData {
     self.vm = [[SportsHistoryViewModel alloc] init];
-    self.vm.studentId = 3;
+    self.vm.studentId = [UserDefaultsManager sharedUserDefaults].studentId;
 //    self.vm.startDate = @"2017-7-1";
 //    self.vm.endDate = @"2017-10-20";
     switch (self.type) {
@@ -219,18 +219,27 @@
     if (weekday == 1) {
         firstDiff = -6;
         lastDiff = 0;
-    }else {
-        firstDiff =  - weekday + 2;
+    } else {
+        firstDiff = [calendar firstWeekday] - weekday + 1;
         lastDiff = 8 - weekday;
     }
     NSInteger day = [dateComponents day];
     NSDateComponents *firstComponents = [calendar components:NSCalendarUnitWeekday | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
     [firstComponents setDay:day+firstDiff];
-    NSDate *firstDay = [calendar dateFromComponents:firstComponents];
+    NSDate *firstDayOfWeek = [calendar dateFromComponents:firstComponents];
     
     NSDateComponents *lastComponents = [calendar components:NSCalendarUnitWeekday | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
     [lastComponents setDay:day+lastDiff];
-    NSDate *lastDay = [calendar dateFromComponents:lastComponents];
+    NSDate *lastDayOfWeek = [calendar dateFromComponents:lastComponents];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSString *firstDay = [formatter stringFromDate:firstDayOfWeek];
+    NSString *lastDay = [formatter stringFromDate:lastDayOfWeek];
+
+    NSLog(@"firstDay: %@   lastDay: %@",firstDay,lastDay);
+    
     return [NSArray arrayWithObjects:firstDay,lastDay, nil];
 }
 
@@ -239,11 +248,21 @@
     NSDate *firstDay;
     [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&firstDay interval:nil forDate:[NSDate date]];
     NSDateComponents *lastDateComponents = [calendar components:NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitDay fromDate:firstDay];
+    
     NSUInteger dayNumberOfMonth = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:[NSDate date]].length;
     NSInteger day = [lastDateComponents day];
     [lastDateComponents setDay:day+dayNumberOfMonth-1];
     NSDate *lastDay = [calendar dateFromComponents:lastDateComponents];
-    return [NSArray arrayWithObjects:firstDay,lastDay, nil];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSString *firstDayOfMonth = [formatter stringFromDate:firstDay];
+    NSString *lastDayOfMonth = [formatter stringFromDate:lastDay];
+    
+    NSLog(@"firstDay: %@   lastDay: %@",firstDayOfMonth,lastDayOfMonth);
+    
+    return [NSArray arrayWithObjects:firstDayOfMonth,lastDayOfMonth, nil];
 }
 
 #pragma mark - getter && setter

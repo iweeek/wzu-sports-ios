@@ -9,12 +9,13 @@
 #import "LoginTextView.h"
 #import "LineTextField.h"
 
-@interface LoginTextView ()
+@interface LoginTextView () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UILabel *labTitle;
 @property (nonatomic, strong) UITextField *txt;
 @property (nonatomic, strong) UIView *spliteLine;
 @property (nonatomic, strong) UILabel *labHint;
+@property (nonatomic, strong) UIButton *btnClear;
 @property (nonatomic, strong) UIButton *btnShowPassword;
 
 @end
@@ -32,6 +33,7 @@
     [attribute addAttribute:NSFontAttributeName value:S12 range:NSMakeRange(0, placeholder.length)];
     [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, placeholder.length)];
     self.txt.attributedPlaceholder = attribute;
+    self.btnClear.hidden = !showClearBtn;
 }
 
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
@@ -41,9 +43,17 @@
 }
 
 - (void)setHint:(NSString *)Hint
-     isShowHint:(BOOL)isShowHint {
+       showHint:(BOOL)showHint {
     self.labHint.text = Hint;
-    self.labHint.hidden = !isShowHint;
+    self.labHint.hidden = !showHint;
+}
+
+- (void)changeTextEnabled:(BOOL)enabled {
+    self.txt.enabled = enabled;
+}
+
+- (void)setText:(NSString *)text {
+    self.txt.text = text;
 }
 
 - (instancetype)init{
@@ -60,6 +70,10 @@
     [self addSubview:self.txt];
     [self addSubview:self.labHint];
     [self addSubview:self.spliteLine];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [self addGestureRecognizer:tap];
+    self.signalDidBeginEditing = [tap rac_gestureSignal];
 }
 
 - (void)layout {
@@ -102,13 +116,15 @@
         _txt.textColor = cFFFFFF;
         _txt.font = S13;
         _txt.tintColor = cFFFFFF;// 改变光标颜色
+//        _txt.delegate = self;
+        self.signalTextChanged = [_txt rac_signalForControlEvents:UIControlEventEditingChanged];
         
         UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 46, 35)];
 
-        UIButton *btnClear = [[UIButton alloc] init];
-        [btnClear setImage:[UIImage imageNamed:@"btn_clear"] forState:UIControlStateNormal];
+        self.btnClear = [[UIButton alloc] init];
+        [self.btnClear setImage:[UIImage imageNamed:@"btn_clear"] forState:UIControlStateNormal];
         @weakify(self);
-        [[btnClear rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+        [[self.btnClear rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
             @strongify(self);
             self.txt.text = @"";
         }];
@@ -138,7 +154,7 @@
 
         }];
         
-        [rightView addSubview:btnClear];
+        [rightView addSubview:self.btnClear];
         [rightView addSubview:self.btnShowPassword];
         
         [self.btnShowPassword mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -146,7 +162,7 @@
             make.centerY.mas_equalTo(0);
             make.size.mas_equalTo(CGSizeMake(19, 14));
         }];
-        [btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(self.btnShowPassword.mas_left).offset(-7);
             make.centerY.mas_equalTo(0);
             make.size.mas_equalTo(CGSizeMake(14, 14));

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RunningSportModel.h"
 #import "AreaSportsOutdoorPointModel.h"
+#import "AreaSportModel.h"
 
 typedef NS_ENUM(NSInteger, SportsStation) {
     SportsWillStart = 0,            //运动未开始
@@ -26,6 +27,7 @@ typedef NS_ENUM(NSInteger, SportsStation) {
 
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) RunningSportModel *runningSport;
+@property (nonatomic, strong) AreaSportModel *areaSport;
 // 地图方向箭头
 @property (nonatomic, strong) MAAnnotationView *userLocationAnnotationView;
 
@@ -73,7 +75,8 @@ typedef NS_ENUM(NSInteger, SportsStation) {
                       speed:(float)speed;
 
 // 设置“合格”数据
-- (void)setQualifiedData;
+- (void)setRunningSportQualifiedData;
+- (void)setAreaSportQualifiedData;
 
 /**
  设置运动结果

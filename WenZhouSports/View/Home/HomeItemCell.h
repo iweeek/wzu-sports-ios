@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, RunningSportsType) {
     SportsTypeJogging = 1,    // 慢跑
     SportsTypeRun,            // 快炮
     SportsTypeWalk,           // 走路
-    SportsTypeStep,           // 累计步数
+//    SportsTypeStep,           // 累计步数
     SportsTypeOutdoor         // 室外运动
 };
 

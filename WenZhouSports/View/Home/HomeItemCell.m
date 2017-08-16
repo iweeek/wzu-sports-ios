@@ -37,9 +37,9 @@
         case SportsTypeWalk:
             [self.img setImage:[UIImage imageNamed:@"bg_walking"]];
             break;
-        case SportsTypeStep:
-            [self.img setImage:[UIImage imageNamed:@"bg_step"]];
-            break;
+//        case SportsTypeStep:
+//            [self.img setImage:[UIImage imageNamed:@"bg_step"]];
+//            break;
         case SportsTypeOutdoor:
             [self.img setImage:[UIImage imageNamed:@"bg_outdoor"]];
             break;

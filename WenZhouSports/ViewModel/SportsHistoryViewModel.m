@@ -77,9 +77,9 @@
         
         self.cmdGetAreaActivity = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id input) {
             @strongify(self);
-            return [[[Dao share] getAreaActivityWithId:self.runningActivity.id]
+            return [[[Dao share] getAreaActivityWithId:self.areaActivity.id]
                     doNext:^(id  _Nullable x) {
-                        self.runningActivity = x;
+                        self.areaActivity = x;
                     }];
         }];
     }

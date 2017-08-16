@@ -9,10 +9,12 @@
 #import "AppDelegate.h"
 #import "LaunchController.h"
 #import "HomeController.h"
+#import "LoginController.h"
 
 @interface AppDelegate ()
 
 @property (nonatomic, strong) LaunchController *launchController;
+@property (nonatomic, strong) LoginController  *loginController;
 @property (nonatomic, strong) HomeController *homeController;
 @property (nonatomic, strong) UINavigationController *navigationController;
 
@@ -29,13 +31,15 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    _launchController = [[LaunchController alloc] init];
+    _loginController = [[LoginController alloc] init];
     _homeController = [[HomeController alloc] init];
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (true) {
-        _navigationController = [[UINavigationController alloc] initWithRootViewController:_homeController];
+    
+    [UserDefaultsManager sharedUserDefaults].studentId = 3;
+    [UserDefaultsManager sharedUserDefaults].universityId = 1;
+    if (![UserDefaultsManager sharedUserDefaults].studentId) {//![UserDefaultsManager sharedUserDefaults].studentId
+        _navigationController = [[UINavigationController alloc] initWithRootViewController:_loginController];
     } else {
-        _navigationController = [[UINavigationController alloc] initWithRootViewController:_launchController];
+        _navigationController = [[UINavigationController alloc] initWithRootViewController:_homeController];
     }
     self.window.rootViewController = _navigationController;
     [self.window makeKeyAndVisible];

@@ -68,7 +68,7 @@
         });
         _nameLabel = ({
             UILabel *lab = [[UILabel alloc] init];
-            lab.text = @"昵称";
+            lab.text = [UserDefaultsManager sharedUserDefaults].studentName;
             lab.textColor = [UIColor whiteColor];
             lab.font = S14;
             
@@ -111,6 +111,8 @@
         [btn setTitleColor:c474A4F forState:UIControlStateHighlighted];
         btn.backgroundColor = [UIColor clearColor];
         [btn sizeToFit];
+        
+        self.signalLogout = [btn rac_signalForControlEvents:UIControlEventTouchUpInside];
         
         btn;
     });

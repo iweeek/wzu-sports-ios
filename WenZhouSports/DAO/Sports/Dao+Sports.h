@@ -32,7 +32,7 @@
                                      locationType:(NSInteger)locationType
                                          isNormal:(BOOL)isNormal;
 
-- (RACSignal *)getAreaSportsList;
+- (RACSignal *)getAreaSportsList:(NSInteger)universityId;
 
 - (RACSignal *)areaActivitysStartWithAreaSportId:(NSInteger)areaSportId
                                        studentId:(NSInteger)studentId;

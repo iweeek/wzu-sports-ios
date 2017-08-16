@@ -10,12 +10,14 @@
 #import "HomePageModel.h"
 #import "StudentModel.h"
 #import "RunningActivityModel.h"
+#import "AreaActivityModel.h"
 
 @interface SportsHistoryViewModel : NSObject
 
 @property (nonatomic, strong) HomePageModel *homePage;
 @property (nonatomic, strong) NSMutableArray *allActivityArray;
 @property (nonatomic, strong) RunningActivityModel *runningActivity;
+@property (nonatomic, strong) AreaActivityModel *areaActivity;
 @property (nonatomic, assign) NSInteger studentId;
 @property (nonatomic, strong) NSString *startDate;
 @property (nonatomic, strong) NSString *endDate;

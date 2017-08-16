@@ -173,7 +173,12 @@
     id responseData = nil;
     
     if (value[@"data"]) {
-        responseData = value[@"data"];
+        if (key) {
+            NSDictionary *dic = value[@"data"];
+            responseData = dic[key];
+        } else {
+            responseData = value[@"data"];
+        }
     } else {
         responseData = value;
     }

@@ -12,7 +12,7 @@
 
 @interface SportsResultController : UIViewController
 
-@property (nonatomic, strong) AreaSportModel *areaActivity;
-@property (nonatomic, strong) RunningActivityModel *RunningActivity;
+@property (nonatomic, strong) AreaActivityModel *areaActivity;
+@property (nonatomic, strong) RunningActivityModel *runningActivity;
 
 @end

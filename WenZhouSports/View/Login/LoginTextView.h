@@ -10,6 +10,9 @@
 
 @interface LoginTextView : UIView
 
+@property (nonatomic, strong) RACSignal *signalDidBeginEditing;
+@property (nonatomic, strong) RACSignal *signalTextChanged;
+
 - (void)initWithTitle:(NSString *)title
           placeholder:(NSString *)placeholder
                  hint:(NSString *)hint
@@ -19,6 +22,10 @@
                 showEyeBtn:(BOOL)showEyeBtn;
 
 - (void)setHint:(NSString *)Hint
-     isShowHint:(BOOL)isShowHint;
+       showHint:(BOOL)showHint;
+
+- (void)changeTextEnabled:(BOOL)enabled;
+
+- (void)setText:(NSString *)text;
 
 @end

@@ -26,7 +26,7 @@
     [self.view addSubview:self.tableView];
     
     self.vm = [[RankingViewModel alloc] init];
-    self.vm.universityId = 1;
+    self.vm.universityId = [UserDefaultsManager sharedUserDefaults].universityId;
 
     @weakify(self);
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -83,7 +83,12 @@
     if (section == 0) {
         return 1;
     }
-    return self.vm.homePage.university.timeCostedRanking.data.count - 3;
+    if (self.type == RankingTypeKcalConsumption) {
+        return self.vm.homePage.university.kcalConsumptionRanking.data.count - 3;
+    } else {
+        return self.vm.homePage.university.timeCostedRanking.data.count - 3;
+    }
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

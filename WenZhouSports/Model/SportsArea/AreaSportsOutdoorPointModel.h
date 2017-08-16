@@ -18,6 +18,6 @@
 @property (nonatomic, strong) NSString *addr;
 @property (nonatomic, assign) NSInteger universityId;
 @property (nonatomic, strong) NSString *desc;
-@property (nonatomic, assign) BOOL isEnable;
+@property (nonatomic, assign) BOOL isEnabled;
 
 @end

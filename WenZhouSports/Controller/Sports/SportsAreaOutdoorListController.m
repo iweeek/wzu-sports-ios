@@ -40,13 +40,15 @@
 - (void)initData {
     @weakify(self);
     [LNDProgressHUD showLoadingInView:self.view];
+    self.vm.universityId = [UserDefaultsManager sharedUserDefaults].universityId;
     [[self.vm.cmdGetAreaSportsList execute:nil] subscribeNext:^(id  _Nullable x) {
         @strongify(self);
         [LNDProgressHUD hidenForView:self.view];
         [self.tableView reloadData];
         NSLog(@"列表获取成功");
     } error:^(NSError * _Nullable error) {
-        [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+//        [LNDProgressHUD showErrorMessage:[error localizedDescription] inView:self.view];
+        [LNDProgressHUD hidenForView:self.view];
         NSLog(@"列表获取失败");
     }];
 }

@@ -34,7 +34,7 @@
 
 - (void)setupWithData:(id)data {
     NSArray *array = data;
-    if (array.count < 2) {
+    if (array.count < 3) {
         return;
     }
     
@@ -59,19 +59,19 @@
     } else {// 卡路里排名
         StudentKcalConsumptionModel *model1 = array[0];
         StudentKcalConsumptionModel *model2 = array[1];
-//        StudentKcalConsumptionModel *model3 = array[2];
+        StudentKcalConsumptionModel *model3 = array[2];
         
         [self.imgAvatarLeft sd_setImageWithURL:[NSURL URLWithString:model2.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
-//        [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
+        [self.imgAvatarRight sd_setImageWithURL:[NSURL URLWithString:model3.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
         [self.imgAvatarCenter sd_setImageWithURL:[NSURL URLWithString:model1.avatarUrl] placeholderImage:[UIImage imageNamed:@"icon_item_avatar"]];
         
         self.labNameLeft.text = model2.studentName;
         self.labNameCenter.text = model1.studentName;
-//        self.labNameRight.text = model3.studentName;
+        self.labNameRight.text = model3.studentName;
 
         self.labDescLeft.text = [NSString stringWithFormat:@"%ld 大卡", model2.kcalConsumption];
         self.labDescCenter.text = [NSString stringWithFormat:@"%ld 大卡", model1.kcalConsumption];
-//        self.labDescRight.text = [NSString stringWithFormat:@"%ld 大卡", model3.kcalConsumption];
+        self.labDescRight.text = [NSString stringWithFormat:@"%ld 大卡", model3.kcalConsumption];
     }
     
     

@@ -30,6 +30,8 @@
 #import "SportsHistoryManagerController.h"
 #import "RankingController.h"
 #import "MJRefresh.h"
+#import "AppDelegate.h"
+#import "LoginController.h"
 
 @interface HomeController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -59,6 +61,7 @@ CGFloat proportion = 0.84;
     
     [self initSubviews];
     [self setupRefresh];
+    [self.tableView.mj_header beginRefreshing];
 //    [self initData];
 }
 
@@ -98,8 +101,8 @@ CGFloat proportion = 0.84;
     
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         @strongify(self);
-        self.vm.universityId = 1;
-        self.vm.studentId = 3;
+        self.vm.universityId = [UserDefaultsManager sharedUserDefaults].universityId;
+        self.vm.studentId = [UserDefaultsManager sharedUserDefaults].studentId;
         self.vm.pageNumber = 1;
         [[self.vm.cmdRunningSports execute:nil] subscribeNext:^(RunningSportsModel *x) {
             @strongify(self);
@@ -121,8 +124,8 @@ CGFloat proportion = 0.84;
 - (void)initData {
     @weakify(self);
     [LNDProgressHUD showLoadingInView:self.view];
-    self.vm.universityId = 1;
-    self.vm.studentId = 3;
+    self.vm.universityId = [UserDefaultsManager sharedUserDefaults].universityId;
+    self.vm.studentId = [UserDefaultsManager sharedUserDefaults].studentId;
     self.vm.pageNumber = 1;
     [[self.vm.cmdRunningSports execute:nil] subscribeNext:^(RunningSportsModel *x) {
         @strongify(self);
@@ -191,10 +194,23 @@ CGFloat proportion = 0.84;
         
         view;
     });
+    
+    // 退出登录
+    @weakify(self);
+    [_personalCenterView.signalLogout subscribeNext:^(id  _Nullable x) {
+        @strongify(self);
+        LoginController *vc = [[LoginController alloc] init];
+        
+        [UserDefaultsManager sharedUserDefaults].universityId = 0;
+        [UserDefaultsManager sharedUserDefaults].studentId = 0;
+        [UserDefaultsManager sharedUserDefaults].studentName = @"";
+        
+        [self restoreRootViewController:vc];
+    }];
+    
     [[UIApplication sharedApplication].keyWindow addSubview:_personalCenterView];
     
     //监听个人中心
-    @weakify(self);
     [[RACObserve(_personalCenterView, selectedIndex) skip:1] subscribeNext:^(id x) {
         @strongify(self);
         switch (self.personalCenterView.selectedIndex) {
@@ -274,21 +290,6 @@ CGFloat proportion = 0.84;
 //            NSLog(@"cmdRuningActivitys:%@", x);
 //        }];
     }
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    SportsDetailViewModel *viewModel = [[SportsDetailViewModel alloc] init];
-//    UIImage *image = [UIImage imageNamed:@"btn_back"];
-//    NSDictionary *dic = @{@"face1":image,
-//                          @"face2":image};
-//    [[viewModel.compareFaceCommand execute:dic] subscribeNext:^(id  _Nullable x) {
-//        [WToast showWithText:@"x"];
-//    }];
-
-    
-//    ForgetPasswordController *vc = [[ForgetPasswordController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
-    
-//    LoginController *vc = [[LoginController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             return;
@@ -343,11 +344,11 @@ CGFloat proportion = 0.84;
                     RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
                     [cell initWithSportsType:SportsTypeWalk data:runSport];                    break;
                 }
-                case SportsTypeStep:
-                {
-                    RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
-                    [cell initWithSportsType:SportsTypeStep data:runSport];                    break;
-                }
+//                case SportsTypeStep:
+//                {
+//                    RunningSportModel *runSport = (RunningSportModel *)self.vm.homePage.runningSports[indexPath.row - 1];
+//                    [cell initWithSportsType:SportsTypeStep data:runSport];                    break;
+//                }
                 case SportsTypeOutdoor:
                 {
                     [cell initWithSportsType:SportsTypeOutdoor data:nil];                    break;
@@ -366,7 +367,8 @@ CGFloat proportion = 0.84;
     if (section == 0) {
         return 2;
     }
-    return 6;
+    return 5;
+//    return self.vm.homePage.runningSports.count + self.vm.homePage.areaSports.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -414,6 +416,27 @@ CGFloat proportion = 0.84;
         _personalCenterView.center = CGPointMake(-WIDTH / 2 * proportion, self.view.center.y);
     } completion:nil];
     _midView.hidden = YES;
+}
+
+// 渐变切换rootController
+- (void)restoreRootViewController:(UIViewController *)rootViewController {
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    typedef void (^Animation)(void);
+    UIWindow *window = delegate.window;
+    
+    rootViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    Animation animation = ^{
+        BOOL oldState = [UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        window.rootViewController = rootViewController;
+        [UIView setAnimationsEnabled:oldState];
+    };
+    
+    [UIView transitionWithView:window
+                      duration:0.3f
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animation
+                    completion:nil];
 }
 
 @end

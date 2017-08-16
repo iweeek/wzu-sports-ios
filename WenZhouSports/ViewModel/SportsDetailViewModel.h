@@ -52,4 +52,6 @@
 @property (nonatomic, strong) AreaSportModel *areaSport;
 @property (nonatomic, assign) NSInteger areaActivityId;
 
+@property (nonatomic, assign) NSInteger universityId;
+
 @end

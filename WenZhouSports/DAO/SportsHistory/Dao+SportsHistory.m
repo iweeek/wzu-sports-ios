@@ -8,6 +8,8 @@
 
 #import "Dao+SportsHistory.h"
 #import "HomePageModel.h"
+#import "RunningActivityModel.h"
+#import "AreaActivityModel.h"
 
 @implementation Dao (SportsHistory)
 
@@ -70,6 +72,7 @@
                             accuAreaActivityCount(timeRange:%@) \
                             areaActivities(startDate:\"%@\",endDate:\"%@\") { \
                                 data{ \
+                                    id \
                                     sportDate \
                                     areaSportId \
                                     costTime \
@@ -84,6 +87,7 @@
                             } \
                             runningActivities(startDate:\"%@\",endDate:\"%@\"){ \
                                 data{ \
+                                    id \
                                     sportDate \
                                     runningSportId \
                                     costTime \
@@ -96,10 +100,6 @@
                                     qualifiedCostTime \
                                     runningSport{ \
                                         name  \
-                                    } \
-                                    data { \
-                                        longitude \
-                                        latitude \
                                     } \
                                 } \
                             }  \
@@ -146,36 +146,34 @@
     NSDictionary *dicParameters = @{@"query":[NSString stringWithFormat:str, activityId]};
     return [[self RAC_POST:@"graphql/query" parameters:dicParameters]
             map:^id _Nullable(id _Nullable value) {
-                return [self jsonToMode:[HomePageModel class] dictionary:value key:nil];
+                return [self jsonToMode:[RunningActivityModel class] dictionary:value key:@"runningActivity"];
             }];
 }
 
 - (RACSignal *)getAreaActivityWithId:(NSInteger)activityId {
     NSString *str = @"{ \
-                        runningActivity(id:%ld){ \
+                        areaActivity(id:%ld){ \
                             id \
-                            runningSportId \
+                            areaSportId \
                             costTime \
                             kcalConsumed \
                             startTime \
                             endedAt \
-                            distance \
                             qualified \
-                            qualifiedDistance \
                             qualifiedCostTime \
                             data { \
                                 longitude \
                                 latitude \
                             } \
-                            runningSport{ \
+                            areaSport{ \
                                 name \
                             } \
                         } \
-                    }";
+                      }";
     NSDictionary *dicParameters = @{@"query":[NSString stringWithFormat:str, activityId]};
     return [[self RAC_POST:@"graphql/query" parameters:dicParameters]
             map:^id _Nullable(id _Nullable value) {
-                return [self jsonToMode:[HomePageModel class] dictionary:value key:nil];
+                return [self jsonToMode:[AreaActivityModel class] dictionary:value key:@"areaActivity"];
             }];
 }
 

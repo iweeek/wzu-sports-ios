@@ -45,6 +45,7 @@
     cell.textLabel.font = S15;
     cell.detailTextLabel.textColor = c7E848C;
     cell.detailTextLabel.font = S15;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (indexPath.section == 0) {
         cell.textLabel.text=@"修改密码";

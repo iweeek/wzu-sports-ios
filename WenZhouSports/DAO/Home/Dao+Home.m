@@ -46,10 +46,11 @@
                         areaSports(universityId:%ld){ \
                             id \
                             name \
-                            isEnable \
+                            isEnabled \
                             qualifiedCostTime \
                             acquisitionInterval \
                             universityId \
+                            participantNum \
                         } \
                     }";
     //participantNum

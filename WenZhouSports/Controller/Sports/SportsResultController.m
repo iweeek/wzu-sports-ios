@@ -10,13 +10,11 @@
 #import "AMapRouteRecord.h"
 #import "SportsDetailView.h"
 #import "MAMutablePolylineRenderer3D.h"
+#import "SportsHistoryViewModel.h"
 
-@interface SportsResultController ()<MAMapViewDelegate>
-{
-    CLLocationCoordinate2D *_traceCoordinate;
-    NSUInteger _traceCount;
-    CFTimeInterval _duration;
-}
+@interface SportsResultController () <MAMapViewDelegate>
+
+@property (nonatomic, strong) SportsHistoryViewModel *vm;
 
 @property (nonatomic, strong) AMapRouteRecord *record;
 @property (nonatomic, strong) MAAnimatedAnnotation *myLocation;
@@ -39,75 +37,57 @@
     
     self.title = @"锻炼成果";
     
-    // 加载坐标点
-    [self modelMapToLocations];
+    self.vm = [[SportsHistoryViewModel alloc] init];
+    if (self.runningActivity) {
+        self.vm.runningActivity = self.runningActivity;
+        [[self.vm.cmdGetRunningActivity execute:nil] subscribeNext:^(id  _Nullable x) {
+            [self.detailView changeSportsStation:SportsDidEnd];
+            [self.detailView setDataWithActivity:self.runningActivity];
+            [self initPolyline];
+        } error:^(NSError * _Nullable error) {
+            [LNDProgressHUD showErrorMessage:@"获取运动信息失败，请重试" inView:self.view];
+        }];
+    } else {
+        self.vm.areaActivity = self.areaActivity;
+        [[self.vm.cmdGetAreaActivity execute:nil] subscribeNext:^(id  _Nullable x) {
+            [self.detailView changeSportsStation:SportsAreaOutdoorDidEnd];
+            [self.detailView setAreaSportQualifiedData];
+            [self.detailView setDataWithActivity:self.vm.areaActivity];
+            [self initPolyline];
+        } error:^(NSError * _Nullable error) {
+            [LNDProgressHUD showErrorMessage:@"获取运动信息失败，请重试" inView:self.view];
+        }];
+    }
     
     [self createUI];
     
-    [self showRoute];
+    
 }
 
 - (void)createUI {
+    
     self.detailView = [[SportsDetailView alloc] initWithFrame:CGRectMake(0.0, 0.0, WIDTH, HEIGHT)];
     [self.detailView setDelegate:self];
     [self.detailView changeSportsStation:SportsWillStart];
     // 不追踪用户的location更新
     [self.detailView changeUserTrackingMode:MAUserTrackingModeNone];
     
+    // 不显示用户当前位置，否则会把当前位置和运动轨迹同时显示在地图上
+    self.detailView.mapView.showsUserLocation = NO;
+    
     self.line = [[MAMutablePolyline alloc] initWithPoints:@[]];
     [self.detailView.mapView addOverlay:self.line];
     
-    if (self.RunningActivity) {
-        [self.detailView changeSportsStation:SportsDidEnd];
-        [self.detailView setDataWithActivity:self.RunningActivity];
-    } else {
-        [self.detailView changeSportsStation:SportsAreaOutdoorDidEnd];
-        [self.detailView setDataWithActivity:self.areaActivity];
-    }
-    
     [self.view addSubview:self.detailView];
     
-    // 初始定位，以运动的开头为中心
-    MATracePoint *point = [[MATracePoint alloc] init];
-    if (self.tracedLocationsArray.count == 0) {
-        return;
-    }
-    point = self.tracedLocationsArray[0];
-    struct CLLocationCoordinate2D location = {point.latitude, point.longitude};
-    self.detailView.mapView.centerCoordinate = location;
 }
 
-// 获取西北角坐标和东南角坐标以及中心点坐标，用于确定地图展示范围
-- (void)setLocationRange {
-    if (self.longitudeArray.count < 2) {
-        return;
-    }
+- (void)initPolyline {
+    // 加载坐标点
+    [self modelMapToLocations];
     
-    // 把经度数组和纬度数组排序生成顺序
-    [self.longitudeArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        return [obj1 doubleValue] > [obj2 doubleValue];
-    }];
-    [self.latitudeArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        return [obj1 doubleValue] > [obj2 doubleValue];
-    }];
-    NSLog(@"longitudeArray:%@", self.longitudeArray);
-    NSLog(@"latitudeArray:%@", self.latitudeArray);
-    
-    // 取中心点坐标
-    double centerlongitude = ([self.longitudeArray.firstObject doubleValue] + [self.longitudeArray.lastObject doubleValue]) / 2;
-    double centerlatitude = ([self.latitudeArray.firstObject doubleValue] + [self.latitudeArray.lastObject doubleValue]) / 2;
-    // 取经纬度跨度
-    double longitudeDelta = [self.longitudeArray.firstObject doubleValue] + [self.longitudeArray.lastObject doubleValue];
-    double latitudeDelta = [self.latitudeArray.firstObject doubleValue] + [self.latitudeArray.lastObject doubleValue];
-    // 当前区域的中心点经纬度
-    CLLocationCoordinate2D centerPoint = CLLocationCoordinate2DMake(centerlatitude, centerlongitude);
-    // 当前区域的经纬度跨度
-    MACoordinateSpan span = MACoordinateSpanMake(latitudeDelta, longitudeDelta);
-    // 确定区域
-    MACoordinateRegion region = MACoordinateRegionMake(centerPoint, span);
-    // 加入系统动画
-    [self.detailView setRegion:region];
-
+    // 画轨迹
+    [self showRoute];
 }
 
 - (void)showRoute {
@@ -122,6 +102,12 @@
     NSArray<MATracePoint *> *tracePoints = self.tracedLocationsArray;
     
     if (tracePoints.count < 2) {
+        if (tracePoints.count == 1) {
+            // 初始定位，以运动的开头为中心
+            MATracePoint *point = [tracePoints firstObject];
+            struct CLLocationCoordinate2D location = {point.latitude, point.longitude};
+            self.detailView.mapView.centerCoordinate = location;
+        }
         return;
     }
     
@@ -143,7 +129,7 @@
     }
     // 完全显示出来所有线
     [self.detailView.mapView showOverlays:self.detailView.mapView.overlays
-                              edgePadding:UIEdgeInsetsMake(200,0,0,0)
+                              edgePadding:UIEdgeInsetsMake(200,20,40,20)
                                  animated:YES];
 }
 
@@ -165,12 +151,14 @@
 
 - (void)modelMapToLocations {
     self.tracedLocationsArray = [[NSMutableArray alloc] init];
-//    self.longitudeArray = [[NSMutableArray alloc] init];
-//    self.latitudeArray = [[NSMutableArray alloc] init];
-    for (NSDictionary *dic in self.RunningActivity.data) {
-//        [self.longitudeArray addObject:dic[@"longitude"]];
-//        [self.latitudeArray addObject:dic[@"latitude"]];
-        
+    NSArray *coordsArr = nil;
+    if (self.runningActivity) {
+        coordsArr = self.vm.runningActivity.data;
+    } else {
+        coordsArr = self.vm.areaActivity.data;
+    }
+    
+    for (NSDictionary *dic in coordsArr) {
         MATracePoint *point = [[MATracePoint alloc] init];
         point.longitude = [dic[@"longitude"] doubleValue];
         point.latitude = [dic[@"latitude"] doubleValue];

@@ -58,7 +58,7 @@
         
         // 定点运动相关
         _cmdGetAreaSportsList = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
-            return [[[[Dao share] getAreaSportsList]
+            return [[[[Dao share] getAreaSportsList:self.universityId]
             doNext:^(id  _Nullable x) {
                 self.areaSportsOutdoorPoints = x;
             }]
@@ -79,7 +79,7 @@
         }];
         
         _cmdAreaActivityData = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(id  _Nullable input) {
-            return [[Dao share] areaActivitysDataWithActivityId:0
+            return [[Dao share] areaActivitysDataWithActivityId:self.areaActivity.id
                                                       longitude:self.longitude
                                                        latitude:self.latitude
                                                    locationType:self.locationType];
